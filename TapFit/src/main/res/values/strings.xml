@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TapFit</string>
+    <string name="action_settings">Settings</string>
+    <string name="tapfit_api">http://staging.tapfit.co/api/</string>
+    <string name="tapfit_url">http://staging.tapfit.co/</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="splash_message">Loading Better Health</string>
+
+    <string-array name="menu_list">
+        <item>Home</item>
+        <item>Favorites</item>
+        <item>Passes</item>
+        <item>Account</item>
+        <item>Share</item>
+    </string-array>
+
+    <string name="title_activity_splash">SplashActivity</string>
+
+</resources>
