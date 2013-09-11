@@ -3,13 +3,17 @@ package co.tapfit.android.database;
 import android.content.Context;
 import android.util.Log;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.sql.DataTruncation;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
+import co.tapfit.android.model.User;
 
 /**
  * Created by zackmartinsek on 9/8/13.
@@ -63,6 +67,17 @@ public class DatabaseWrapper {
         }
     }
 
+    public void createOrUpdateUser(User user) {
+        try
+        {
+            helper.getUserDao().createOrUpdate(user);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create user: " + user, e);
+        }
+    }
+
     public void createClassTime(ClassTime classTime) {
 
         try
@@ -75,4 +90,39 @@ public class DatabaseWrapper {
         }
     }
 
+    public User getCurrentUser() {
+        try
+        {
+            Integer userId = SharePref.getIntPref(mContext, SharePref.CURRENT_USER_ID);
+            return helper.getUserDao().queryForId(userId);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to find a current user", e);
+            return null;
+        }
+    }
+
+    public void deleteClassTime(ClassTime classTime) {
+        try
+        {
+            helper.getClassTimeDao().delete(classTime);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to delete classTime: " + classTime, e);
+        }
+    }
+
+    public List<Place> getFavorites() {
+        try
+        {
+            return helper.getPlaceDao().queryForEq("user_id", SharePref.getIntPref(mContext, SharePref.CURRENT_USER_ID));
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get favorites");
+            return null;
+        }
+    }
 }

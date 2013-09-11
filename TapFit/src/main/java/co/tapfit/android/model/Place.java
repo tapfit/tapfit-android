@@ -1,9 +1,16 @@
 package co.tapfit.android.model;
 
+import android.content.Context;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Date;
+import java.util.Iterator;
+
+import co.tapfit.android.database.DatabaseWrapper;
 
 /**
  * Created by zackmartinsek on 9/7/13.
@@ -57,5 +64,28 @@ public class Place {
 
     @ForeignCollectionField
     public ForeignCollection<ClassTime> classTimes;
+
+    @DatabaseField(foreign = true)
+    public User favorite_place;
+
+    public void addClassTime(Context context, ClassTime classTime) {
+
+        Iterator<ClassTime> currentTimes = classTimes.iterator();
+
+        boolean shouldAdd = true;
+
+        while (currentTimes.hasNext()) {
+            ClassTime currentTime = currentTimes.next();
+            if (currentTime.classTime.compareTo(new Date()) < 0) {
+                DatabaseWrapper.getInstance(context).deleteClassTime(currentTime);
+                classTimes.remove(currentTime);
+            }
+            if (currentTime.classTime.equals(classTime.classTime)) {
+                shouldAdd = false;
+            }
+        }
+        if (shouldAdd)
+            classTimes.add(classTime);
+    }
 
 }

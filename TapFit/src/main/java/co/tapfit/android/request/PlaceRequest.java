@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
+import co.tapfit.android.model.User;
 import co.tapfit.android.service.ApiService;
 
 /**
@@ -31,7 +32,7 @@ public class PlaceRequest extends Request {
     private static boolean mWaitingForPlacesResponse = false;
     private static boolean mWaitingForPlaceResponse = false;
 
-    public static boolean getPlaces(Context context, ResponseCallback callback)
+    public static boolean getPlaces(final Context context, ResponseCallback callback)
     {
         setDatabaseWrapper(context);
 
@@ -67,6 +68,8 @@ public class PlaceRequest extends Request {
 
                         JsonArray array = object.getAsJsonArray("places");
 
+                        User currentUser = dbWrapper.getCurrentUser();
+
                         for (JsonElement element : array)
                         {
                             Place place = gson.fromJson(element, Place.class);
@@ -76,7 +79,7 @@ public class PlaceRequest extends Request {
 
                                 ClassTime classTime = new ClassTime(dateTime);
                                 dbWrapper.createClassTime(classTime);
-                                place.classTimes.add(classTime);
+                                place.addClassTime(context, classTime);
                             }
 
                             dbWrapper.createOrUpdatePlace(place);

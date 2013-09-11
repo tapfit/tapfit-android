@@ -4,6 +4,7 @@ import co.tapfit.android.R;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Debug;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -16,8 +17,10 @@ import java.sql.SQLException;
 
 import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
+import co.tapfit.android.model.Instructor;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
+import co.tapfit.android.model.Workout;
 
 /**
  * Created by zackmartinsek on 9/8/13.
@@ -27,7 +30,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "tapfit.db";
     // any time you make changes to your database objects, you may have to increase the database version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // the DAO model we use to access the SimpleData table
     private Dao<Place, Integer> placeDao = null;
@@ -41,6 +44,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private Dao<ClassTime, Integer> classTimeDao = null;
     private RuntimeExceptionDao<ClassTime, Integer> classTimeRuntimeDao = null;
+
+    private Dao<Workout, Integer> workoutDao = null;
+    private RuntimeExceptionDao<Workout, Integer> workoutRuntimeDao = null;
+
+    private Dao<Instructor, Integer> instructorDao = null;
+    private RuntimeExceptionDao<Instructor, Integer> instructorRuntimeDao = null;
 
     public DatabaseHelper(Context context) {
         //super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -59,6 +68,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Address.class);
             TableUtils.createTable(connectionSource, User.class);
             TableUtils.createTable(connectionSource, ClassTime.class);
+            TableUtils.createTable(connectionSource, Workout.class);
+            TableUtils.createTable(connectionSource, Instructor.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -77,6 +88,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Address.class, true);
             TableUtils.dropTable(connectionSource, User.class, true);
             TableUtils.dropTable(connectionSource, ClassTime.class, true);
+            TableUtils.dropTable(connectionSource, Workout.class, true);
+            TableUtils.dropTable(connectionSource, Instructor.class, true);
             // after we drop the old databases, we create the new ones
             onCreate(db, connectionSource);
         } catch (SQLException e) {
@@ -149,6 +162,33 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return classTimeRuntimeDao;
     }
 
+    public Dao<Workout, Integer> getWorkoutDao() throws SQLException {
+        if (workoutDao == null) {
+            workoutDao = getDao(Workout.class);
+        }
+        return workoutDao;
+    }
+
+    public RuntimeExceptionDao<Workout, Integer> getWorkoutRuntimeDao() {
+        if (workoutRuntimeDao == null) {
+            workoutRuntimeDao = getRuntimeExceptionDao(Workout.class);
+        }
+        return workoutRuntimeDao;
+    }
+
+    public Dao<Instructor, Integer> getInstructorDao() throws SQLException {
+        if (instructorDao == null) {
+            instructorDao = getDao(Instructor.class);
+        }
+        return instructorDao;
+    }
+
+    public RuntimeExceptionDao<Instructor, Integer> getInstructorRuntimeDao() {
+        if (instructorRuntimeDao == null) {
+            instructorRuntimeDao = getRuntimeExceptionDao(Instructor.class);
+        }
+        return instructorRuntimeDao;
+    }
     /**
      * Close the database connections and clear any cached DAOs.
      */
