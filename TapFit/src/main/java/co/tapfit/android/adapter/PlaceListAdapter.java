@@ -8,22 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
-import com.nostra13.universalimageloader.utils.ImageSizeUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import co.tapfit.android.R;
-import co.tapfit.android.helper.CroppedBitmapDisplayer;
-import co.tapfit.android.helper.ImageCache;
+import co.tapfit.android.helper.RoundedBackgroundDisplayer;
+import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 
 /**
@@ -37,7 +38,8 @@ public class PlaceListAdapter extends BaseAdapter {
     private ImageLoader mImageLoader;
     private LayoutInflater mInflater;
     private List<Place> mPlaceData;
-    private Display mDisplay;
+
+    private DateFormat df = new SimpleDateFormat("H:mma");
 
     private static final String TAG = PlaceListAdapter.class.getSimpleName();
 
@@ -49,14 +51,12 @@ public class PlaceListAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageScaleType ist = ImageScaleType.EXACTLY_STRETCHED;
 
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        mDisplay = wm.getDefaultDisplay();
-
         mOptions = new DisplayImageOptions.Builder()
+                .resetViewBeforeLoading(true)
                 .cacheOnDisc(true)
                 .cacheInMemory(true)
                 .imageScaleType(ist)
-                .displayer(new RoundedBitmapDisplayer(20))
+                .displayer(new RoundedBackgroundDisplayer(mContext.getResources().getDimension(R.dimen.rounded_edges)))
                 .build();
 
         mImageLoader = ImageLoader.getInstance();
@@ -102,6 +102,23 @@ public class PlaceListAdapter extends BaseAdapter {
         Place place = (Place) getItem(i);
 
         mImageLoader.displayImage(place.cover_photo, holder.place_image, mOptions);
+        holder.place_name_text.setText(place.name);
+        holder.place_price_text.setText("$" + Math.round(place.lowest_price));
+        holder.place_distance_text.setText(String.format("%.1f", place.distance) + " mi");
+
+        String classTimeString = "";
+        for (ClassTime classTime : place.classTimes) {
+            if ((new Date()).compareTo(classTime.classTime) < 0)
+            {
+                classTimeString = classTimeString + df.format(classTime.classTime) + " ";
+            }
+        }
+
+        if (classTimeString.equals("")) {
+            classTimeString = "Dropin passes available";
+        }
+
+        holder.place_class_time_text.setText(classTimeString);
 
         return view;
     }
@@ -111,9 +128,17 @@ public class PlaceListAdapter extends BaseAdapter {
         public ViewHolder(View view)
         {
             place_image = (ImageView) view.findViewById(R.id.place_image);
+            place_name_text = (TextView) view.findViewById(R.id.place_name_text);
+            place_class_time_text = (TextView) view.findViewById(R.id.place_class_time_text);
+            place_price_text = (TextView) view.findViewById(R.id.place_price_text);
+            place_distance_text = (TextView) view.findViewById(R.id.place_distance_text);
         }
 
         public ImageView place_image;
+        public TextView place_name_text;
+        public TextView place_class_time_text;
+        public TextView place_price_text;
+        public TextView place_distance_text;
 
     }
 }

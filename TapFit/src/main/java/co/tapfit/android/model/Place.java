@@ -1,6 +1,8 @@
 package co.tapfit.android.model;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
@@ -30,6 +32,15 @@ public class Place {
     public String phone_number;
 
     @DatabaseField
+    public String source_description;
+
+    @DatabaseField
+    public Double lowest_price;
+
+    @DatabaseField
+    public Float distance;
+
+    @DatabaseField
     public String avg_rating;
 
     @DatabaseField
@@ -44,6 +55,7 @@ public class Place {
     @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     public Address address;
 
-
+    @ForeignCollectionField
+    public ForeignCollection<ClassTime> classTimes;
 
 }

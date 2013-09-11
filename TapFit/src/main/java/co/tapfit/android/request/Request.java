@@ -2,6 +2,7 @@ package co.tapfit.android.request;
 
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import co.tapfit.android.R;
@@ -11,6 +12,8 @@ import co.tapfit.android.database.DatabaseWrapper;
  * Created by zackmartinsek on 9/8/13.
  */
 public class Request {
+
+    protected static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     protected static String getUrl(Context context)
     {

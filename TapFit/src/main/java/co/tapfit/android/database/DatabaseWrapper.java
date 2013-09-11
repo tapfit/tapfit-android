@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.tapfit.android.model.Address;
+import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 
 /**
@@ -59,6 +60,18 @@ public class DatabaseWrapper {
         catch (Exception e)
         {
             Log.d(TAG, "Failed to save place: " + place.id, e);
+        }
+    }
+
+    public void createClassTime(ClassTime classTime) {
+
+        try
+        {
+            helper.getClassTimeDao().create(classTime);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create classTime: " + classTime.classTime, e);
         }
     }
 

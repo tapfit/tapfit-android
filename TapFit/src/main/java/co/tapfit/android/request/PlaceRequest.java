@@ -13,10 +13,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
-import co.tapfit.android.R;
+import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.service.ApiService;
 
@@ -27,7 +28,8 @@ public class PlaceRequest extends Request {
 
     private static String TAG = PlaceRequest.class.getSimpleName();
 
-    private static boolean mWaitingForResponse = false;
+    private static boolean mWaitingForPlacesResponse = false;
+    private static boolean mWaitingForPlaceResponse = false;
 
     public static boolean getPlaces(Context context, ResponseCallback callback)
     {
@@ -37,7 +39,7 @@ public class PlaceRequest extends Request {
             callbacks.add(callback);
         }
 
-        if (mWaitingForResponse)
+        if (mWaitingForPlacesResponse)
             return true;
 
         ResultReceiver receiver = new ResultReceiver(new Handler()){
@@ -47,7 +49,7 @@ public class PlaceRequest extends Request {
             {
                 if (resultCode == 0)
                 {
-                    mWaitingForResponse = false;
+                    mWaitingForPlacesResponse = false;
                     Log.d(TAG, "Failed to get result");
                 }
                 else
@@ -69,6 +71,14 @@ public class PlaceRequest extends Request {
                         {
                             Place place = gson.fromJson(element, Place.class);
 
+                            for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
+                                Date dateTime = mDateFormat.parse(time.getAsString());
+
+                                ClassTime classTime = new ClassTime(dateTime);
+                                dbWrapper.createClassTime(classTime);
+                                place.classTimes.add(classTime);
+                            }
+
                             dbWrapper.createOrUpdatePlace(place);
                         }
                     }
@@ -77,7 +87,7 @@ public class PlaceRequest extends Request {
                         Log.d(TAG, "Exception: " + e);
                     }
 
-                    mWaitingForResponse = false;
+                    mWaitingForPlacesResponse = false;
                     Iterator iterator = callbacks.iterator();
                     while (iterator.hasNext()) {
                         ResponseCallback cb = (ResponseCallback) iterator.next();
@@ -89,7 +99,7 @@ public class PlaceRequest extends Request {
 
         };
 
-        mWaitingForResponse = true;
+        mWaitingForPlacesResponse = true;
 
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(ApiService.URL, getUrl(context) + "places");
@@ -100,6 +110,5 @@ public class PlaceRequest extends Request {
 
         return false;
     }
-
 
 }

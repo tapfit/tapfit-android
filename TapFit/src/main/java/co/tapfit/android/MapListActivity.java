@@ -2,35 +2,25 @@ package co.tapfit.android;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import co.tapfit.android.DrawerLayout;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.DrawerLayout;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-
 import co.tapfit.android.fragment.MapListFragment;
 import co.tapfit.android.fragment.PlaceMapFragment;
-import co.tapfit.android.helper.LocationServices;
-import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
-import co.tapfit.android.request.UserRequest;
 
 public class MapListActivity extends BaseActivity {
 
@@ -46,6 +36,7 @@ public class MapListActivity extends BaseActivity {
     private TextView mBottomButtonText;
     private FrameLayout mBottomButton;
 
+    private MapListFragment mFavoriteListFragment;
     private MapListFragment mMapListFragment;
     private PlaceMapFragment mPlaceMapFragment;
 
@@ -73,13 +64,19 @@ public class MapListActivity extends BaseActivity {
         mBottomButton = (FrameLayout) findViewById(R.id.bottom_button);
 
         mMapListFragment = new MapListFragment();
+        Bundle args = new Bundle();
+        args.putInt(MapListFragment.LIST_TYPE, MapListFragment.MAP_LIST);
+        mMapListFragment.setArguments(args);
+
+        mFavoriteListFragment = new MapListFragment();
+        args = new Bundle();
+        args.putInt(MapListFragment.LIST_TYPE, MapListFragment.FAVORITE_LIST);
+        mFavoriteListFragment.setArguments(args);
 
         mPlaceMapFragment = new PlaceMapFragment();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
-                .add(R.id.content_frame, mMapListFragment, "List Fragment")
-                .hide(mMapListFragment)
                 .commit();
 
         mBottomButtonText.setText("View List");
@@ -93,9 +90,8 @@ public class MapListActivity extends BaseActivity {
                         if (mPlaceMapFragment.isVisible())
                         {
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.hide(mPlaceMapFragment)
-                                    .show(mMapListFragment)
-                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            ft.replace(R.id.content_frame, mMapListFragment, "List Fragment")
+                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                     .commit();
 
                             mBottomButtonText.setText("View Map");
@@ -104,9 +100,8 @@ public class MapListActivity extends BaseActivity {
                         else
                         {
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.hide(mMapListFragment)
-                                    .show(mPlaceMapFragment)
-                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                            ft.replace(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
+                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                     .commit();
                             mBottomButtonText.setText("View List");
                         }
@@ -132,6 +127,7 @@ public class MapListActivity extends BaseActivity {
         // Set the adapter for the list view
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.menu_list_item, R.id.menu_item, mMenuOptions));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -156,6 +152,8 @@ public class MapListActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+
     }
 
     View.OnClickListener switchMapAndList = new View.OnClickListener() {
@@ -205,6 +203,27 @@ public class MapListActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.map_list, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position) {
+
+        if (position == 0) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
+                    .commit();
+        }
+
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
     }
     
 }

@@ -47,7 +47,7 @@ public class ImageCache {
                 .threadPoolSize(5)
                 .threadPriority(Thread.MIN_PRIORITY + 3)
                 .denyCacheImageMultipleSizesInMemory()
-                .memoryCacheSizePercentage(30) // You can pass your own memory cache implementation
+                .memoryCacheSize(3 * 1024)// You can pass your own memory cache implementation
                 .discCache(new UnlimitedDiscCache(cacheDir)) // You can pass your own disc cache implementation
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
                 .build();

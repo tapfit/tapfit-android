@@ -82,4 +82,64 @@ public class UserRequest extends Request {
 
     }
 
+    public static final String EMAIL = "user[email]";
+    public static final String PASSWORD = "user[password]";
+
+    public static void registerUser(final Context context, Bundle args, ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new Gson();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonElement element = parser.parse(json);
+
+                        User user = gson.fromJson(element, User.class);
+
+                        DatabaseHelper helper = new DatabaseHelper(context);
+
+                        helper.getUserDao().createOrUpdate(user);
+
+                        //Log.d(TAG, "Registered a guest user: " + user.auth_token);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                    }
+                }
+            }
+
+        };
+
+        Intent intent = new Intent(context, ApiService.class);
+        intent.putExtra(ApiService.URL, getUrl(context) + "users/register");
+        intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+        intent.putExtra(ApiService.PARAMS, args);
+        intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+        context.startService(intent);
+
+
+    }
+
 }
