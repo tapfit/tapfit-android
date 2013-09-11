@@ -20,5 +20,6 @@
     </string-array>
 
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_place_info">PlaceInfoActivity</string>
 
 </resources>

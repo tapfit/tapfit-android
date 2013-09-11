@@ -91,7 +91,7 @@ public class MapListActivity extends BaseActivity {
                         {
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                             ft.replace(R.id.content_frame, mMapListFragment, "List Fragment")
-                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                    .setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
                                     .commit();
 
                             mBottomButtonText.setText("View Map");
@@ -101,7 +101,7 @@ public class MapListActivity extends BaseActivity {
                         {
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                             ft.replace(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
-                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                    .setCustomAnimations(R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom)
                                     .commit();
                             mBottomButtonText.setText("View List");
                         }
@@ -218,6 +218,7 @@ public class MapListActivity extends BaseActivity {
         if (position == 0) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
+                    .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
                     .commit();
         }
 

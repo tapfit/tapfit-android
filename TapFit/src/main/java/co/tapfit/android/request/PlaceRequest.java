@@ -95,7 +95,7 @@ public class PlaceRequest extends Request {
                     while (iterator.hasNext()) {
                         ResponseCallback cb = (ResponseCallback) iterator.next();
                         cb.sendCallback(json, json);
-                        callbacks.remove(cb);
+                        iterator.remove();
                     }
                 }
             }

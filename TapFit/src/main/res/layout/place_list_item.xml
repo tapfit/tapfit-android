@@ -5,9 +5,9 @@
 
     <ImageView
         android:id="@+id/place_image"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/place_image_size"
         android:layout_width="match_parent"
-        android:maxHeight="150dp"
+        android:maxHeight="@dimen/place_image_size"
         android:scaleType="centerCrop"
         android:fadingEdge="vertical"
         android:padding="5dp"/>

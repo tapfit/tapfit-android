@@ -3,6 +3,7 @@ package co.tapfit.android.helper;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -21,6 +22,8 @@ public class ImageCache {
     private static Resources mResources;
     private static ImageCache ourInstance = new ImageCache();
 
+    private static DisplayImageOptions placePageOpts;
+
     public static ImageCache getInstance() {
         return ourInstance;
     }
@@ -33,6 +36,18 @@ public class ImageCache {
         DisplayMetrics metrics = mResources.getDisplayMetrics();
         float px = dp * (metrics.densityDpi/160f);
         return Math.round(px);
+    }
+
+    public static void loadImageForPlacePage(ImageView imageView, String url) {
+
+        imageLoader.displayImage(url, imageView, getPlacePageOpts());
+    }
+
+    private static DisplayImageOptions getPlacePageOpts() {
+        if (placePageOpts == null) {
+            placePageOpts = DisplayImageOptions.createSimple();
+        }
+        return placePageOpts;
     }
 
     public static void initImageLoader(Context context) {

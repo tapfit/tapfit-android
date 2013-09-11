@@ -2,6 +2,7 @@ package co.tapfit.android.model;
 
 import android.content.Context;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.helper.LocationServices;
 
 /**
  * Created by zackmartinsek on 9/7/13.
@@ -68,6 +70,12 @@ public class Place {
     @DatabaseField(foreign = true)
     public User favorite_place;
 
+    @ForeignCollectionField
+    public ForeignCollection<Pass> passes;
+
+    @ForeignCollectionField
+    public ForeignCollection<Workout> workouts;
+
     public void addClassTime(Context context, ClassTime classTime) {
 
         Iterator<ClassTime> currentTimes = classTimes.iterator();
@@ -88,4 +96,37 @@ public class Place {
             classTimes.add(classTime);
     }
 
+    public double getDistance() {
+
+        LatLng userLocation = LocationServices.getLatLng();
+
+        double R = 6371;
+
+        double maxLat = Math.max(userLocation.latitude, this.address.lat);
+        double maxLon = Math.max(userLocation.longitude, this.address.lon);
+        double minLat = Math.min(userLocation.latitude, this.address.lat);
+        double minLon = Math.min(userLocation.longitude, this.address.lon);
+
+        double dLat = deg2rad( - minLat);
+        double dLon = deg2rad(minLon - maxLon);
+
+        double a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(deg2rad(maxLat)) * Math.cos(deg2rad(minLat)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
+        return d;
+    }
+
+    private double deg2rad(double deg)
+    {
+        return deg * (Math.PI / 180);
+    }
+
+    private double rad2deg(double rad)
+    {
+        return rad * (180 / Math.PI);
+    }
 }

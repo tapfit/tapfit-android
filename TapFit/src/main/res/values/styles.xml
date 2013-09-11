@@ -18,6 +18,7 @@
     </style>
 
     <style name="Font">
+        <item name="android:fontFamily"></item>
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>

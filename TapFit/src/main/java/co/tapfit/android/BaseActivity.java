@@ -8,15 +8,19 @@ import android.view.Menu;
 import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.R;
+import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.ImageCache;
 
 public class BaseActivity extends ActionBarActivity {
 
     protected ImageCache imageCache = ImageCache.getInstance();
+    protected DatabaseWrapper dbWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dbWrapper = DatabaseWrapper.getInstance(getApplicationContext());
     }
 
 

@@ -12,8 +12,10 @@ import java.util.List;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
+import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
+import co.tapfit.android.model.Workout;
 
 /**
  * Created by zackmartinsek on 9/8/13.
@@ -122,6 +124,52 @@ public class DatabaseWrapper {
         catch (Exception e)
         {
             Log.d(TAG, "Failed to get favorites");
+            return null;
+        }
+    }
+
+    public void createOrUpdateWorkout(Workout workout) {
+        try
+        {
+            helper.getWorkoutDao().createOrUpdate(workout);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create workout: " + workout, e);
+        }
+    }
+
+    public void createOrUpdatePass(Pass pass) {
+        try
+        {
+            helper.getPassDao().createOrUpdate(pass);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create pass: " + pass, e);
+        }
+    }
+
+    public List<Pass> getPasses() {
+        try
+        {
+            return helper.getPassDao().queryForEq("user_id", SharePref.getIntPref(mContext, SharePref.CURRENT_USER_ID));
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get pass for user.", e);
+            return null;
+        }
+    }
+
+    public Place getPlace(Integer placeId) {
+        try
+        {
+            return helper.getPlaceDao().queryForId(placeId);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to place for id: " + placeId, e);
             return null;
         }
     }

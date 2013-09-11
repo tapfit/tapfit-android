@@ -2,6 +2,7 @@ package co.tapfit.android.database;
 
 import co.tapfit.android.R;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Debug;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Instructor;
+import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
@@ -51,6 +53,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Instructor, Integer> instructorDao = null;
     private RuntimeExceptionDao<Instructor, Integer> instructorRuntimeDao = null;
 
+    private Dao<Pass, Integer> passDao = null;
+    private RuntimeExceptionDao<Pass, Integer> passRuntimeDao = null;
+
     public DatabaseHelper(Context context) {
         //super(context, DATABASE_NAME, null, DATABASE_VERSION);
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -70,6 +75,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, ClassTime.class);
             TableUtils.createTable(connectionSource, Workout.class);
             TableUtils.createTable(connectionSource, Instructor.class);
+            TableUtils.createTable(connectionSource, Pass.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -90,6 +96,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, ClassTime.class, true);
             TableUtils.dropTable(connectionSource, Workout.class, true);
             TableUtils.dropTable(connectionSource, Instructor.class, true);
+            TableUtils.dropTable(connectionSource, Pass.class, true);
             // after we drop the old databases, we create the new ones
             onCreate(db, connectionSource);
         } catch (SQLException e) {
@@ -188,6 +195,20 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             instructorRuntimeDao = getRuntimeExceptionDao(Instructor.class);
         }
         return instructorRuntimeDao;
+    }
+
+    public Dao<Pass, Integer> getPassDao() throws SQLException {
+        if (passDao == null) {
+            passDao = getDao(Pass.class);
+        }
+        return passDao;
+    }
+
+    public RuntimeExceptionDao<Pass, Integer> getPassRuntimeDao() {
+        if (passRuntimeDao == null) {
+            passRuntimeDao = getRuntimeExceptionDao(Pass.class);
+        }
+        return passRuntimeDao;
     }
     /**
      * Close the database connections and clear any cached DAOs.

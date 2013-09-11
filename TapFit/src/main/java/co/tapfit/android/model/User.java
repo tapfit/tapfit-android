@@ -35,4 +35,7 @@ public class User {
 
     @ForeignCollectionField
     public ForeignCollection<Place> favorite_places;
+
+    @ForeignCollectionField
+    public ForeignCollection<Pass> passes;
 }

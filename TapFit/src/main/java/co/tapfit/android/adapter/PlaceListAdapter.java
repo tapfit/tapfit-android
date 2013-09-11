@@ -104,7 +104,7 @@ public class PlaceListAdapter extends BaseAdapter {
         mImageLoader.displayImage(place.cover_photo, holder.place_image, mOptions);
         holder.place_name_text.setText(place.name);
         holder.place_price_text.setText("$" + Math.round(place.lowest_price));
-        holder.place_distance_text.setText(String.format("%.1f", place.distance) + " mi");
+        holder.place_distance_text.setText(String.format("%.1f", place.getDistance()) + " mi");
 
         String classTimeString = "";
         for (ClassTime classTime : place.classTimes) {

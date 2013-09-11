@@ -1,15 +1,19 @@
 package co.tapfit.android.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.adapter.PlaceListAdapter;
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.model.Place;
 
 /**
  * Created by zackmartinsek on 9/9/13.
@@ -47,12 +51,29 @@ public class MapListFragment extends Fragment {
         mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWrapper.getPlaces());
 
         mPlaceList.setAdapter(mPlaceListAdapter);
+
+        mPlaceList.setOnItemClickListener(placeListClickListener);
     }
 
     private void initializeFavoriteList() {
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
         //mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWra)
     }
+
+    private AdapterView.OnItemClickListener placeListClickListener = new AdapterView.OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+            Place place = (Place) adapterView.getItemAtPosition(position);
+
+            Intent intent = new Intent(getActivity(), PlaceInfoActivity.class);
+
+            intent.putExtra(PlaceInfoActivity.PLACE_ID, place.id);
+
+            startActivity(intent);
+        }
+    };
 
 
 }

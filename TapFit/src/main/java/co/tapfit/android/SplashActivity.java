@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.request.UserRequest;
 
 public class SplashActivity extends Activity {
 
@@ -28,6 +29,7 @@ public class SplashActivity extends Activity {
         {
             //TODO: Make regions call and prompt user
         }
+
         PlaceRequest.getPlaces(this, new ResponseCallback() {
             @Override
             public void sendCallback(Object responseObject, String message) {
