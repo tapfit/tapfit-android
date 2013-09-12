@@ -10,12 +10,16 @@ import android.os.Build;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import co.tapfit.android.fragment.PlaceCardFragment;
 import co.tapfit.android.model.Place;
 
 public class PlaceInfoActivity extends BaseActivity {
 
     public static final String PLACE_ID = "place_id";
+    private static final String PLACE_FRAGMENT = "place_fragment";
     private Place mPlace;
+
+    private PlaceCardFragment mPlaceCardFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,24 +30,16 @@ public class PlaceInfoActivity extends BaseActivity {
 
         mPlace = dbWrapper.getPlace(getIntent().getIntExtra(PLACE_ID, -1));
 
-        setUpResourceInfo();
+        setUpFragments();
     }
 
+    private void setUpFragments() {
+        mPlaceCardFragment = new PlaceCardFragment();
+        Bundle args = new Bundle();
+        args.putInt(PLACE_ID, mPlace.id);
+        mPlaceCardFragment.setArguments(args);
 
-    private void setUpResourceInfo() {
-
-        ImageView imageView = (ImageView) findViewById(R.id.place_image);
-        imageCache.loadImageForPlacePage(imageView, mPlace.cover_photo);
-
-        TextView textView = (TextView) findViewById(R.id.place_description);
-        textView.setText(mPlace.source_description);
-
-        textView = (TextView) findViewById(R.id.place_name);
-        textView.setText(mPlace.name);
-
-        textView = (TextView) findViewById(R.id.place_distance);
-        textView.setText(String.format("%.1f", mPlace.getDistance()) + " miles away");
-
+        getSupportFragmentManager().beginTransaction().add(R.id.content_frame, mPlaceCardFragment, PLACE_FRAGMENT).commit();
     }
 
     /**

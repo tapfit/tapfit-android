@@ -18,11 +18,10 @@ import co.tapfit.android.model.Place;
 /**
  * Created by zackmartinsek on 9/9/13.
  */
-public class MapListFragment extends Fragment {
+public class MapListFragment extends BaseFragment {
 
     View mView;
     ListView mPlaceList;
-    DatabaseWrapper dbWrapper;
 
     public static final String LIST_TYPE = "list_type";
     public static final int MAP_LIST = 0;
@@ -33,7 +32,6 @@ public class MapListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_map_list, null);
-        dbWrapper = DatabaseWrapper.getInstance(getActivity().getApplicationContext());
         if (getArguments().getInt(LIST_TYPE) == MAP_LIST) {
             initializeMapList();
         }

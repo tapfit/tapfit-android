@@ -1,6 +1,7 @@
 package co.tapfit.android;
 
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
@@ -152,8 +153,7 @@ public class MapListActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-
+        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.red));
     }
 
     View.OnClickListener switchMapAndList = new View.OnClickListener() {
