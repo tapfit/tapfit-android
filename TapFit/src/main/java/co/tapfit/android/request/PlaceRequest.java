@@ -8,18 +8,24 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
+import co.tapfit.android.model.Workout;
 import co.tapfit.android.service.ApiService;
 
 /**
@@ -52,13 +58,22 @@ public class PlaceRequest extends Request {
                 {
                     mWaitingForPlacesResponse = false;
                     Log.d(TAG, "Failed to get result");
+
+                    Iterator iterator = callbacks.iterator();
+                    while (iterator.hasNext()) {
+                        ResponseCallback cb = (ResponseCallback) iterator.next();
+                        cb.sendCallback(null, "Failed to get back result");
+                        iterator.remove();
+                    }
                 }
                 else
                 {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .create();
 
                     JsonParser parser = new JsonParser();
 
@@ -68,7 +83,7 @@ public class PlaceRequest extends Request {
 
                         JsonArray array = object.getAsJsonArray("places");
 
-                        User currentUser = dbWrapper.getCurrentUser();
+                        //User currentUser = dbWrapper.getCurrentUser();
 
                         for (JsonElement element : array)
                         {
@@ -112,6 +127,71 @@ public class PlaceRequest extends Request {
         context.startService(intent);
 
         return false;
+    }
+
+    public static void getWorkouts(final Context context, final Place place, final ResponseCallback callback)
+    {
+        setDatabaseWrapper(context);
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()){
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                    callback.sendCallback(null, "Failed Request");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    ArrayList<Workout> workouts = new ArrayList<Workout>();
+
+                    try
+                    {
+                        JsonArray array = parser.parse(json).getAsJsonArray();
+
+                        for (JsonElement element : array)
+                        {
+                            Workout workout = gson.fromJson(element, Workout.class);
+
+                            workout.place = place;
+
+                            dbWrapper.createOrUpdateWorkout(workout);
+                            dbWrapper.createOrUpdateInstructor(workout.instructor);
+
+                            workouts.add(workout);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e.getMessage());
+                        callback.sendCallback(null, "Failed to get workouts");
+                        return;
+                    }
+
+                    callback.sendCallback(workouts, "Success");
+                }
+            }
+
+        };
+
+        Intent intent = new Intent(context, ApiService.class);
+        intent.putExtra(ApiService.URL, getUrl(context) + "places/" + place.id + "/workouts");
+        intent.putExtra(ApiService.HTTP_VERB, ApiService.GET);
+        intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+        context.startService(intent);
     }
 
 }

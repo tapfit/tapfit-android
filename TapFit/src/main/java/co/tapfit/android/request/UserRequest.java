@@ -8,16 +8,20 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import co.tapfit.android.R;
 import co.tapfit.android.database.DatabaseHelper;
+import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Pass;
@@ -55,7 +59,10 @@ public class UserRequest extends Request {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
 
                     JsonParser parser = new JsonParser();
 
@@ -129,7 +136,10 @@ public class UserRequest extends Request {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
 
                     JsonParser parser = new JsonParser();
 
@@ -167,8 +177,84 @@ public class UserRequest extends Request {
 
         };
 
+        User user = dbWrapper.getCurrentUser();
+        if (user != null) {
+            args.putString(AUTH_TOKEN, user.auth_token);
+        }
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(ApiService.URL, getUrl(context) + "users/register");
+        intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+        intent.putExtra(ApiService.PARAMS, args);
+        intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+        context.startService(intent);
+
+    }
+
+    public static void loginUser(final Context context, Bundle args, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    User user = null;
+
+                    try
+                    {
+                        JsonElement element = parser.parse(json);
+
+                        user = gson.fromJson(element, User.class);
+
+                        dbWrapper.createOrUpdateUser(user);
+
+                        SharePref.setIntPref(context, SharePref.CURRENT_USER_ID, user.id);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                    }
+
+                    if (callback != null)
+                    {
+                        if (user == null)
+                        {
+                            callback.sendCallback(user, "Failed to login user");
+                        }
+                        else
+                        {
+                            callback.sendCallback(user, "Success registering user");
+                            UserRequest.favorites(context, null);
+                        }
+                    }
+                }
+            }
+
+        };
+
+        Intent intent = new Intent(context, ApiService.class);
+        intent.putExtra(ApiService.URL, getUrl(context) + "users/login");
         intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
         intent.putExtra(ApiService.PARAMS, args);
         intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
@@ -197,7 +283,10 @@ public class UserRequest extends Request {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
 
                     JsonParser parser = new JsonParser();
 
@@ -283,7 +372,10 @@ public class UserRequest extends Request {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
 
                     JsonParser parser = new JsonParser();
 

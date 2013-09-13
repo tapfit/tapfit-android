@@ -39,7 +39,7 @@ public class PlaceListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Place> mPlaceData;
 
-    private DateFormat df = new SimpleDateFormat("H:mma");
+    private DateFormat df = new SimpleDateFormat("h:mma");
 
     private static final String TAG = PlaceListAdapter.class.getSimpleName();
 

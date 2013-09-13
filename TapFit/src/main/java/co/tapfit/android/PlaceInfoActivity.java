@@ -11,15 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.tapfit.android.fragment.PlaceCardFragment;
+import co.tapfit.android.fragment.WorkoutListFragment;
 import co.tapfit.android.model.Place;
 
 public class PlaceInfoActivity extends BaseActivity {
 
     public static final String PLACE_ID = "place_id";
     private static final String PLACE_FRAGMENT = "place_fragment";
+    private static final String WORKOUT_FRAGMENT = "workout_fragment";
     private Place mPlace;
 
     private PlaceCardFragment mPlaceCardFragment;
+    private WorkoutListFragment mWorkoutListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,4 +77,18 @@ public class PlaceInfoActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void openClassSchedule(Integer placeId) {
+
+        if (mWorkoutListFragment == null) {
+            mWorkoutListFragment = new WorkoutListFragment();
+        }
+
+        Bundle args = new Bundle();
+        args.putInt(PLACE_ID, placeId);
+
+        mWorkoutListFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutListFragment, WORKOUT_FRAGMENT).addToBackStack(PLACE_FRAGMENT).commit();
+
+    }
 }

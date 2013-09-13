@@ -1,9 +1,12 @@
 package co.tapfit.android.model;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -11,7 +14,7 @@ import java.util.Date;
  * Created by zackmartinsek on 9/11/13.
  */
 @DatabaseTable(tableName = "workout")
-public class Workout {
+public class Workout implements Comparable<Workout> {
 
     @DatabaseField(id = true)
     public Integer id;
@@ -19,11 +22,11 @@ public class Workout {
     @DatabaseField
     public String name;
 
-    @DatabaseField
-    public Date start_time;
+    @DatabaseField(dataType = DataType.DATE_TIME)
+    public DateTime start_time;
 
-    @DatabaseField
-    public Date end_time;
+    @DatabaseField(dataType = DataType.DATE_TIME)
+    public DateTime end_time;
 
     @DatabaseField
     public String source_description;
@@ -52,9 +55,42 @@ public class Workout {
     @DatabaseField
     public String fine_print;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     public Instructor instructor;
 
     @ForeignCollectionField
     public ForeignCollection<Pass> passes;
+
+    public Workout() {
+
+    }
+
+    public Workout(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int compareTo(Workout workout) {
+
+        if (this == workout) {
+            return 0;
+        }
+
+        return this.start_time.compareTo(workout.start_time);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null)
+        {
+            return false;
+        }
+
+        if (this.getClass() != other.getClass())
+        {
+            return false;
+        }
+
+        return this.id.equals(((Workout) other).id);
+    }
 }

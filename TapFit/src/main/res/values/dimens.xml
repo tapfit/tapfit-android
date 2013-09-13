@@ -4,4 +4,10 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="rounded_edges">20px</dimen>
     <dimen name="place_image_size">150dp</dimen>
+    <dimen name="normal_text_size">15dp</dimen>
+    <dimen name="normal_button_size">40dp</dimen>
+    <dimen name="normal_button_width">100dp</dimen>
+    <dimen name="normal_button_text_padding">12.5dp</dimen>
+    <dimen name="padding">10dp</dimen>
+    <dimen name="workout_item_size">80dp</dimen>
 </resources>

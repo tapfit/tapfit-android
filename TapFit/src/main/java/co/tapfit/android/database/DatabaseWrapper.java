@@ -5,13 +5,17 @@ import android.util.Log;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import org.joda.time.DateTime;
+
 import java.sql.DataTruncation;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
+import co.tapfit.android.model.Instructor;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
@@ -139,6 +143,32 @@ public class DatabaseWrapper {
         }
     }
 
+    public List<Workout> getUpcomingWorkouts(Place place) {
+        try
+        {
+            QueryBuilder<Workout, Integer> builder = helper.getWorkoutDao().queryBuilder();
+            builder.where().eq("place_id", place.id).and().gt("start_time", DateTime.now());
+            return helper.getWorkoutDao().query(builder.prepare());
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get upcoming workouts for place: " + place.id);
+            return null;
+        }
+    }
+
+    public List<Workout> getWorkouts(Place place) {
+        try
+        {
+            return helper.getWorkoutDao().queryForEq("place_id", place.id);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get workouts: " + place.id, e);
+            return null;
+        }
+    }
+
     public void createOrUpdatePass(Pass pass) {
         try
         {
@@ -171,6 +201,17 @@ public class DatabaseWrapper {
         {
             Log.d(TAG, "Failed to place for id: " + placeId, e);
             return null;
+        }
+    }
+
+    public void createOrUpdateInstructor(Instructor instructor) {
+        try
+        {
+            helper.getInstructorDao().createOrUpdate(instructor);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create instructor: " + instructor, e);
         }
     }
 }
