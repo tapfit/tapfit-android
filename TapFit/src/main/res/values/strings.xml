@@ -21,5 +21,6 @@
 
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_place_info">PlaceInfoActivity</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
 
 </resources>

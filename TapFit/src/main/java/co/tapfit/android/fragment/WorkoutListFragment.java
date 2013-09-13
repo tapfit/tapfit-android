@@ -4,17 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.google.android.gms.internal.da;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +83,16 @@ public class WorkoutListFragment extends BaseFragment {
         }
 
         mWorkoutList.setAdapter(mWorkoutListAdapter);
+
+        mWorkoutList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Workout workout = (Workout) adapterView.getItemAtPosition(i);
+                ((PlaceInfoActivity) getActivity()).openWorkoutCardFromList(workout.id);
+
+            }
+        });
 
     }
 }

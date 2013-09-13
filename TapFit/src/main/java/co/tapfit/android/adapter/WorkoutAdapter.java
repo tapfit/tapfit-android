@@ -8,15 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import co.tapfit.android.R;
+import co.tapfit.android.helper.WorkoutFormat;
 import co.tapfit.android.model.Workout;
 
 /**
@@ -76,34 +73,10 @@ public class WorkoutAdapter extends BaseAdapter {
         Workout workout = mWorkouts.get(i);
 
         holder.workout_name.setText(workout.name);
-        if (workout.instructor != null) {
-            String instructor_name = "";
-            if (workout.instructor.first_name != null) {
-                instructor_name = instructor_name + workout.instructor.first_name;
-            }
-            if (workout.instructor.last_name != null) {
-                instructor_name = instructor_name + " " + workout.instructor.last_name;
-            }
-
-            Log.d(TAG, "instructor: " + instructor_name);
-            holder.workout_instructor.setText(instructor_name);
-        }
+        holder.workout_instructor.setText(WorkoutFormat.getInstructor(workout.instructor));
         holder.workout_price.setText("$" + Math.round(workout.price));
-        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
-                .appendClockhourOfHalfday(1)
-                .appendLiteral(":")
-                .appendMinuteOfHour(2)
-                .appendHalfdayOfDayText()
-                .toFormatter();
 
-
-        String start = dateFormatter.print(workout.start_time);
-        String end = dateFormatter.print(workout.end_time);
-
-        start = start.substring(0, start.length() - 1).toLowerCase();
-        end = end.substring(0, end.length() - 1).toLowerCase();
-
-        String timeString = start + " - " + end;
+        String timeString = WorkoutFormat.getStartEndDateTime(workout.start_time, workout.end_time);
         holder.workout_time.setText(timeString);
 
         return view;

@@ -1,16 +1,11 @@
 package co.tapfit.android;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import co.tapfit.android.fragment.PlaceCardFragment;
+import co.tapfit.android.fragment.WorkoutCardFragment;
 import co.tapfit.android.fragment.WorkoutListFragment;
 import co.tapfit.android.model.Place;
 
@@ -18,11 +13,13 @@ public class PlaceInfoActivity extends BaseActivity {
 
     public static final String PLACE_ID = "place_id";
     private static final String PLACE_FRAGMENT = "place_fragment";
-    private static final String WORKOUT_FRAGMENT = "workout_fragment";
+    private static final String WORKOUT_LIST_FRAGMENT = "workout_fragment";
+    private static final String WORKOUT_CARD_FRAGMENT = "workout_card_fragment";
     private Place mPlace;
 
     private PlaceCardFragment mPlaceCardFragment;
     private WorkoutListFragment mWorkoutListFragment;
+    private WorkoutCardFragment mWorkoutCardFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +85,22 @@ public class PlaceInfoActivity extends BaseActivity {
 
         mWorkoutListFragment.setArguments(args);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutListFragment, WORKOUT_FRAGMENT).addToBackStack(PLACE_FRAGMENT).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutListFragment, WORKOUT_LIST_FRAGMENT).addToBackStack(PLACE_FRAGMENT).commit();
 
+    }
+
+    public void openWorkoutCardFromList(Integer workoutId) {
+
+        if (mWorkoutCardFragment == null) {
+            mWorkoutCardFragment = new WorkoutCardFragment();
+        }
+
+        Bundle args = new Bundle();
+        args.putInt(WorkoutCardFragment.WORKOUT_ID, workoutId);
+        args.putInt(PLACE_ID, mPlace.id);
+
+        mWorkoutCardFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutCardFragment, WORKOUT_CARD_FRAGMENT).addToBackStack(WORKOUT_LIST_FRAGMENT).commit();
     }
 }

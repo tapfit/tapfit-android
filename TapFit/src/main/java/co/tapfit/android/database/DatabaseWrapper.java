@@ -214,4 +214,16 @@ public class DatabaseWrapper {
             Log.d(TAG, "Failed to create instructor: " + instructor, e);
         }
     }
+
+    public Workout getWorkout(Integer workoutId) {
+        try
+        {
+            return helper.getWorkoutDao().queryForId(workoutId);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get workout with id: " + workoutId, e);
+            return null;
+        }
+    }
 }

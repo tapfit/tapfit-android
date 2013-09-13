@@ -36,7 +36,6 @@ public class PlaceRequest extends Request {
     private static String TAG = PlaceRequest.class.getSimpleName();
 
     private static boolean mWaitingForPlacesResponse = false;
-    private static boolean mWaitingForPlaceResponse = false;
 
     public static boolean getPlaces(final Context context, ResponseCallback callback)
     {
@@ -167,6 +166,7 @@ public class PlaceRequest extends Request {
 
                             workout.place = place;
 
+                            dbWrapper.createOrUpdatePlace(place);
                             dbWrapper.createOrUpdateWorkout(workout);
                             dbWrapper.createOrUpdateInstructor(workout.instructor);
 

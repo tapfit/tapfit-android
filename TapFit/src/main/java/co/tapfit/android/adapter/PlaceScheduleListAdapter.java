@@ -8,18 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import co.tapfit.android.R;
+import co.tapfit.android.helper.WorkoutFormat;
 import co.tapfit.android.model.Workout;
 
 /**
@@ -108,21 +104,7 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
 
             TextView classTime = (TextView) view.findViewById(R.id.class_time);
 
-            DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
-                    .appendClockhourOfHalfday(1)
-                    .appendLiteral(":")
-                    .appendMinuteOfHour(2)
-                    .appendHalfdayOfDayText()
-                    .toFormatter();
-
-
-            String start = dateFormatter.print(workout.start_time);
-            String end = dateFormatter.print(workout.end_time);
-
-            start = start.substring(0, start.length() - 1).toLowerCase();
-            end = end.substring(0, end.length() - 1).toLowerCase();
-
-            String timeString = start + " - " + end;
+            String timeString = WorkoutFormat.getStartEndDateTime(workout.start_time, workout.end_time);
             classTime.setText(timeString);
         }
 

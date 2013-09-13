@@ -68,12 +68,18 @@
         <activity
             android:name="co.tapfit.android.PlaceInfoActivity"
             android:label="@string/title_activity_place_info"
-            android:theme="@style/TapFit"
+            android:parentActivityName="co.tapfit.android.MapListActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="co.tapfit.android.MapListActivity" >
+            android:theme="@style/TapFit" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="co.tapfit.android.MapListActivity" />
+        </activity>
+        <activity
+            android:name="co.tapfit.android.SignInActivity"
+            android:label="@string/title_activity_sign_in"
+            android:screenOrientation="portrait"
+            android:theme="@style/TapFit">
         </activity>
     </application>
 

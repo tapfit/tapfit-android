@@ -25,6 +25,7 @@ import java.util.List;
 
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.SignInActivity;
 import co.tapfit.android.adapter.PlaceScheduleListAdapter;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.model.Place;
@@ -127,6 +128,7 @@ public class PlaceCardFragment extends BaseFragment {
         User user = dbWrapper.getCurrentUser();
         if (user != null) {
             if (user.favorite_places.contains(mPlace)) {
+
                 mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
                 mSaveButton.setTag(true);
             }
@@ -135,10 +137,14 @@ public class PlaceCardFragment extends BaseFragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 User user = dbWrapper.getCurrentUser();
 
                 if (user == null) {
-                    //TODO: Add prompt to sign in
+                    Intent intent = new Intent(getActivity(), SignInActivity.class);
+                    startActivity(intent);
                     return;
                 }
 
