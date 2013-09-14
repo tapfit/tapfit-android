@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import co.tapfit.android.fragment.ConfirmPurchaseFragment;
 import co.tapfit.android.fragment.PlaceCardFragment;
 import co.tapfit.android.fragment.WorkoutCardFragment;
 import co.tapfit.android.fragment.WorkoutListFragment;
 import co.tapfit.android.model.Place;
+import co.tapfit.android.model.Workout;
 
 public class PlaceInfoActivity extends BaseActivity {
 
@@ -15,11 +17,13 @@ public class PlaceInfoActivity extends BaseActivity {
     private static final String PLACE_FRAGMENT = "place_fragment";
     private static final String WORKOUT_LIST_FRAGMENT = "workout_fragment";
     private static final String WORKOUT_CARD_FRAGMENT = "workout_card_fragment";
+    private static final String CONFIRM_PURCHASE_FRAGMENT = "confirm_purchase_fragment";
     private Place mPlace;
 
     private PlaceCardFragment mPlaceCardFragment;
     private WorkoutListFragment mWorkoutListFragment;
     private WorkoutCardFragment mWorkoutCardFragment;
+    private ConfirmPurchaseFragment mConfirmPurchaseFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,5 +106,21 @@ public class PlaceInfoActivity extends BaseActivity {
         mWorkoutCardFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutCardFragment, WORKOUT_CARD_FRAGMENT).addToBackStack(WORKOUT_LIST_FRAGMENT).commit();
+    }
+
+    public void confirmPurchasePage(Workout workout) {
+
+        if (mConfirmPurchaseFragment == null) {
+            mConfirmPurchaseFragment = new ConfirmPurchaseFragment();
+        }
+
+        Bundle args = new Bundle();
+        args.putInt(WorkoutCardFragment.WORKOUT_ID, workout.id);
+        args.putInt(PLACE_ID, mPlace.id);
+
+        mConfirmPurchaseFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mConfirmPurchaseFragment, CONFIRM_PURCHASE_FRAGMENT).addToBackStack(WORKOUT_CARD_FRAGMENT).commit();
+
     }
 }

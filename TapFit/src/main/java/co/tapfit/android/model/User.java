@@ -33,6 +33,9 @@ public class User {
     @DatabaseField
     public String auth_token;
 
+    @DatabaseField
+    public Double credit_amount;
+
     @ForeignCollectionField
     public ForeignCollection<Place> favorite_places;
 

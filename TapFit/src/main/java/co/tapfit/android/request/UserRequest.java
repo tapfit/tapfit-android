@@ -238,7 +238,8 @@ public class UserRequest extends Request {
 
                         if (errors != null)
                         {
-                            callback.sendCallback(null, errors.getAsString());
+                            if (callback != null)
+                                callback.sendCallback(null, errors.getAsString());
                             return;
                         }
 
@@ -355,6 +356,82 @@ public class UserRequest extends Request {
 
             Intent intent = new Intent(context, ApiService.class);
             intent.putExtra(ApiService.URL, getUrl(context) + "me/favorites");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.GET);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        } else {
+            if (callback != null) {
+                callback.sendCallback(null, "Need to sign in");
+            }
+        }
+
+    }
+
+    public static void getMyInfo(final Context context, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        final ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonObject object = parser.parse(json).getAsJsonObject();
+
+                        JsonElement element = object.get("user");
+
+                        if (element != null) {
+                            User user = gson.fromJson(element, User.class);
+
+                            dbWrapper.createOrUpdateUser(user);
+
+                            SharePref.setIntPref(context, SharePref.CURRENT_USER_ID, user.id);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                    }
+
+                    if (callback != null) {
+                        callback.sendCallback(dbWrapper.getPasses(), "Success getting favorites");
+                    }
+                }
+            }
+
+        };
+
+        User currentUser = dbWrapper.getCurrentUser();
+
+        if (currentUser != null) {
+
+            Bundle args = new Bundle();
+            args.putString(AUTH_TOKEN, currentUser.auth_token);
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "me");
             intent.putExtra(ApiService.HTTP_VERB, ApiService.GET);
             intent.putExtra(ApiService.PARAMS, args);
             intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
