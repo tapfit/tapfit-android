@@ -10,8 +10,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.LocationServices;
+<<<<<<< HEAD
 import co.tapfit.android.model.User;
+=======
 import co.tapfit.android.helper.SharePref;
+>>>>>>> f45e1589dc5d5d3d01c0c4ff810d3843484957e4
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;

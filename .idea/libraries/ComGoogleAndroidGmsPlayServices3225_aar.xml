@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="ComGoogleAndroidGmsPlayServices3225.aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/TapFit/build/exploded-bundles/ComGoogleAndroidGmsPlayServices3225.aar/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/TapFit/build/exploded-bundles/ComGoogleAndroidGmsPlayServices3225.aar/res" />
+      <root url="jar://$PROJECT_DIR$/TapFit/build/exploded-bundles/ComGoogleAndroidGmsPlayServices3225.aar/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
