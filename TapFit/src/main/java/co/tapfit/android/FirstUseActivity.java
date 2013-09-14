@@ -22,7 +22,6 @@ public class FirstUseActivity extends Activity {
         _appPrefs = new SharePref(getApplicationContext());
 
         Button nextButton = (Button) findViewById(R.id.next_button);
-        Button resetButton = (Button) findViewById(R.id.reset_button);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,13 +32,6 @@ public class FirstUseActivity extends Activity {
             }
         });
 
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _appPrefs.setFirstUse(true);
-                finish();
-            }
-        });
     }
 
 }
