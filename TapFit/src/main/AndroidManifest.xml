@@ -49,6 +49,12 @@
             android:theme="@style/TapFit" >
         </activity>
         <activity
+            android:name="co.tapfit.android.FirstUseActivity"
+            android:label="@string/title_activity_base"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black">
+        </activity>
+        <activity
             android:name="co.tapfit.android.SplashActivity"
             android:exported="true"
             android:label="@string/title_activity_splash"
@@ -79,7 +85,11 @@
             android:name="co.tapfit.android.SignInActivity"
             android:label="@string/title_activity_sign_in"
             android:screenOrientation="portrait"
-            android:theme="@style/TapFit">
+            android:theme="@style/TapFit" >
+        </activity>
+        <activity
+            android:name="co.tapfit.android.FirstUseActivity"
+            android:label="@string/title_activity_first_use" >
         </activity>
     </application>
 

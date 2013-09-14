@@ -1,9 +1,15 @@
-package co.tapfit.android.helper;
+package co.tapfit.android;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+
+import co.tapfit.android.BaseActivity;
+import co.tapfit.android.helper.SharePref;
+
 /*
 777IDDDDDDDDDDDDD777777777777777778DDDDDDDO777777777777O8888887777777777O88888$777777777788888877777777777O88888D8I77777777777778DDDDDDDDD7I77777777777777777777
 77777IDDDDDDDDDDDD$7777777777777777ZDD8888D87777777777778888887I77777777$88888Z777777777Z88888O777777777778888888777777777777778DDDDDDDD87777777777777777777778N
@@ -45,58 +51,28 @@ DDD8D888888888888888888O$77777777777777777777OOOOOI+~~:::+?IOOZ77777?~:~~:=IIIO7
 7777777777777777777777777777777777777777777777777$OOOOOOOOO$7777777ZZ$77ZZ7Z7Z7ZZ7Z7Z77ZO7777$OZOZ77777777777777777ZOOOO8OOO888888888888888888888888888888888ZZ$
 */
 
-/**
- * Created by zackmartinsek on 9/11/13.
- */
-public class SharePref {
+public class FirstUseActivity extends Activity {
 
-    public static final String CURRENT_USER_ID = "currentUser";
-    public static final String KEY_PREFS_FIRST_USE = "firstUse";
+    private SharePref _appPrefs;
 
-    private static final String APP_SHARED_PREFS = SharePref.class.getSimpleName(); //  Name of the file -.xml
-    private SharedPreferences _sharedPrefs;
-    private SharedPreferences.Editor _prefsEditor;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_first_use);
 
-    /**
-     * Allow the user to instantiate an instance of our shared preferences class.
-     *
-     * @param context is required for access to SharedPreferences
-     */
-    public SharePref(Context context) {
-        this._sharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
-        this._prefsEditor = _sharedPrefs.edit();
+        _appPrefs = new SharePref(getApplicationContext());
+
+        Button nextButton = (Button) findViewById(R.id.next_button);
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _appPrefs.setFirstUse(false);
+                startActivity(new Intent(FirstUseActivity.this, MapListActivity.class));
+                finish();
+            }
+        });
+
     }
 
-    /**
-     * Set whether or not this is the first use of the application.
-     *
-     * @param isFirstUse
-     */
-    public void setFirstUse(boolean isFirstUse) {
-        _prefsEditor.putBoolean(KEY_PREFS_FIRST_USE, isFirstUse);
-        _prefsEditor.commit();
-    }
-
-    /**
-     * Get whether or not this is the first use of the application.
-     *
-     * @return true if this is the first use.
-     */
-    public boolean getFirstUse() {
-        return _sharedPrefs.getBoolean(KEY_PREFS_FIRST_USE, true);
-    }
-
-    public static void setIntPref(Context context, String key, Integer value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putInt(key, value);
-
-        editor.commit();
-    }
-
-    public static int getIntPref(Context context, String key) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt(key, -1);
-    }
 }
