@@ -3,11 +3,18 @@ package co.tapfit.android.model;
 import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.CloseableWrappedIterable;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.joda.time.DateTime;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -65,7 +72,7 @@ public class Place {
     public Address address;
 
     @ForeignCollectionField
-    public ForeignCollection<ClassTime> classTimes;
+    public Collection<ClassTime> classTimes;
 
     @DatabaseField(foreign = true)
     public User favorite_place;
@@ -78,13 +85,18 @@ public class Place {
 
     public void addClassTime(Context context, ClassTime classTime) {
 
+        if (classTimes == null) {
+            classTimes = new ArrayList<ClassTime>();
+            classTimes.add(classTime);
+            return;
+        }
         Iterator<ClassTime> currentTimes = classTimes.iterator();
 
         boolean shouldAdd = true;
 
         while (currentTimes.hasNext()) {
             ClassTime currentTime = currentTimes.next();
-            if (currentTime.classTime.compareTo(new Date()) < 0) {
+            if (currentTime.classTime.compareTo(DateTime.now()) < 0) {
                 DatabaseWrapper.getInstance(context).deleteClassTime(currentTime);
                 classTimes.remove(currentTime);
             }

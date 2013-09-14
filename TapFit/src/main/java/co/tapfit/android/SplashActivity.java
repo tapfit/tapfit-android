@@ -8,7 +8,9 @@ import android.view.Menu;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.model.User;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
@@ -18,6 +20,8 @@ public class SplashActivity extends Activity {
     private static final long SPLASH_TIME = 3000;
     Handler mHandler;
     Runnable mJumpRunnable;
+
+    DatabaseWrapper dbWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class SplashActivity extends Activity {
             }
         });
 
+        User user = DatabaseWrapper.getInstance(getApplicationContext()).getCurrentUser();
+        if (user != null) {
+            UserRequest.favorites(getApplicationContext(), null);
+        }
         /*mJumpRunnable = new Runnable() {
 
             public void run() {

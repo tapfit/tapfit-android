@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import co.tapfit.android.database.DatabaseHelper;
 import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
@@ -84,16 +85,24 @@ public class PlaceRequest extends Request {
 
                         //User currentUser = dbWrapper.getCurrentUser();
 
+                        Log.d(TAG, "array count: " + array.size());
+
                         for (JsonElement element : array)
                         {
                             Place place = gson.fromJson(element, Place.class);
 
                             for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
-                                Date dateTime = mDateFormat.parse(time.getAsString());
+                                DateTime dateTime = DateTime.parse(time.getAsString());
 
                                 ClassTime classTime = new ClassTime(dateTime);
+                                classTime.place = place;
                                 dbWrapper.createClassTime(classTime);
                                 place.addClassTime(context, classTime);
+                            }
+
+                            Place oldPlace = dbWrapper.getPlace(place.id);
+                            if (oldPlace != null) {
+                                place.favorite_place = oldPlace.favorite_place;
                             }
 
                             dbWrapper.createOrUpdatePlace(place);
@@ -101,7 +110,7 @@ public class PlaceRequest extends Request {
                     }
                     catch (Exception e)
                     {
-                        Log.d(TAG, "Exception: " + e);
+                        Log.d(TAG, "Exception: " + e, e);
                     }
 
                     mWaitingForPlacesResponse = false;
@@ -126,6 +135,80 @@ public class PlaceRequest extends Request {
         context.startService(intent);
 
         return false;
+    }
+
+    public static void favoritePlace(final Context context, final Place place, final User user, final ResponseCallback callback) {
+        setDatabaseWrapper(context);
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()){
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                    callback.sendCallback(null, "Failed Request");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonObject object = parser.parse(json).getAsJsonObject();
+
+                        JsonElement element = object.get("success_code");
+                        if (element == null) {
+                            if (callback != null)
+                                callback.sendCallback(null, "Failed to favorite");
+                        }
+                        else
+                        {
+                            if (element.getAsInt() == 0) {
+                                if (place.favorite_place == user) {
+                                    dbWrapper.removePlaceFromFavorites(user, place);
+                                }
+                            }
+                            else {
+                                if (place.favorite_place == null) {
+                                    dbWrapper.addPlaceToFavorites(user, place);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e.getMessage());
+                        if (callback != null)
+                            callback.sendCallback(null, "Failed to favorite");
+                        return;
+                    }
+                    if (callback != null)
+                        callback.sendCallback(place, "Success");
+                }
+            }
+
+        };
+
+        Bundle args = new Bundle();
+        args.putString(UserRequest.AUTH_TOKEN, user.auth_token);
+
+        Intent intent = new Intent(context, ApiService.class);
+        intent.putExtra(ApiService.URL, getUrl(context) + "places/" + place.id + "/favorite");
+        intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+        intent.putExtra(ApiService.PARAMS, args);
+        intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+        context.startService(intent);
     }
 
     public static void getWorkouts(final Context context, final Place place, final ResponseCallback callback)

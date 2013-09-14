@@ -37,7 +37,7 @@ public class UserRequest extends Request {
 
     private static String TAG = UserRequest.class.getSimpleName();
 
-    private static final String AUTH_TOKEN = "auth_token";
+    public static final String AUTH_TOKEN = "auth_token";
 
     public static void registerGuest(final Context context, final ResponseCallback callback) {
 
@@ -115,6 +115,8 @@ public class UserRequest extends Request {
 
     public static final String EMAIL = "user[email]";
     public static final String PASSWORD = "user[password]";
+    public static final String FIRST_NAME = "user[first_name]";
+    public static final String LAST_NAME = "user[last_name]";
 
     public static void registerUser(final Context context, Bundle args, final ResponseCallback callback) {
 
@@ -149,6 +151,14 @@ public class UserRequest extends Request {
                     {
                         JsonElement element = parser.parse(json);
 
+                        JsonElement errors = element.getAsJsonObject().get("error");
+
+                        if (errors != null)
+                        {
+                            callback.sendCallback(null, errors.getAsString());
+                            return;
+                        }
+
                         user = gson.fromJson(element, User.class);
 
                         dbWrapper.createOrUpdateUser(user);
@@ -178,7 +188,7 @@ public class UserRequest extends Request {
         };
 
         User user = dbWrapper.getCurrentUser();
-        if (user != null) {
+        if (user != null && user.is_guest) {
             args.putString(AUTH_TOKEN, user.auth_token);
         }
         Intent intent = new Intent(context, ApiService.class);
@@ -224,6 +234,14 @@ public class UserRequest extends Request {
                     {
                         JsonElement element = parser.parse(json);
 
+                        JsonElement errors = element.getAsJsonObject().get("errors");
+
+                        if (errors != null)
+                        {
+                            callback.sendCallback(null, errors.getAsString());
+                            return;
+                        }
+
                         user = gson.fromJson(element, User.class);
 
                         dbWrapper.createOrUpdateUser(user);
@@ -244,7 +262,7 @@ public class UserRequest extends Request {
                         }
                         else
                         {
-                            callback.sendCallback(user, "Success registering user");
+                            callback.sendCallback(user, "Success loging in user");
                             UserRequest.favorites(context, null);
                         }
                     }
@@ -303,18 +321,16 @@ public class UserRequest extends Request {
                             Place place = gson.fromJson(element, Place.class);
 
                             for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
-                                Date dateTime = mDateFormat.parse(time.getAsString());
+                                DateTime dateTime = DateTime.parse(time.getAsString());
 
                                 ClassTime classTime = new ClassTime(dateTime);
                                 dbWrapper.createClassTime(classTime);
                                 place.addClassTime(context, classTime);
                             }
 
-                            currentUser.favorite_places.add(place);
-
-                            dbWrapper.createOrUpdateUser(currentUser);
-
                             dbWrapper.createOrUpdatePlace(place);
+
+                            dbWrapper.addPlaceToFavorites(currentUser, place);
                         }
                     }
                     catch (Exception e)
@@ -332,7 +348,7 @@ public class UserRequest extends Request {
 
         User currentUser = dbWrapper.getCurrentUser();
 
-        if (currentUser == null) {
+        if (currentUser != null) {
 
             Bundle args = new Bundle();
             args.putString(AUTH_TOKEN, currentUser.auth_token);

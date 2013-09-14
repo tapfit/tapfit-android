@@ -65,8 +65,7 @@
                     android:layout_height="@dimen/normal_button_size"
                     android:layout_width="@dimen/normal_button_width"
                     android:scaleType="fitXY"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/save_button"/>
+                    android:background="@android:color/transparent"/>
 
                 <TextView
                     android:id="@+id/description_header"

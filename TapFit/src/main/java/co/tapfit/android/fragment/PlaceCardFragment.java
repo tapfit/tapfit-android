@@ -33,6 +33,7 @@ import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.request.UserRequest;
 
 /**
  * Created by zackmartinsek on 9/11/13.
@@ -47,6 +48,8 @@ public class PlaceCardFragment extends BaseFragment {
 
     private ListView mWorkoutList;
     private PlaceScheduleListAdapter mWorkoutListAdapter;
+
+    private Boolean toggledFavorite = false;
 
 
     @Override
@@ -127,10 +130,15 @@ public class PlaceCardFragment extends BaseFragment {
 
         User user = dbWrapper.getCurrentUser();
         if (user != null) {
-            if (user.favorite_places.contains(mPlace)) {
+            if (mPlace.favorite_place != null && mPlace.favorite_place.id == user.id) {
 
                 mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
                 mSaveButton.setTag(true);
+            }
+            else
+            {
+                mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
+                mSaveButton.setTag(false);
             }
         }
 
@@ -144,7 +152,7 @@ public class PlaceCardFragment extends BaseFragment {
 
                 if (user == null) {
                     Intent intent = new Intent(getActivity(), SignInActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                     return;
                 }
 
@@ -152,14 +160,32 @@ public class PlaceCardFragment extends BaseFragment {
                 if ((Boolean) mSaveButton.getTag()) {
                     mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
                     mSaveButton.setTag(false);
+                    dbWrapper.removePlaceFromFavorites(user, mPlace);
+                    toggledFavorite = !toggledFavorite;
                 }
                 else
                 {
                     mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
                     mSaveButton.setTag(true);
+                    dbWrapper.addPlaceToFavorites(user, mPlace);
+                    toggledFavorite = !toggledFavorite;
                 }
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+
+            if(resultCode == getActivity().RESULT_OK){
+                Log.d(TAG, "Successfully signed in");
+            }
+            if (resultCode == getActivity().RESULT_CANCELED) {
+                Log.d(TAG, "Didn't log in");
+            }
+        }
     }
 
     private String getGoogleMapsStaticUrl() {
@@ -211,4 +237,13 @@ public class PlaceCardFragment extends BaseFragment {
             mWorkoutList.invalidate();
         }
     };
+
+    @Override
+    public void onPause(){
+        if (toggledFavorite) {
+            Log.d(TAG, "About to favorite a place");
+            PlaceRequest.favoritePlace(getActivity(), mPlace, dbWrapper.getCurrentUser(), null);
+        }
+        super.onPause();
+    }
 }

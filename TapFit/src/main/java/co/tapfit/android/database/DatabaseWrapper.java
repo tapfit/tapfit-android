@@ -3,6 +3,7 @@ package co.tapfit.android.database;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.internal.ca;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import org.joda.time.DateTime;
@@ -117,6 +118,46 @@ public class DatabaseWrapper {
         catch (Exception e)
         {
             Log.d(TAG, "Failed to delete classTime: " + classTime, e);
+        }
+    }
+
+    public void removePlaceFromFavorites(User user, Place place) {
+        try
+        {
+            place.favorite_place = null;
+            helper.getPlaceDao().update(place);
+
+            helper.getUserDao().refresh(user);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed remove place from favorites");
+        }
+    }
+
+    public void addPlaceToFavorites(User user, Place place) {
+        try
+        {
+            place.favorite_place = user;
+            helper.getPlaceDao().update(place);
+
+            helper.getUserDao().refresh(user);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to add place to favorites");
+        }
+    }
+
+    public List<ClassTime> getClassTimes(Integer id) {
+
+        try {
+
+            return helper.getClassTimeDao().queryForEq("place_id", id);
+        }
+        catch (Exception e) {
+            Log.d(TAG, "Failed to get class times for id: " + id, e);
+            return null;
         }
     }
 

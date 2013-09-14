@@ -16,6 +16,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +25,9 @@ import java.util.Date;
 import java.util.List;
 
 import co.tapfit.android.R;
+import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.RoundedBackgroundDisplayer;
+import co.tapfit.android.helper.WorkoutFormat;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 
@@ -106,11 +110,16 @@ public class PlaceListAdapter extends BaseAdapter {
         holder.place_price_text.setText("$" + Math.round(place.lowest_price));
         holder.place_distance_text.setText(String.format("%.1f", place.getDistance()) + " mi");
 
+        List<ClassTime> classTimes = DatabaseWrapper.getInstance(mContext.getApplicationContext()).getClassTimes(place.id);
+        if (classTimes.size() > 4){
+            classTimes = classTimes.subList(0, 4);
+        }
+
         String classTimeString = "";
-        for (ClassTime classTime : place.classTimes) {
-            if ((new Date()).compareTo(classTime.classTime) < 0)
+        for (ClassTime classTime : classTimes) {
+            if ((DateTime.now()).compareTo(classTime.classTime) < 0)
             {
-                classTimeString = classTimeString + df.format(classTime.classTime) + " ";
+                classTimeString = classTimeString + WorkoutFormat.getDateTimeString(classTime.classTime) + " ";
             }
         }
 
