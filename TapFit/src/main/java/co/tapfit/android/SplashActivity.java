@@ -9,6 +9,7 @@ import android.view.Menu;
 import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
@@ -18,11 +19,15 @@ public class SplashActivity extends Activity {
     private static final long SPLASH_TIME = 3000;
     Handler mHandler;
     Runnable mJumpRunnable;
+    private SharePref _appPrefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        _appPrefs = new AppPreferences(getApplicationContext());
 
         LatLng location = LocationServices.getInstance(getApplicationContext()).getLatLng();
         if (location == null)
@@ -33,7 +38,14 @@ public class SplashActivity extends Activity {
         PlaceRequest.getPlaces(this, new ResponseCallback() {
             @Override
             public void sendCallback(Object responseObject, String message) {
-                startActivity(new Intent(SplashActivity.this, MapListActivity.class));
+                Intent intent;
+                if (_appPrefs.getFirstUse()) {
+                    // Change MapListActivity.class to FirstUseActivity.class or similar.
+                    intent = new Intent(this, MapListActivity.class);
+                } else {
+                    intent = new Intent(this, MapListActivity.class);
+                }
+                startActivity(intent);
                 finish();
             }
         });
