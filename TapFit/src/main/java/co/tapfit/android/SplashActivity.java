@@ -27,7 +27,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        _appPrefs = new AppPreferences(getApplicationContext());
+        _appPrefs = new SharePref(getApplicationContext());
 
         LatLng location = LocationServices.getInstance(getApplicationContext()).getLatLng();
         if (location == null)
@@ -41,9 +41,9 @@ public class SplashActivity extends Activity {
                 Intent intent;
                 if (_appPrefs.getFirstUse()) {
                     // Change MapListActivity.class to FirstUseActivity.class or similar.
-                    intent = new Intent(this, MapListActivity.class);
+                    intent = new Intent(SplashActivity.this, FirstUseActivity.class);
                 } else {
-                    intent = new Intent(this, MapListActivity.class);
+                    intent = new Intent(SplashActivity.this, MapListActivity.class);
                 }
                 startActivity(intent);
                 finish();

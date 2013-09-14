@@ -1,5 +1,6 @@
 package co.tapfit.android.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -14,7 +15,7 @@ public class SharePref {
 
     private static final String APP_SHARED_PREFS = SharePref.class.getSimpleName(); //  Name of the file -.xml
     private SharedPreferences _sharedPrefs;
-    private Editor _prefsEditor;
+    private SharedPreferences.Editor _prefsEditor;
 
     /**
      * Allow the user to instantiate an instance of our shared preferences class.
@@ -42,7 +43,7 @@ public class SharePref {
      * @return true if this is the first use.
      */
     public boolean getFirstUse() {
-        return _sharedPrefs.getString(KEY_PREFS_FIRST_USE, true);
+        return _sharedPrefs.getBoolean(KEY_PREFS_FIRST_USE, true);
     }
 
     public static void setIntPref(Context context, String key, Integer value) {

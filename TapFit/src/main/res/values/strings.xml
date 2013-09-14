@@ -10,6 +10,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="splash_message">Loading Better Health</string>
+    <string name="first_use">Place Holder for First Use Activity</string>
 
     <string-array name="menu_list">
         <item>Home</item>
@@ -22,5 +23,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_place_info">PlaceInfoActivity</string>
     <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_first_use">TapFit</string>
 
 </resources>
