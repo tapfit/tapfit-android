@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TapFit/TapFit.iml" filepath="$PROJECT_DIR$/TapFit/TapFit.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TapFitProject.iml" filepath="$PROJECT_DIR$/TapFitProject.iml" />
-      <module fileurl="file://$APPLICATION_HOME_DIR$/sdk/extras/google/google_play_services/libproject/google-play-services_lib/google-play-services_lib.iml" filepath="$APPLICATION_HOME_DIR$/sdk/extras/google/google_play_services/libproject/google-play-services_lib/google-play-services_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tapfit-android.iml" filepath="$PROJECT_DIR$/tapfit-android.iml" />
     </modules>
   </component>
 </project>
