@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="@dimen/normal_button_size">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/content_title"
+        style="@style/SmallFont"
+        android:textColor="@color/black"
+        android:paddingLeft="@dimen/padding"
+        android:layout_centerVertical="true"
+        android:text="Subtotal"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/content_value"
+        style="@style/SmallFont"
+        android:textColor="@color/dark_gray"
+        android:paddingRight="@dimen/padding"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="$10"/>
+
+</RelativeLayout>

@@ -37,6 +37,12 @@ public class SplashActivity extends Activity {
             //TODO: Make regions call and prompt user
         }
 
+        /**
+         * This is poor design on my part. I'm just calling getPlaces in dev mode.
+         * Will change to make the call here and handle the callback when it gets back
+         * and not hold up the app for that.
+         * TODO: Don't hold up app with getPlaces() call.
+         */
         PlaceRequest.getPlaces(this, new ResponseCallback() {
             @Override
             public void sendCallback(Object responseObject, String message) {

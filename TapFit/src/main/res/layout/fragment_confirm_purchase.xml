@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/bottom_button"
+        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:background="@color/blue"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/bottom_button_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="Confirm Purchase"/>
+
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_above="@id/bottom_button"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Order Details"
+                style="@style/SmallFont"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/order_details_list"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/list_view_background_round">
+
+                <include
+                    android:id="@+id/workout_name"
+                    layout="@layout/form_input"/>
+
+                <View
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/light_gray" />
+
+                <include
+                    android:id="@+id/place_name"
+                    layout="@layout/form_input"/>
+
+                <View
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/light_gray" />
+
+                <include
+                    android:id="@+id/user_name"
+                    layout="@layout/form_input"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Payment Details"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                style="@style/SmallFont"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/order_details_list"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/list_view_background_round">
+
+                <include
+                    android:id="@+id/subtotal"
+                    layout="@layout/form_input"/>
+
+                <View
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/light_gray" />
+
+                <include
+                    android:id="@+id/credits"
+                    layout="@layout/form_input"/>
+
+                <View
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/light_gray" />
+
+                <include
+                    android:id="@+id/total"
+                    layout="@layout/form_input"/>
+
+                <View
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/light_gray" />
+
+                <include
+                    android:id="@+id/payments"
+                    layout="@layout/button_navigation"
+                    android:paddingLeft="@dimen/padding"
+                    android:paddingRight="@dimen/padding"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Tapfit terms of purchase"
+                android:layout_marginTop="7dp"
+                android:textSize="10dp"
+                android:textColor="@color/dark_gray"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

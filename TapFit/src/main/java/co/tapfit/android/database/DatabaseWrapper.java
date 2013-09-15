@@ -77,6 +77,20 @@ public class DatabaseWrapper {
     public void createOrUpdateUser(User user) {
         try
         {
+            User currentUser = helper.getUserDao().queryForId(user.id);
+
+            if (currentUser != null && user.credit_amount == null) {
+                user.credit_amount = currentUser.credit_amount;
+            }
+
+            if (currentUser != null && user.auth_token == null) {
+                user.auth_token = currentUser.auth_token;
+            }
+
+            if (user.credit_amount == null) {
+                user.credit_amount = 0.0;
+            }
+
             helper.getUserDao().createOrUpdate(user);
         }
         catch (Exception e)
@@ -101,6 +115,7 @@ public class DatabaseWrapper {
         try
         {
             Integer userId = SharePref.getIntPref(mContext, SharePref.CURRENT_USER_ID);
+            Log.d(TAG, "Current user id: " + userId);
             return helper.getUserDao().queryForId(userId);
         }
         catch (Exception e)

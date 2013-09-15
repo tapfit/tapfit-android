@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import co.tapfit.android.R;
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.ImageCache;
+import co.tapfit.android.request.UserRequest;
 
 public class BaseActivity extends ActionBarActivity {
 
@@ -21,6 +22,8 @@ public class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         dbWrapper = DatabaseWrapper.getInstance(getApplicationContext());
+
+        UserRequest.getMyInfo(getApplicationContext(), null);
     }
 
 
