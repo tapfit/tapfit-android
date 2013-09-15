@@ -53,45 +53,34 @@ public class SharePref {
     public static final String CURRENT_USER_ID = "currentUser";
     public static final String KEY_PREFS_FIRST_USE = "firstUse";
 
-    private static final String APP_SHARED_PREFS = SharePref.class.getSimpleName(); //  Name of the file -.xml
-    private SharedPreferences _sharedPrefs;
-    private SharedPreferences.Editor _prefsEditor;
+    private SharePref() {
+        // Do not allow this to be instantiated.
+    }
 
-    /**
-     * Allow the user to instantiate an instance of our shared preferences class.
-     *
-     * @param context is required for access to SharedPreferences
-     */
-    public SharePref(Context context) {
-        this._sharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
-        this._prefsEditor = _sharedPrefs.edit();
+    public static void setBooleanPref(Context context, String key, boolean value) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
     }
 
     /**
-     * Set whether or not this is the first use of the application.
+     * Get a boolean preference value based on the key provided.  If the key/value pair is not found return the defaultValue passed in.
      *
-     * @param isFirstUse
+     * @param context
+     * @param key
+     * @param defaultValue
+     * @return the value of the preference or, if missing, the defaultValue
      */
-    public void setFirstUse(boolean isFirstUse) {
-        _prefsEditor.putBoolean(KEY_PREFS_FIRST_USE, isFirstUse);
-        _prefsEditor.commit();
-    }
-
-    /**
-     * Get whether or not this is the first use of the application.
-     *
-     * @return true if this is the first use.
-     */
-    public boolean getFirstUse() {
-        return _sharedPrefs.getBoolean(KEY_PREFS_FIRST_USE, true);
+    public static boolean getBooleanPref(Context context, String key, boolean defaultValue) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(key, defaultValue);
     }
 
     public static void setIntPref(Context context, String key, Integer value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-
         editor.putInt(key, value);
-
         editor.commit();
     }
 
