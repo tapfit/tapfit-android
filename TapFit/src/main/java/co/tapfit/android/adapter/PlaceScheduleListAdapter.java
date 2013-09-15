@@ -2,7 +2,7 @@ package co.tapfit.android.adapter;
 
 import android.app.ActionBar;
 import android.content.Context;
-import android.util.Log;
+import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

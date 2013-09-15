@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.util.Log;
+import co.tapfit.android.helper.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,15 +1,10 @@
 package co.tapfit.android.service;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.ResultReceiver;
-import android.util.Log;
-
-import com.j256.ormlite.android.apptools.OrmLiteBaseService;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import co.tapfit.android.helper.Log;
 
 /**
  * Created by zackmartinsek on 9/7/13.

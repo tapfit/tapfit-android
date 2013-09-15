@@ -74,6 +74,14 @@ public class Log {
         return 0;
     }
 
+    // 3
+    public static int d(String tag, String msg, Throwable tr) {
+        if (logLevel <= android.util.Log.DEBUG && isLogging) {
+            return android.util.Log.d(tag, msg, tr);
+        }
+        return 0;
+    }
+
     // 4
     public static int i(String tag, String msg) {
         if (logLevel <= android.util.Log.INFO && isLogging) {
