@@ -21,7 +21,6 @@ public class SplashActivity extends Activity {
     private static final long SPLASH_TIME = 3000;
     Handler mHandler;
     Runnable mJumpRunnable;
-    private SharePref _appPrefs;
 
 
     DatabaseWrapper dbWrapper;
@@ -31,7 +30,6 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        _appPrefs = new SharePref(getApplicationContext());
 
         LatLng location = LocationServices.getInstance(getApplicationContext()).getLatLng();
         if (location == null)
@@ -43,8 +41,7 @@ public class SplashActivity extends Activity {
             @Override
             public void sendCallback(Object responseObject, String message) {
                 Intent intent;
-                if (_appPrefs.getFirstUse()) {
-                    // Change MapListActivity.class to FirstUseActivity.class or similar.
+                if (SharePref.getBooleanPref(SplashActivity.this, SharePref.KEY_PREFS_FIRST_USE, true)) {
                     intent = new Intent(SplashActivity.this, FirstUseActivity.class);
                 } else {
                     intent = new Intent(SplashActivity.this, MapListActivity.class);
