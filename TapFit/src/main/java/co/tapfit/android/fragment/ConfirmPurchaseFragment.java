@@ -1,16 +1,20 @@
 package co.tapfit.android.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
+import co.tapfit.android.PaymentsActivity;
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
@@ -54,6 +58,35 @@ public class ConfirmPurchaseFragment extends BaseFragment {
         setUpForm(R.id.credits, "Your Credits", "$" + df.format(Math.round(mUser.credit_amount * 100.0) / 100.0));
         setUpForm(R.id.total, "Your Total", "$" + df.format(Math.round(Math.max(0, mWorkout.price - mUser.credit_amount) * 100.0) / 100.0));
 
+        if (mUser.credit_cards != null && mUser.credit_cards.size() > 0) {
+
+            CreditCard creditCard = dbWrapper.getDefaulCard(mUser);
+            if (creditCard == null) {
+                setUpDefaultPaymentPrompt();
+            }
+            else {
+                setUpPaymentPrompt(creditCard);
+            }
+        }
+        else {
+            setUpDefaultPaymentPrompt();
+        }
+    }
+
+    private void setUpPaymentPrompt(CreditCard creditCard) {
+        View view = mView.findViewById(R.id.payments);
+        ImageView imageView = (ImageView) view.findViewById(R.id.button_icon);
+        imageCache.loadImageForPlacePage(imageView, creditCard.image_url);
+        imageView.setVisibility(View.VISIBLE);
+        ((TextView) view.findViewById(R.id.content_title)).setText("****" + creditCard.last_four);
+        view.setClickable(true);
+        view.setOnClickListener(showPayments);
+        int padding = (int) getResources().getDimension(R.dimen.padding);
+        view.setPadding(padding, 0, padding, 0);
+    }
+
+    private void setUpDefaultPaymentPrompt() {
+
         View view = mView.findViewById(R.id.payments);
         ((TextView) view.findViewById(R.id.content_title)).setText("Set payment option");
         view.setClickable(true);
@@ -65,7 +98,8 @@ public class ConfirmPurchaseFragment extends BaseFragment {
     View.OnClickListener showPayments = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(), "Show payments", 1000).show();
+            Intent intent = new Intent(getActivity(), PaymentsActivity.class);
+            startActivityForResult(intent, 1);
         }
     };
 

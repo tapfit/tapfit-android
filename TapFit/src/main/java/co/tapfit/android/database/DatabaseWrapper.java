@@ -16,6 +16,7 @@ import java.util.List;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
+import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Instructor;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
@@ -150,6 +151,43 @@ public class DatabaseWrapper {
         }
     }
 
+    public void addCreditCardToUser(User user, CreditCard creditCard) {
+        try
+        {
+            creditCard.user = user;
+            helper.getCreditCardDao().createOrUpdate(creditCard);
+
+            helper.getUserDao().refresh(user);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to add credit card to user");
+        }
+    }
+
+    public List<CreditCard> getCreditCards(User user) {
+        try {
+            return helper.getCreditCardDao().queryForEq("user_id", user.id);
+        } catch (Exception e) {
+            Log.d(TAG, "Failed to get credit cards");
+            return null;
+        }
+    }
+
+    public void removeCreditCardFromUser(User user, CreditCard creditCard) {
+        try
+        {
+            creditCard.user = null;
+            helper.getCreditCardDao().delete(creditCard);
+
+            helper.getUserDao().refresh(user);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to remove credit card from user");
+        }
+    }
+
     public void addPlaceToFavorites(User user, Place place) {
         try
         {
@@ -279,6 +317,22 @@ public class DatabaseWrapper {
         catch (Exception e)
         {
             Log.d(TAG, "Failed to get workout with id: " + workoutId, e);
+            return null;
+        }
+    }
+
+    public CreditCard getDefaulCard(User mUser) {
+        try {
+            QueryBuilder<CreditCard, Integer> queryBuilder = helper.getCreditCardDao().queryBuilder();
+            queryBuilder.where().eq("user_id", mUser.id).and().eq("default_card", true);
+            List<CreditCard> default_cards = helper.getCreditCardDao().query(queryBuilder.prepare());
+            for (CreditCard card : default_cards) {
+                return card;
+            }
+            return null;
+        }
+        catch (Exception e) {
+            Log.d(TAG, "Failed to get default card");
             return null;
         }
     }

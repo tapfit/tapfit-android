@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TapFit/TapFit.iml" filepath="$PROJECT_DIR$/TapFit/TapFit.iml" />
       <module fileurl="file://$PROJECT_DIR$/TapFitProject.iml" filepath="$PROJECT_DIR$/TapFitProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gradle/gradle.iml" filepath="$PROJECT_DIR$/gradle/gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/tapfit-android.iml" filepath="$PROJECT_DIR$/tapfit-android.iml" />
     </modules>
   </component>

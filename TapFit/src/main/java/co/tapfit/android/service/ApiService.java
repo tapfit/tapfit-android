@@ -227,6 +227,8 @@ public class ApiService extends IntentService {
         for (String key : params.keySet()) {
             Object value = params.get(key);
 
+            Log.d(TAG, "key: " + key + ", value: " + value);
+
             // We can only put Strings in a form entity, so we call the toString()
             // method to enforce. We also probably don't need to check for null here
             // but we do anyway because Bundle.get() can return null.

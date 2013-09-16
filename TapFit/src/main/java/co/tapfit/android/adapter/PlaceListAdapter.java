@@ -97,12 +97,6 @@ public class PlaceListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        if (holder == null)
-            Log.d(TAG, "holder is null");
-
-        if (view == null)
-            Log.d(TAG, "View is null");
-
         Place place = (Place) getItem(i);
 
         mImageLoader.displayImage(place.cover_photo, holder.place_image, mOptions);

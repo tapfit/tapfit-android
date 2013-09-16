@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.google.android.gms.internal.cu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -24,6 +25,7 @@ import co.tapfit.android.database.DatabaseHelper;
 import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.ClassTime;
+import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
@@ -84,6 +86,9 @@ public class UserRequest extends Request {
                     catch (Exception e)
                     {
                         Log.d(TAG, "Exception: " + e);
+                        if (callback != null) {
+                            callback.sendCallback(null, "Failed to register user");
+                        }
                     }
 
                     if (callback != null)
@@ -97,6 +102,8 @@ public class UserRequest extends Request {
                             callback.sendCallback(user, "Success registering user");
                         }
                     }
+
+                    UserRequest.getPaymentMethods(context, null);
                 }
             }
 
@@ -201,6 +208,9 @@ public class UserRequest extends Request {
 
     }
 
+    public static final String LOGIN_EMAIL = "email";
+    public static final String LOGIN_PASSWORD = "password";
+
     public static void loginUser(final Context context, Bundle args, final ResponseCallback callback) {
 
         if (callback != null && !callbacks.contains(callback)){
@@ -267,10 +277,14 @@ public class UserRequest extends Request {
                             UserRequest.favorites(context, null);
                         }
                     }
+
+                    UserRequest.getPaymentMethods(context, null);
                 }
             }
 
         };
+
+
 
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(ApiService.URL, getUrl(context) + "users/login");
@@ -356,6 +370,95 @@ public class UserRequest extends Request {
 
             Intent intent = new Intent(context, ApiService.class);
             intent.putExtra(ApiService.URL, getUrl(context) + "me/favorites");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.GET);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        } else {
+            if (callback != null) {
+                callback.sendCallback(null, "Need to sign in");
+            }
+        }
+
+    }
+
+    public static void getPaymentMethods(final Context context, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        final ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonObject object = parser.parse(json).getAsJsonObject();
+
+                        JsonArray array = object.getAsJsonArray("credit_cards");
+
+                        String default_card = object.getAsJsonObject("default").getAsString();
+
+                        User currentUser = dbWrapper.getCurrentUser();
+
+                        for (JsonElement element : array)
+                        {
+                            CreditCard creditCard = gson.fromJson(element, CreditCard.class);
+
+                            if (default_card.equals(creditCard.token)) {
+                                creditCard.default_card = true;
+                            }
+                            else {
+                                creditCard.default_card = false;
+                            }
+
+                            dbWrapper.addCreditCardToUser(currentUser, creditCard);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                        if (callback != null) {
+                            callback.sendCallback(null, "Failed getting creditCards");
+                        }
+                    }
+
+                    if (callback != null) {
+                        callback.sendCallback(dbWrapper.getCurrentUser().credit_cards, "Success getting creditCards");
+                    }
+                }
+            }
+
+        };
+
+        User currentUser = dbWrapper.getCurrentUser();
+
+        if (currentUser != null) {
+
+            Bundle args = new Bundle();
+            args.putString(AUTH_TOKEN, currentUser.auth_token);
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "me/payments");
             intent.putExtra(ApiService.HTTP_VERB, ApiService.GET);
             intent.putExtra(ApiService.PARAMS, args);
             intent.putExtra(ApiService.RESULT_RECEIVER, receiver);

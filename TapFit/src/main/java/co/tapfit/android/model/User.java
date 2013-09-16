@@ -41,4 +41,7 @@ public class User {
 
     @ForeignCollectionField
     public ForeignCollection<Pass> passes;
+
+    @ForeignCollectionField
+    public ForeignCollection<CreditCard> credit_cards;
 }

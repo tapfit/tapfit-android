@@ -99,8 +99,8 @@ public class SignInFragment extends BaseFragment {
             Boolean validPassword = SignInActivity.isValidPassword(mPassword.getText().toString());
             if (validEmail && validPassword){
                 Bundle args = new Bundle();
-                args.putString(UserRequest.EMAIL, mEmail.getText().toString());
-                args.putString(UserRequest.PASSWORD, mPassword.getText().toString());
+                args.putString(UserRequest.LOGIN_EMAIL, mEmail.getText().toString());
+                args.putString(UserRequest.LOGIN_PASSWORD, mPassword.getText().toString());
                 UserRequest.loginUser(getActivity(), args, callback);
                 progressDialog.show();;
             }
