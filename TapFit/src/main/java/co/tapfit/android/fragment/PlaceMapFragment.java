@@ -1,7 +1,7 @@
 package co.tapfit.android.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
+import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="logging">true</string> <!-- true/false logging on/off application wide -->
+    <string name="logging_level">2</string> <!-- 2 = Verbose, 6 = error (2..7 valid values) -->
+    <string name="tracker_url">http://your.url.here</string>
+    <string name="google_analytics_key">YourKeyHere</string>
+
+</resources>

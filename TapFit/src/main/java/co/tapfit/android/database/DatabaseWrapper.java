@@ -1,7 +1,7 @@
 package co.tapfit.android.database;
 
 import android.content.Context;
-import android.util.Log;
+import co.tapfit.android.helper.Log;
 
 import com.google.android.gms.internal.ca;
 import com.j256.ormlite.stmt.QueryBuilder;
