@@ -1,1 +1,1 @@
-include ':TapFit'
+include ':libraries:countly-sdk-android', ':TapFit'

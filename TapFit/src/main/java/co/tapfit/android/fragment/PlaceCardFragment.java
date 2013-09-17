@@ -1,12 +1,10 @@
 package co.tapfit.android.fragment;
 
 import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
+
 import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +17,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
@@ -33,7 +27,6 @@ import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
-import co.tapfit.android.request.UserRequest;
 
 /**
  * Created by zackmartinsek on 9/11/13.
@@ -130,7 +123,7 @@ public class PlaceCardFragment extends BaseFragment {
 
         User user = dbWrapper.getCurrentUser();
         if (user != null) {
-            if (mPlace.favorite_place != null && mPlace.favorite_place.id == user.id) {
+            if (mPlace.user != null && mPlace.user.id == user.id) {
 
                 mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
                 mSaveButton.setTag(true);
@@ -140,6 +133,11 @@ public class PlaceCardFragment extends BaseFragment {
                 mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
                 mSaveButton.setTag(false);
             }
+        }
+        else
+        {
+            mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
+            mSaveButton.setTag(false);
         }
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +178,12 @@ public class PlaceCardFragment extends BaseFragment {
         if (requestCode == 1) {
 
             if(resultCode == getActivity().RESULT_OK){
+                User user = dbWrapper.getCurrentUser();
                 Log.d(TAG, "Successfully signed in");
+                mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
+                mSaveButton.setTag(true);
+                dbWrapper.addPlaceToFavorites(user, mPlace);
+                toggledFavorite = !toggledFavorite;
             }
             if (resultCode == getActivity().RESULT_CANCELED) {
                 Log.d(TAG, "Didn't log in");

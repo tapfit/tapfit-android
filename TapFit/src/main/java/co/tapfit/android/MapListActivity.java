@@ -4,10 +4,14 @@ import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
+import co.tapfit.android.fragment.AccountFragment;
+import co.tapfit.android.fragment.CustomerSupportFragment;
+import co.tapfit.android.fragment.TapfitInfoFragment;
 import co.tapfit.android.helper.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.flurry.android.monolithic.sdk.impl.acc;
 
 import co.tapfit.android.fragment.MapListFragment;
 import co.tapfit.android.fragment.PlaceMapFragment;
@@ -37,9 +44,25 @@ public class MapListActivity extends BaseActivity {
     private TextView mBottomButtonText;
     private FrameLayout mBottomButton;
 
+    public static final String FAVORITES = "favorite";
+    public static final String MAP = "map";
+    public static final String PLACE_LIST = "place_list";
+    public static final String ACCOUNT = "account";
+    public static final String CUSOMER_SUPPORT = "customer_support";
+    public static final String TAPFIT_INFO = "tapfit_info";
+
     private MapListFragment mFavoriteListFragment;
     private MapListFragment mMapListFragment;
     private PlaceMapFragment mPlaceMapFragment;
+    private AccountFragment mAccountFragment;
+    private CustomerSupportFragment mCustomerSupportFragment;
+    private TapfitInfoFragment mTapfitInfoFragment;
+
+    private String mCurrentFragment;
+
+    public void setAccountFragment(AccountFragment accountFragment) {
+        this.mAccountFragment = accountFragment;
+    }
 
     private ResponseCallback callback = new ResponseCallback() {
         @Override
@@ -76,11 +99,15 @@ public class MapListActivity extends BaseActivity {
 
         mPlaceMapFragment = new PlaceMapFragment();
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
-                .commit();
+        mAccountFragment = new AccountFragment();
 
-        mBottomButtonText.setText("View List");
+        mCustomerSupportFragment = new CustomerSupportFragment();
+
+        mTapfitInfoFragment = new TapfitInfoFragment();
+
+        replaceFragment(mMapListFragment, PLACE_LIST);
+
+        mBottomButtonText.setText("View Map");
 
         mBottomButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -90,20 +117,15 @@ public class MapListActivity extends BaseActivity {
                         mBottomButton.setBackgroundResource(R.color.dark_gray);
                         if (mPlaceMapFragment.isVisible())
                         {
-                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.replace(R.id.content_frame, mMapListFragment, "List Fragment")
-                                    .setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom)
-                                    .commit();
+                            replaceFragment(mMapListFragment, PLACE_LIST);
 
                             mBottomButtonText.setText("View Map");
 
                         }
                         else
                         {
-                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.replace(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
-                                    .setCustomAnimations(R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom)
-                                    .commit();
+                            replaceFragment(mPlaceMapFragment, MAP);
+
                             mBottomButtonText.setText("View List");
                         }
                         break;
@@ -117,6 +139,18 @@ public class MapListActivity extends BaseActivity {
 
         mBottomButton.setOnClickListener(switchMapAndList);
     }
+
+    private void replaceFragment(Fragment fragment, String fragmentName) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment, fragmentName)
+                .setCustomAnimations(R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom)
+                .addToBackStack(mCurrentFragment)
+                .commit();
+
+        mCurrentFragment = fragmentName;
+    }
+
 
     private void initializeActionBar() {
 
@@ -137,13 +171,13 @@ public class MapListActivity extends BaseActivity {
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
+                //getSupportActionBar().setTitle(mTitle);
                 supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
+                //getSupportActionBar().setTitle(mDrawerTitle);
                 supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -205,6 +239,14 @@ public class MapListActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void showCustomerSupport() {
+        replaceFragment(mCustomerSupportFragment, CUSOMER_SUPPORT);
+    }
+
+    public void showTapfitInfo() {
+        replaceFragment(mTapfitInfoFragment, TAPFIT_INFO);
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -212,14 +254,48 @@ public class MapListActivity extends BaseActivity {
         }
     }
 
+    public View getBottomButton() {
+        return mBottomButton;
+    }
+
+    public TextView getBottomButtonText() {
+        return mBottomButtonText;
+    }
+
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
 
         if (position == 0) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, mPlaceMapFragment, "Map Fragment")
-                    .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
-                    .commit();
+
+            getSupportActionBar().setTitle("tapfit");
+
+            replaceFragment(mMapListFragment, PLACE_LIST);
+
+            mBottomButton.setVisibility(View.VISIBLE);
+            mBottomButtonText.setText("View Map");
+        }
+        else if (position == 1) {
+
+            getSupportActionBar().setTitle("Favorites");
+
+            replaceFragment(mFavoriteListFragment, FAVORITES);
+
+            mBottomButton.setVisibility(View.GONE);
+        }
+        else if (position == 2) {
+
+            getSupportActionBar().setTitle("Passes");
+
+            Toast.makeText(this, "Implement passes page", 1000).show();
+            //TODO: Implement passes
+        }
+        else if (position == 3) {
+
+            getSupportActionBar().setTitle("Account");
+
+            replaceFragment(mAccountFragment, ACCOUNT);
+
+            mBottomButton.setVisibility(View.GONE);
         }
 
         // Highlight the selected item, update the title, and close the drawer

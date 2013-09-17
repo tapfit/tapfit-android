@@ -1,6 +1,8 @@
 package co.tapfit.android.fragment;
 
 import android.os.Bundle;
+
+import co.tapfit.android.MapListActivity;
 import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
@@ -41,6 +43,12 @@ public class PlaceMapFragment extends SupportMapFragment {
         return (PlaceMapFragment) SupportMapFragment.newInstance(options);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MapListActivity) getActivity()).getBottomButton().setVisibility(View.VISIBLE);
+        ((MapListActivity) getActivity()).getBottomButtonText().setText("View List");
+    }
 
     @Override
     public void onCreate(Bundle bundle){

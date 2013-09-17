@@ -2,6 +2,8 @@ package co.tapfit.android.application;
 
 import android.app.Application;
 
+import com.flurry.android.FlurryAgent;
+
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.Log;

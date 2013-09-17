@@ -3,18 +3,13 @@ package co.tapfit.android.database;
 import android.content.Context;
 import co.tapfit.android.helper.Log;
 
-import com.google.android.gms.internal.ca;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import org.joda.time.DateTime;
 
-import java.sql.DataTruncation;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import co.tapfit.android.helper.SharePref;
-import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Instructor;
@@ -140,7 +135,7 @@ public class DatabaseWrapper {
     public void removePlaceFromFavorites(User user, Place place) {
         try
         {
-            place.favorite_place = null;
+            place.user = null;
             helper.getPlaceDao().update(place);
 
             helper.getUserDao().refresh(user);
@@ -191,7 +186,7 @@ public class DatabaseWrapper {
     public void addPlaceToFavorites(User user, Place place) {
         try
         {
-            place.favorite_place = user;
+            place.user = user;
             helper.getPlaceDao().update(place);
 
             helper.getUserDao().refresh(user);

@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.List;
+
+import co.tapfit.android.MapListActivity;
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.adapter.PlaceListAdapter;
@@ -30,6 +33,16 @@ public class MapListFragment extends BaseFragment {
     PlaceListAdapter mPlaceListAdapter;
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getArguments().getInt(LIST_TYPE) == MAP_LIST) {
+            ((MapListActivity) getActivity()).getBottomButton().setVisibility(View.VISIBLE);
+            ((MapListActivity) getActivity()).getBottomButtonText().setText("View Map");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_map_list, null);
         if (getArguments().getInt(LIST_TYPE) == MAP_LIST) {
@@ -45,17 +58,30 @@ public class MapListFragment extends BaseFragment {
 
     private void initializeMapList() {
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
+        List<Place> places = dbWrapper.getPlaces();
+        if (places != null) {
 
-        mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWrapper.getPlaces());
+            mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWrapper.getPlaces());
 
-        mPlaceList.setAdapter(mPlaceListAdapter);
+            mPlaceList.setAdapter(mPlaceListAdapter);
 
-        mPlaceList.setOnItemClickListener(placeListClickListener);
+            mPlaceList.setOnItemClickListener(placeListClickListener);
+        }
     }
 
     private void initializeFavoriteList() {
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
-        //mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWra)
+
+        List<Place> places = dbWrapper.getFavorites();
+
+        if (places != null) {
+
+            mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWrapper.getFavorites());
+
+            mPlaceList.setAdapter(mPlaceListAdapter);
+
+            mPlaceList.setOnItemClickListener(placeListClickListener);
+        }
     }
 
     private AdapterView.OnItemClickListener placeListClickListener = new AdapterView.OnItemClickListener() {

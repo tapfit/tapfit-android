@@ -16,12 +16,9 @@ import com.google.gson.JsonParser;
 
 import org.joda.time.DateTime;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
-import co.tapfit.android.database.DatabaseHelper;
 import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
@@ -102,7 +99,7 @@ public class PlaceRequest extends Request {
 
                             Place oldPlace = dbWrapper.getPlace(place.id);
                             if (oldPlace != null) {
-                                place.favorite_place = oldPlace.favorite_place;
+                                place.user = oldPlace.user;
                             }
 
                             dbWrapper.createOrUpdatePlace(place);
@@ -174,12 +171,12 @@ public class PlaceRequest extends Request {
                         else
                         {
                             if (element.getAsInt() == 0) {
-                                if (place.favorite_place == user) {
+                                if (place.user == user) {
                                     dbWrapper.removePlaceFromFavorites(user, place);
                                 }
                             }
                             else {
-                                if (place.favorite_place == null) {
+                                if (place.user == null) {
                                     dbWrapper.addPlaceToFavorites(user, place);
                                 }
                             }

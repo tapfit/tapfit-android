@@ -75,7 +75,7 @@ public class Place {
     public Collection<ClassTime> classTimes;
 
     @DatabaseField(foreign = true)
-    public User favorite_place;
+    public User user;
 
     @ForeignCollectionField
     public ForeignCollection<Pass> passes;

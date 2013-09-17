@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.R;
@@ -16,6 +17,18 @@ public class BaseActivity extends ActionBarActivity {
 
     protected ImageCache imageCache = ImageCache.getInstance();
     protected DatabaseWrapper dbWrapper;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, getResources().getString(R.string.flurry_api_key));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

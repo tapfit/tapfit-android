@@ -296,6 +296,60 @@ public class UserRequest extends Request {
 
     }
 
+    public static void logoutUser(final Context context, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    User user = dbWrapper.getCurrentUser();
+
+                    SharePref.setIntPref(context, SharePref.CURRENT_USER_ID, -1);
+
+                    if (callback != null)
+                    {
+                        callback.sendCallback(user, "Logged out user");
+                    }
+                }
+            }
+
+        };
+
+
+        User user = dbWrapper.getCurrentUser();
+        if (user != null) {
+
+            Bundle args = new Bundle();
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "users/login");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        }
+        else {
+            if (callback != null) {
+                callback.sendCallback(user, "Already logged out");
+            }
+        }
+    }
+
     public static void favorites(final Context context, final ResponseCallback callback) {
 
         if (callback != null && !callbacks.contains(callback)){

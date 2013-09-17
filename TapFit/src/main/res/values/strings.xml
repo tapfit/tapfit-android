@@ -14,6 +14,7 @@
     <string name="tapfit_terms">By confirming the purchase, I agree to TapFit\'s Terms of Use and Privacy Policy</string>
     <string name="tapfit_secure">Information is sent over a secure connection.</string>
     <string name="braintree_encryption">MIIBCgKCAQEAulUZkkzhyBDqY8heTV34RVnbmawkcgWosUKc/XHRg5XgHbdBB3ncNVTqG3sLhSb/4fTHa5mzbtTkx4NKuaot59RF1ZSw6eFndMabfxSVkW2M0F20mRgxlVsYjGR3yM3eVcrQBRtZ99lV8ck61NfDGt6AOSJh1CGthaijXi0HTZ6iGJK9N7AK/cw2pKM3k97yFGEzU7LuVVBAiZK7Nmlxy1CgRBsBr1SGc4+EKA6BSSGqSa0TjGINWJVG8D0jjJqvZfLSPcc9Vx/Viol8qF6sjZIsuiUPsIrWqc/m98xROq/HuAltEBUNhEh7ryjEbG4+jFWkn8Qwe3JmRzCQ1XpNpwIDAQAB</string>
+    <string name="flurry_api_key">X59K4VB95Q2SYM67X4KX</string>
 
     <string-array name="menu_list">
         <item>Home</item>
