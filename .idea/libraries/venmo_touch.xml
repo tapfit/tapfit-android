@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="venmo-touch">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/TapFit/build/exploded-bundles/TapFitProjectLibrariesVenmoTouchAndroid100B2VenmoTouchUnspecified.aar/libs/venmo-touch.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

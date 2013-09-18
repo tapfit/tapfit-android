@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="VenmoTouch">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/build/source/r/release" />
+      <root url="file://$PROJECT_DIR$/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/build/source/buildConfig/release" />
+    </SOURCES>
+  </library>
+</component>
