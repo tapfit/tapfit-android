@@ -45,7 +45,9 @@ public class ImageCache {
 
     private static DisplayImageOptions getPlacePageOpts() {
         if (placePageOpts == null) {
-            placePageOpts = DisplayImageOptions.createSimple();
+            placePageOpts = new DisplayImageOptions.Builder()
+                    .cacheOnDisc(true)
+                    .build();
         }
         return placePageOpts;
     }

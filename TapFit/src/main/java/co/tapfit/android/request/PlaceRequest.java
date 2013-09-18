@@ -197,7 +197,7 @@ public class PlaceRequest extends Request {
         };
 
         Bundle args = new Bundle();
-        args.putString(UserRequest.AUTH_TOKEN, user.auth_token);
+        args.putString(AUTH_TOKEN, user.auth_token);
 
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(ApiService.URL, getUrl(context) + "places/" + place.id + "/favorite");

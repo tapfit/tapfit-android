@@ -5,26 +5,29 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/normal_button_size"
+        android:layout_height="@dimen/small_button_size"
         android:id="@+id/card_icon"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/card_number"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
         style="@style/SmallFont"
+        android:layout_alignParentRight="true"
         android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         android:layout_toRightOf="@id/card_icon"/>
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/normal_button_size"
+        android:layout_height="@dimen/small_button_size"
         android:id="@+id/default_icon"
         android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:visibility="gone"/>
+        android:layout_alignParentRight="true"
+        android:src="@drawable/abc_ic_cab_done_holo_light" />
 
 </RelativeLayout>

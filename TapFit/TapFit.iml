@@ -69,17 +69,19 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.2.2 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="FLurry_3.2.2" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="module" module-name="countly-sdk-android" exported="" />
     <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
     <orderEntry type="library" exported="" name="braintree-android-encryption-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="venmo-touch" level="project" />
     <orderEntry type="library" exported="" name="ComGoogleAndroidGmsPlayServices3225.aar" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="module" module-name="VenmoTouch" exported="" />
     <orderEntry type="library" exported="" name="ormlite-core-4.46" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.8.6-with-sources" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.3" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.46" level="project" />
-    <orderEntry type="library" name="FLurry_3.2.2" level="project" />
-    <orderEntry type="module" module-name="TapFitProject" />
   </component>
 </module>
 

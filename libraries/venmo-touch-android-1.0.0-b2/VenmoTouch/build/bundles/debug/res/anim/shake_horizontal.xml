@@ -1,0 +1,6 @@
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:fromXDelta="0"
+    android:interpolator="@anim/shake_interpolator"
+    android:toXDelta="10" />
+<!-- From: file:/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/anim/shake_horizontal.xml -->

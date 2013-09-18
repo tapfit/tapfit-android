@@ -93,6 +93,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/TapFit">
         </activity>
+        <activity android:name="com.venmo.touch.activity.PaymentFormActivity"/>
+        <receiver
+            android:name="com.venmo.touch.service.VenmoTouchUpdateReceiver"
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="com.venmo.touch.UPDATE"/>
+            </intent-filter>
+
+        </receiver>
+        <service android:name="com.venmo.touch.service.VenmoTouchUpdateService" />
+        <meta-data android:name="venmo_touch.enabled" android:value="true"/>
     </application>
 
 </manifest>

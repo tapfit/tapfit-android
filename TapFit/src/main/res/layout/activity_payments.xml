@@ -16,11 +16,17 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/credit_card_list"
         android:layout_alignParentTop="true"
         android:layout_above="@id/add_card_button"
         android:background="@drawable/list_view_background_round"
         android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
 </RelativeLayout>

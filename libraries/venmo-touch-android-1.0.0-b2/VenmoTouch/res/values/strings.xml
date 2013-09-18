@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Venmo Touch</string>
+    <string name="hint_account_number">1111 2222 3333 4444</string>
+    <string name="hint_expiration">MM/YY</string>
+    <string name="hint_zip">Zip Code</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="title_activity_payment">PaymentActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="consent_text_preamble">Save card with Venmo for use in other apps.  By doing so you agree to the Terms of Service.</string>
+    <string name="consent_text_terms_of_service"><u>Terms of Service</u></string>
+    <string name="consent_text_how_it_works"><u>How it Works</u></string>
+    <string name="add_card_submit">Submit</string>
+    <string name="dialog_tos_title">Terms of Service</string>
+    <string name="dialog_tos_close">Close</string>
+    <string name="dialog_how_it_works_title">How it Works</string>
+    <string name="dialog_how_it_works_prev">Previous</string>
+    <string name="dialog_how_it_works_next">Next</string>
+    <string name="select_card_button_text">Use Card</string>
+    <string name="select_card_string_unknown_merchant">Unknown Merchant</string>
+    <string name="select_card_dialog_title_verify">Security Verification</string>
+    <string name="select_card_dialog_button_cancel">Cancel</string>
+    <string name="select_card_dialog_button_verify">Verify</string>
+    <string name="select_card_progress_text">Verifying...</string>
+    
+    <string name="vt_tutorial_title">How it Works</string>
+    <string name="vt_tutorial_button_ok">Got it!</string>
+    <string name="vt_tutorial_new_user_title">Save Your Fingers Some Typing!</string>
+    <string name="vt_tutorial_new_user_text">When you securely store your card with Venmo, you can use it again in other apps on this device without re-typing it.</string>
+    <string name="vt_tutorial_existing_user_title">Saved Card</string>
+    <string name="vt_tutorial_existing_user_text">In a past purchase on this device, you stored this card with Venmo. Now you can use the same card without re-typing it.</string>
+    <string name="vt_tutorial_saving_card_title">Saving a Card</string>
+    <string name="vt_tutorial_saving_card_text">When you save a new card with Venmo, it is encrypted and stored securely on our servers.</string>
+    <string name="vt_tutorial_using_card_title">Using a Card</string>
+    <string name="vt_tutorial_using_card_text">Other apps will not receive your card info until you tap "Use Card" and answer a security question.</string>
+    <string name="vt_tutorial_download_venmo_title">Get Venmo</string>
+    <string name="vt_tutorial_download_venmo_text">To manage your cards and security settings for Venmo payments in apps like this one, download Venmo for free.</string>
+    <string name="vt_tutorial_download_venmo_button_text">Download Venmo</string>
+    <string name="vt_tutorial_logout_text">To stop suggesting this card for purchases in apps on this device, <u>tap here</u>.</string>
+    
+    <string name="vt_logout_dialog_title">Confirm Logout</string>
+    <string name="vt_logout_dialog_text">Your session with Venmo Touch will be ended, and previously-saved card information will be deleted.</string>
+    <string name="vt_logout_dialog_button_ok">Logout</string>
+    <string name="vt_logout_dialog_button_cancel">Cancel</string>
+    <string name="vt_logout_dialog_progress_title">Logging out...</string>
+    
+    <string name="vt_payment_form_select_card_title">Select Existing Card</string>
+    <string name="vt_payment_form_add_new_card_title">Add New Card</string>
+    
+    <string name="vt_card_picker_title">Select Saved Card</string>
+    <string name="vt_saved_card_learn_more">LEARN MORE</string>
+    
+</resources>

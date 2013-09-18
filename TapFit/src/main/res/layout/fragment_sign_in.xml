@@ -49,7 +49,7 @@
                 android:layout_height="@dimen/normal_button_size"
                 android:layout_below="@id/password"
                 android:layout_marginTop="10dp"
-                android:text="Sign Up"
+                android:text="Sign In"
                 android:background="@color/blue"/>
         </RelativeLayout>
 

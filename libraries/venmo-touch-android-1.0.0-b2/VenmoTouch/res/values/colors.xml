@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="blue_link">#8888ff</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="dark_gray">#777777</color>
+    
+    <color name="vt_blue">#ff4094d1</color>
+    <color name="vt_blue_dark">#2D6892</color>
+    <color name="vt_white_50pct">#80ffffff</color>
+    <color name="vt_black_25pct">#40000000</color>
+    <color name="vt_dark_gray">#888888</color>
+</resources>

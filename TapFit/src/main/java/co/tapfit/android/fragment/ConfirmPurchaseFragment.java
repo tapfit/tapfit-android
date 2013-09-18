@@ -1,10 +1,14 @@
 package co.tapfit.android.fragment;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +22,8 @@ import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
+import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.request.WorkoutRequest;
 
 /**
  * Created by zackmartinsek on 9/14/13.
@@ -29,6 +35,8 @@ public class ConfirmPurchaseFragment extends BaseFragment {
     private Workout mWorkout;
     private Place mPlace;
     private User mUser;
+
+    private Button mConfirmPurchase;
 
     public static final String WORKOUT_ID = "workout_id";
 
@@ -71,7 +79,51 @@ public class ConfirmPurchaseFragment extends BaseFragment {
         else {
             setUpDefaultPaymentPrompt();
         }
+
+        mConfirmPurchase = (Button) mView.findViewById(R.id.confirm_purchase_button);
+        mConfirmPurchase.setOnClickListener(buyWorkout);
     }
+
+    private View.OnClickListener buyWorkout = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Purchasing " + mWorkout.name);
+            progressDialog.show();
+            WorkoutRequest.buyWorkout(getActivity(), mWorkout, new ResponseCallback() {
+                @Override
+                public void sendCallback(Object responseObject, String message) {
+                    progressDialog.cancel();
+                    if (responseObject != null) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                                .setTitle("Success!")
+                                .setPositiveButton("See Pass", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                }).create();
+
+                        alertDialog.show();
+                    }
+                    else
+                    {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                                .setTitle("Failed to buy pass!")
+                                .setMessage(message)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                }).create();
+
+                        alertDialog.show();
+                    }
+                }
+            });
+        }
+    };
 
     private void setUpPaymentPrompt(CreditCard creditCard) {
         View view = mView.findViewById(R.id.payments);

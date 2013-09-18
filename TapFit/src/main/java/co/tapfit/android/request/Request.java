@@ -15,6 +15,8 @@ public class Request {
 
     protected static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
+    public static final String AUTH_TOKEN = "auth_token";
+
     protected static String getUrl(Context context)
     {
         return context.getString(R.string.tapfit_api);

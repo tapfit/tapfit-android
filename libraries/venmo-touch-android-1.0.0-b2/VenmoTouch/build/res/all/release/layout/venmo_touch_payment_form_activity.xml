@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".VenmoTouchDemoActivity" >
+
+    <com.venmo.touch.view.VTComboCardView
+        android:id="@+id/venmoTouchPaymentForm_comboView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+<!-- From: file:/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/venmo_touch_payment_form_activity.xml -->

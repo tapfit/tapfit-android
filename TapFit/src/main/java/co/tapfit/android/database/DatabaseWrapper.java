@@ -3,7 +3,9 @@ package co.tapfit.android.database;
 import android.content.Context;
 import co.tapfit.android.helper.Log;
 
+import com.flurry.android.monolithic.sdk.impl.up;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import org.joda.time.DateTime;
 
@@ -146,10 +148,57 @@ public class DatabaseWrapper {
         }
     }
 
+    public void deleteCreditCard(CreditCard creditCard) {
+        try
+        {
+            helper.getCreditCardDao().delete(creditCard);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to delete card: " + creditCard.token, e);
+        }
+    }
+
+    public void setDefaultCardFromToken(String token) {
+        try
+        {
+            CreditCard card = helper.getCreditCardDao().queryForEq("token", token).get(0);
+            card.default_card = true;
+            setDefaultCardForUser(getCurrentUser(), card);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Error setting default card from token: " + token, e);
+        }
+    }
+
+    public void setDefaultCardForUser(User user, CreditCard creditCard) {
+        try
+        {
+            UpdateBuilder<CreditCard, Integer> updateBuilder = helper.getCreditCardDao().updateBuilder();
+            updateBuilder.updateColumnValue("default_card", false);
+            helper.getCreditCardDao().update(updateBuilder.prepare());
+
+            creditCard.default_card = true;
+
+            helper.getCreditCardDao().createOrUpdate(creditCard);
+        }
+        catch (Exception e) {
+            Log.d(TAG, "Failed to set default card for user: " + creditCard.token, e);
+        }
+    }
+
     public void addCreditCardToUser(User user, CreditCard creditCard) {
         try
         {
             creditCard.user = user;
+
+            if (creditCard.default_card) {
+                UpdateBuilder<CreditCard, Integer> updateBuilder = helper.getCreditCardDao().updateBuilder();
+                updateBuilder.updateColumnValue("default_card", false);
+                helper.getCreditCardDao().update(updateBuilder.prepare());
+            }
+
             helper.getCreditCardDao().createOrUpdate(creditCard);
 
             helper.getUserDao().refresh(user);
@@ -262,6 +311,10 @@ public class DatabaseWrapper {
         try
         {
             helper.getPassDao().createOrUpdate(pass);
+
+            helper.getPlaceDao().update(pass.place);
+            helper.getWorkoutDao().update(pass.workout);
+            helper.getUserDao().update(pass.user);
         }
         catch (Exception e)
         {

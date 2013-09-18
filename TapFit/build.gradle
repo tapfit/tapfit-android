@@ -30,4 +30,6 @@ dependencies {
     compile files ('libs/ormlite-core-4.46.jar', 'libs/universal-image-loader-1.8.6-with-sources.jar')
     compile files ('libs/braintree-android-encryption-1.0.0.jar', 'libs/FLurry_3.2.2.jar')
     compile project (':libraries:countly-sdk-android')
+    compile project (':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch')
+    compile files (':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch/libs/venmo-touch.jar')
 }

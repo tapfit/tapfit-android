@@ -39,8 +39,6 @@ public class UserRequest extends Request {
 
     private static String TAG = UserRequest.class.getSimpleName();
 
-    public static final String AUTH_TOKEN = "auth_token";
-
     public static void registerGuest(final Context context, final ResponseCallback callback) {
 
         if (callback != null && !callbacks.contains(callback)){
@@ -346,6 +344,239 @@ public class UserRequest extends Request {
         else {
             if (callback != null) {
                 callback.sendCallback(user, "Already logged out");
+            }
+        }
+    }
+
+    public static final String TOKEN = "token";
+
+    public static void setDefaultCard(final Context context, final CreditCard card, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        final ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonObject object = parser.parse(json).getAsJsonObject();
+
+                        if (object.get("success").getAsBoolean()){
+
+                            dbWrapper.setDefaultCardForUser(dbWrapper.getCurrentUser(), card);
+                        }
+                        else {
+                            if (callback != null) {
+                                callback.sendCallback(null, object.get("error_message").getAsString());
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                    }
+
+                    if (callback != null) {
+                        callback.sendCallback(dbWrapper.getDefaulCard(dbWrapper.getCurrentUser()), "Success setting default card");
+                    }
+                }
+            }
+        };
+
+        User currentUser = dbWrapper.getCurrentUser();
+
+        if (currentUser != null) {
+
+            Bundle args = new Bundle();
+            args.putString(AUTH_TOKEN, currentUser.auth_token);
+            args.putString(TOKEN, card.token);
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "me/payments/default");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.PUT);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        } else {
+            if (callback != null) {
+                callback.sendCallback(null, "Need to sign in");
+            }
+        }
+    }
+
+    public static void deleteCreditCard(final Context context, final CreditCard card, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        final ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonObject object = parser.parse(json).getAsJsonObject();
+
+                        if (object.get("success").getAsBoolean()){
+
+                            object.get("default_card").getAsString();
+
+                            dbWrapper.setDefaultCardFromToken(object.get("default_card").getAsString());
+
+                            dbWrapper.deleteCreditCard(card);
+                        }
+                        else {
+                            if (callback != null) {
+                                callback.sendCallback(null, object.get("error_message").getAsString());
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                    }
+
+                    if (callback != null) {
+                        callback.sendCallback(card, "Success deleting card");
+                    }
+                }
+            }
+        };
+
+        User currentUser = dbWrapper.getCurrentUser();
+
+        if (currentUser != null) {
+
+            Bundle args = new Bundle();
+            args.putString(AUTH_TOKEN, currentUser.auth_token);
+            args.putString(TOKEN, card.token);
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "me/payments/delete");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.DELETE);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        } else {
+            if (callback != null) {
+                callback.sendCallback(null, "Need to sign in");
+            }
+        }
+    }
+
+    public static void addPaymentMethod(final Context context, Bundle args, final ResponseCallback callback) {
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        final ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    try
+                    {
+                        JsonObject object = parser.parse(json).getAsJsonObject();
+
+                        if (object.get("success").getAsBoolean()){
+                            CreditCard creditCard = gson.fromJson(object, CreditCard.class);
+                            creditCard.token = object.get("credit_card").getAsString();
+
+                            creditCard.default_card = true;
+
+                            dbWrapper.addCreditCardToUser(dbWrapper.getCurrentUser(), creditCard);
+                        }
+                        else {
+                            if (callback != null) {
+                                callback.sendCallback(null, object.get("error_message").getAsString());
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                    }
+
+                    if (callback != null) {
+                        callback.sendCallback(dbWrapper.getDefaulCard(dbWrapper.getCurrentUser()), "Success adding card");
+                    }
+                }
+            }
+
+        };
+
+        User currentUser = dbWrapper.getCurrentUser();
+
+        if (currentUser != null) {
+
+            args.putString(AUTH_TOKEN, currentUser.auth_token);
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "me/payments");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        } else {
+            if (callback != null) {
+                callback.sendCallback(null, "Need to sign in");
             }
         }
     }

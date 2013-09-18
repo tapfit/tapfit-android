@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res" >
+            <file
+                name="vt_expand"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-mdpi/vt_expand.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="venmo_logo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-mdpi/venmo_logo.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="vt_expand"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-xhdpi/vt_expand.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="venmo_logo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-xhdpi/venmo_logo.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="vt_button"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable/vt_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/values/styles.xml"
+                qualifiers="" >
+
+                <style name="AppBaseTheme" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style name="vtTextHeader" >
+                    <item name="android:layout_width">
+wrap_content
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:textSize">
+18sp
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/values/colors.xml"
+                qualifiers="" >
+                <color name="vt_white_50pct" >#80ffffff
+                </color>
+                <color name="vt_blue" >#ff4094d1
+                </color>
+                <color name="transparent" >#00ffffff
+                </color>
+                <color name="vt_blue_dark" >#2D6892
+                </color>
+                <color name="blue_link" >#8888ff
+                </color>
+                <color name="dark_gray" >#777777
+                </color>
+                <color name="vt_black_25pct" >#40000000
+                </color>
+                <color name="vt_dark_gray" >#888888
+                </color>
+            </file>
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/values/strings.xml"
+                qualifiers="" >
+                <string name="vt_tutorial_saving_card_title" >Saving a Card
+                </string>
+                <string name="dialog_how_it_works_title" >How it Works
+                </string>
+                <string name="vt_logout_dialog_title" >Confirm Logout
+                </string>
+                <string name="vt_tutorial_new_user_title" >Save Your Fingers Some Typing!
+                </string>
+                <string name="action_settings" >Settings
+                </string>
+                <string name="vt_payment_form_select_card_title" >Select Existing Card
+                </string>
+                <string name="select_card_dialog_button_verify" >Verify
+                </string>
+                <string name="vt_card_picker_title" >Select Saved Card
+                </string>
+                <string name="add_card_submit" >Submit
+                </string>
+                <string name="select_card_dialog_title_verify" >Security Verification
+                </string>
+                <string name="vt_tutorial_title" >How it Works
+                </string>
+                <string name="vt_tutorial_existing_user_title" >Saved Card
+                </string>
+                <string name="select_card_string_unknown_merchant" >Unknown Merchant
+                </string>
+                <string name="vt_tutorial_using_card_text" >Other apps will not receive your card info until you tap "Use Card" and answer a security question.
+                </string>
+                <string name="vt_logout_dialog_button_cancel" >Cancel
+                </string>
+                <string name="vt_tutorial_new_user_text" >When you securely store your card with Venmo, you can use it again in other apps on this device without re-typing it.
+                </string>
+                <string name="consent_text_how_it_works" ><u>
+How it Works
+                    </u></string>
+                <string name="title_activity_payment" >PaymentActivity
+                </string>
+                <string name="hint_expiration" >MM/YY
+                </string>
+                <string name="vt_tutorial_download_venmo_title" >Get Venmo
+                </string>
+                <string name="hint_zip" >Zip Code
+                </string>
+                <string name="dialog_how_it_works_next" >Next
+                </string>
+                <string name="select_card_button_text" >Use Card
+                </string>
+                <string name="hello_world" >Hello world!
+                </string>
+                <string name="vt_tutorial_logout_text" >To stop suggesting this card for purchases in apps on this device, 
+<u>
+tap here
+                    </u>.
+                </string>
+                <string name="vt_tutorial_download_venmo_button_text" >Download Venmo
+                </string>
+                <string name="vt_tutorial_existing_user_text" >In a past purchase on this device, you stored this card with Venmo. Now you can use the same card without re-typing it.
+                </string>
+                <string name="vt_logout_dialog_button_ok" >Logout
+                </string>
+                <string name="consent_text_preamble" >Save card with Venmo for use in other apps.  By doing so you agree to the Terms of Service.
+                </string>
+                <string name="dialog_tos_close" >Close
+                </string>
+                <string name="vt_tutorial_saving_card_text" >When you save a new card with Venmo, it is encrypted and stored securely on our servers.
+                </string>
+                <string name="vt_payment_form_add_new_card_title" >Add New Card
+                </string>
+                <string name="consent_text_terms_of_service" ><u>
+Terms of Service
+                    </u></string>
+                <string name="vt_logout_dialog_text" >Your session with Venmo Touch will be ended, and previously-saved card information will be deleted.
+                </string>
+                <string name="hint_cvv" >CVV
+                </string>
+                <string name="dialog_tos_title" >Terms of Service
+                </string>
+                <string name="select_card_progress_text" >Verifying...
+                </string>
+                <string name="vt_tutorial_download_venmo_text" >To manage your cards and security settings for Venmo payments in apps like this one, download Venmo for free.
+                </string>
+                <string name="vt_saved_card_learn_more" >LEARN MORE
+                </string>
+                <string name="dialog_how_it_works_prev" >Previous
+                </string>
+                <string name="app_name" >Venmo Touch
+                </string>
+                <string name="select_card_dialog_button_cancel" >Cancel
+                </string>
+                <string name="vt_tutorial_using_card_title" >Using a Card
+                </string>
+                <string name="hint_account_number" >1111 2222 3333 4444
+                </string>
+                <string name="vt_logout_dialog_progress_title" >Logging out...
+                </string>
+                <string name="vt_tutorial_button_ok" >Got it!
+                </string>
+            </file>
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                name="single_line_card_entry_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/single_line_card_entry_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="vt_card_picker_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/vt_card_picker_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="payment_method_list_item"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/payment_method_list_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="how_it_works_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/how_it_works_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="vt_new_card_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/vt_new_card_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="auth_questions_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/auth_questions_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="vt_saved_card_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/vt_saved_card_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="venmo_touch_payment_form_activity"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/venmo_touch_payment_form_activity.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="terms_of_service_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/terms_of_service_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="vt_check_box_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/vt_check_box_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="vt_combo_card_view_layout"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/layout/vt_combo_card_view_layout.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/values-sw720dp-land/dimens.xml"
+                qualifiers="sw720dp-land" >
+                <dimen name="activity_horizontal_margin" >128dp
+                </dimen>
+            </file>
+            <file
+                name="shake_horizontal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/anim/shake_horizontal.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shake_interpolator"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/anim/shake_interpolator.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="slide_in_right"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/anim/slide_in_right.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="slide_out_left"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/anim/slide_out_left.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="bt_amex_cvv"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_amex_cvv.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="vt_expand"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/vt_expand.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_generic_card"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_generic_card.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="venmo_logo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/venmo_logo.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_diners_club"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_diners_club.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="venmobutton"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/venmobutton.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_mastercard"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_mastercard.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_visa"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_visa.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="spacer"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/spacer.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_amex"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_amex.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_discover"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_discover.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="vtbutton"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/vtbutton.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_cvv"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_cvv.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="info_button"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/info_button.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="bt_jcb"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/res/drawable-hdpi/bt_jcb.png"
+                qualifiers="hdpi"
+                type="drawable" />
+        </source>
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/build/res/rs/release" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/src/release/res" />
+    </dataSet>
+
+</merger>
