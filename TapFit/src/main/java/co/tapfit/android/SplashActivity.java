@@ -6,13 +6,19 @@ import android.app.Activity;
 import android.os.Handler;
 import android.view.Menu;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.User;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.request.PlaceRequest;
+import co.tapfit.android.request.RegionRequest;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
 
@@ -22,40 +28,65 @@ public class SplashActivity extends Activity {
     Handler mHandler;
     Runnable mJumpRunnable;
 
+    private Boolean mReadyForApp = false;
+    private Boolean mPastSplashTime = false;
+
+    Timer splashTimer = new Timer();
+
+    private static final String TAG = SplashActivity.class.getSimpleName();
 
     DatabaseWrapper dbWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
+
         setContentView(R.layout.activity_splash);
 
 
-        LatLng location = LocationServices.getInstance(getApplicationContext()).getLatLng();
-        if (location == null)
+        splashTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mPastSplashTime = true;
+                if (mReadyForApp) {
+                    launchPostSplashPage();
+                }
+            }
+        }, SPLASH_TIME);
+
+        LocationServices.getInstance(getApplicationContext());
+
+        if (!SharePref.getBooleanPref(getApplicationContext(), SharePref.SELECTED_REGION, false)) {
+            RegionRequest.getRegions(getApplicationContext(), new ResponseCallback() {
+                @Override
+                public void sendCallback(Object responseObject, String message) {
+                    mReadyForApp = true;
+                    if (mPastSplashTime) {
+                        splashTimer.cancel();
+                        launchPostSplashPage();
+                    }
+                }
+            });
+        }
+        else
         {
-            //TODO: Make regions call and prompt user
+            RegionRequest.getRegions(getApplicationContext(), null);
         }
 
+        LatLng location = LocationServices.getLatLng();
+
+        if (location != null)
+        {
+            mReadyForApp = true;
+            PlaceRequest.getPlaces(getApplicationContext(), location, false, null);
+        }
         /**
          * This is poor design on my part. I'm just calling getPlaces in dev mode.
          * Will change to make the call here and handle the callback when it gets back
          * and not hold up the app for that.
          * TODO: Don't hold up app with getPlaces() call.
          */
-        PlaceRequest.getPlaces(this, new ResponseCallback() {
-            @Override
-            public void sendCallback(Object responseObject, String message) {
-                Intent intent;
-                if (SharePref.getBooleanPref(SplashActivity.this, SharePref.KEY_PREFS_FIRST_USE, true)) {
-                    intent = new Intent(SplashActivity.this, FirstUseActivity.class);
-                } else {
-                    intent = new Intent(SplashActivity.this, MapListActivity.class);
-                }
-                startActivity(intent);
-                finish();
-            }
-        });
 
         User user = DatabaseWrapper.getInstance(getApplicationContext()).getCurrentUser();
         if (user != null) {
@@ -71,13 +102,23 @@ public class SplashActivity extends Activity {
         //mHandler.postDelayed(mJumpRunnable, SPLASH_TIME);
     }
 
-    private void jump() {
-        //it is safe to use this code even if you
-        //do not intend to allow users to skip the splash
-        if(isFinishing())
-            return;
-        startActivity(new Intent(this, MapListActivity.class));
-        finish();
+    private void launchPostSplashPage() {
+        if (!isFinishing()) {
+            Intent intent;
+            if (SharePref.getBooleanPref(SplashActivity.this, SharePref.KEY_PREFS_FIRST_USE, true)) {
+                intent = new Intent(SplashActivity.this, FirstUseActivity.class);
+            }
+            else if (!SharePref.getBooleanPref(SplashActivity.this, SharePref.SELECTED_REGION, false))
+            {
+                intent = new Intent(SplashActivity.this, RegionListActivity.class);
+            }
+            else
+            {
+                intent = new Intent(SplashActivity.this, MapListActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        }
     }
 
 

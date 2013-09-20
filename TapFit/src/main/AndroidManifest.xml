@@ -91,20 +91,47 @@
             android:name="co.tapfit.android.PaymentsActivity"
             android:label="@string/title_activity_payments"
             android:screenOrientation="portrait"
-            android:theme="@style/TapFit">
+            android:theme="@style/TapFit" >
         </activity>
-        <activity android:name="com.venmo.touch.activity.PaymentFormActivity"/>
+        <activity android:name="com.venmo.touch.activity.PaymentFormActivity" />
+
         <receiver
             android:name="com.venmo.touch.service.VenmoTouchUpdateReceiver"
             android:exported="true" >
-
             <intent-filter>
-                <action android:name="com.venmo.touch.UPDATE"/>
+                <action android:name="com.venmo.touch.UPDATE" />
             </intent-filter>
-
         </receiver>
+
         <service android:name="com.venmo.touch.service.VenmoTouchUpdateService" />
-        <meta-data android:name="venmo_touch.enabled" android:value="true"/>
+
+        <meta-data
+            android:name="venmo_touch.enabled"
+            android:value="true" />
+
+        <activity
+            android:name="co.tapfit.android.PassActivity"
+            android:label="@string/title_activity_pass"
+            android:screenOrientation="portrait"
+            android:theme="@style/TapFit" >
+        </activity>
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="aeae09dd9be73cdcb340e229c960d639d695aaaf" />
+
+        <activity
+            android:name="co.tapfit.android.RegionListActivity"
+            android:label="@string/title_activity_region_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/TapFit" >
+        </activity>
+        <activity
+            android:name="co.tapfit.android.WebViewActivity"
+            android:label="@string/title_activity_web_view"
+            android:screenOrientation="portrait"
+            android:theme="@style/TapFit" >
+        </activity>
     </application>
 
 </manifest>

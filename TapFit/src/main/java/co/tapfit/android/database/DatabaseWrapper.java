@@ -17,6 +17,7 @@ import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Instructor;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
+import co.tapfit.android.model.Region;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
 
@@ -54,6 +55,18 @@ public class DatabaseWrapper {
             Log.d(TAG, "Failed to get Places", e);
         }
         return null;
+    }
+
+    public Instructor getInstructor(Integer instructorId) {
+        try
+        {
+            return helper.getInstructorDao().queryForId(instructorId);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get Instructor: " + instructorId, e);
+            return null;
+        }
     }
 
     public void createOrUpdatePlace(Place place){
@@ -307,6 +320,19 @@ public class DatabaseWrapper {
         }
     }
 
+    public Pass getPass(Integer passId)
+    {
+        try
+        {
+            return helper.getPassDao().queryForId(passId);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get pass: " + passId, e);
+            return null;
+        }
+    }
+
     public void createOrUpdatePass(Pass pass) {
         try
         {
@@ -382,6 +408,30 @@ public class DatabaseWrapper {
         catch (Exception e) {
             Log.d(TAG, "Failed to get default card");
             return null;
+        }
+    }
+
+    public List<Region> getRegions() {
+        try
+        {
+            return helper.getRegionDao().queryForAll();
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Faild to get regions", e);
+            return null;
+        }
+    }
+
+    public void createOrUpdateRegion(Region region) {
+
+        try
+        {
+            helper.getRegionDao().createOrUpdate(region);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to created or update region: " + region, e);
         }
     }
 }

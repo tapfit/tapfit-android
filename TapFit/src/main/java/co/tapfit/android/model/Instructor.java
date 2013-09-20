@@ -22,4 +22,17 @@ public class Instructor {
 
     @ForeignCollectionField
     public ForeignCollection<Workout> workouts;
+
+    public String getInstructorName() {
+
+        String instructorName = "";
+
+        if (first_name != null) {
+            instructorName = first_name;
+        }
+        if (last_name != null) {
+            instructorName = instructorName + " " + last_name;
+        }
+        return instructorName;
+    }
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import co.tapfit.android.helper.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -35,7 +36,10 @@ public class PlaceRequest extends Request {
 
     private static boolean mWaitingForPlacesResponse = false;
 
-    public static boolean getPlaces(final Context context, ResponseCallback callback)
+    public static final String LAT = "lat";
+    public static final String LON = "lon";
+
+    public static boolean getPlaces(final Context context, LatLng location, boolean forceCall, ResponseCallback callback)
     {
         setDatabaseWrapper(context);
 
@@ -43,7 +47,7 @@ public class PlaceRequest extends Request {
             callbacks.add(callback);
         }
 
-        if (mWaitingForPlacesResponse)
+        if (mWaitingForPlacesResponse && !forceCall)
             return true;
 
         ResultReceiver receiver = new ResultReceiver(new Handler()){
@@ -89,6 +93,7 @@ public class PlaceRequest extends Request {
                             Place place = gson.fromJson(element, Place.class);
 
                             for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
+                                Log.d(TAG, "place: " + place.name + ", class_time: " + time);
                                 DateTime dateTime = DateTime.parse(time.getAsString());
 
                                 ClassTime classTime = new ClassTime(dateTime);
@@ -124,9 +129,14 @@ public class PlaceRequest extends Request {
 
         mWaitingForPlacesResponse = true;
 
+        Bundle args = new Bundle();
+        args.putDouble(LAT, location.latitude);
+        args.putDouble(LON, location.longitude);
+
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(ApiService.URL, getUrl(context) + "places");
         intent.putExtra(ApiService.HTTP_VERB, ApiService.GET);
+        intent.putExtra(ApiService.PARAMS, args);
         intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
 
         context.startService(intent);

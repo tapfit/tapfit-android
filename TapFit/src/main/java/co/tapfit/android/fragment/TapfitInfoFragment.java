@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.tapfit.android.R;
+import co.tapfit.android.WebViewActivity;
 
 /**
  * Created by zackmartinsek on 9/16/13.
@@ -29,13 +30,45 @@ public class TapfitInfoFragment extends BaseFragment {
 
     private void setUpTapfitInfo() {
 
-        setUpNavButton(R.id.about, "ABOUT TAPFIT", null);
+        setUpNavButton(R.id.about, "ABOUT TAPFIT", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL, getResources().getString(R.string.tapfit_url) + "about");
+                intent.putExtra(WebViewActivity.TITLE, "About TapFit");
+                startActivity(intent);
+            }
+        });
 
-        setUpNavButton(R.id.privacy, "PRIVACY", null);
+        setUpNavButton(R.id.privacy, "PRIVACY", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL, getResources().getString(R.string.tapfit_url) + "privacy");
+                intent.putExtra(WebViewActivity.TITLE, "Privacy");
+                startActivity(intent);
+            }
+        });
 
-        setUpNavButton(R.id.terms, "TERMS", null);
+        setUpNavButton(R.id.terms, "TERMS", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL, getResources().getString(R.string.tapfit_url) + "terms");
+                intent.putExtra(WebViewActivity.TITLE, "Terms of Use");
+                startActivity(intent);
+            }
+        });
 
-        setUpNavButton(R.id.faq, "FAQ", null);
+        setUpNavButton(R.id.faq, "FAQ", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL, getResources().getString(R.string.tapfit_url) + "faq");
+                intent.putExtra(WebViewActivity.TITLE, "FAQ");
+                startActivity(intent);
+            }
+        });
 
     }
 

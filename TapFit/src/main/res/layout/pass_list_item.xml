@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_height="@dimen/normal_text_size"
+        android:layout_width="@dimen/normal_text_size"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:id="@+id/right_carrot"
+        android:src="@drawable/right_arrow_navigation" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/right_carrot"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:id="@+id/place_name"
+            style="@style/SmallFont"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:id="@+id/workout_time"
+            style="@style/SmallFont"
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:id="@+id/workout_name"
+            style="@style/SmallFont"
+            android:textColor="@color/dark_gray" />
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

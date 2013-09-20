@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -111,10 +112,27 @@ public class PlaceListAdapter extends BaseAdapter {
 
         String classTimeString = "";
         for (ClassTime classTime : classTimes) {
-            if ((DateTime.now()).compareTo(classTime.classTime) < 0)
-            {
-                classTimeString = classTimeString + WorkoutFormat.getDateTimeString(classTime.classTime) + " ";
+            Log.d(TAG, "place: " + place.name + ", classTime: " + classTime.classTime);
+            if (LocalDate.now().getDayOfYear() == classTime.classTime.getDayOfYear()) {
+                if ((DateTime.now()).compareTo(classTime.classTime) < 0)
+                {
+                    classTimeString = classTimeString + WorkoutFormat.getDateTimeString(classTime.classTime) + " ";
+                }
             }
+        }
+
+        Log.d(TAG, "classTime: " + classTimeString);
+        if (classTimeString.equals("")) {
+            for (ClassTime classTime : classTimes) {
+                if (LocalDate.now().getDayOfYear() + 1 == classTime.classTime.getDayOfYear()) {
+                    classTimeString = "Tomorrow's next class: " + WorkoutFormat.getDateTimeString(classTime.classTime);
+                    break;
+                }
+            }
+        }
+
+        if (classTimeString.equals("")){
+            classTimeString = "No Schedule Available";
         }
 
         if (classTimeString.equals("")) {

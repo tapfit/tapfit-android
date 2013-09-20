@@ -52,6 +52,7 @@ public class SharePref {
 
     public static final String CURRENT_USER_ID = "currentUser";
     public static final String KEY_PREFS_FIRST_USE = "firstUse";
+    public static final String SELECTED_REGION = "region";
 
     private SharePref() {
         // Do not allow this to be instantiated.
@@ -74,7 +75,15 @@ public class SharePref {
      */
     public static boolean getBooleanPref(Context context, String key, boolean defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(key, defaultValue);
+        if (key.equals(KEY_PREFS_FIRST_USE)){
+            return true;
+        }
+        else if (key.equals(SELECTED_REGION)){
+            return false;
+        }
+        else {
+            return prefs.getBoolean(key, defaultValue);
+        }
     }
 
     public static void setIntPref(Context context, String key, Integer value) {

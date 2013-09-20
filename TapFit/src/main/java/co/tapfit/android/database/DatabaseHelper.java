@@ -22,6 +22,7 @@ import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Instructor;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
+import co.tapfit.android.model.Region;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
 
@@ -33,7 +34,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "tapfit.db";
     // any time you make changes to your database objects, you may have to increase the database version
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 14;
 
     // the DAO model we use to access the SimpleData table
     private Dao<Place, Integer> placeDao = null;
@@ -60,6 +61,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<CreditCard, Integer> creditCardDao = null;
     private RuntimeExceptionDao<CreditCard, Integer> creditCardRuntimeDao = null;
 
+    private Dao<Region, Integer> regionDao = null;
+    private RuntimeExceptionDao<Region, Integer> regionRuntimeDao = null;
+
     public DatabaseHelper(Context context) {
         //super(context, DATABASE_NAME, null, DATABASE_VERSION);
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -81,6 +85,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Instructor.class);
             TableUtils.createTable(connectionSource, Pass.class);
             TableUtils.createTable(connectionSource, CreditCard.class);
+            TableUtils.createTable(connectionSource, Region.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -103,6 +108,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Instructor.class, true);
             TableUtils.dropTable(connectionSource, Pass.class, true);
             TableUtils.dropTable(connectionSource, CreditCard.class, true);
+            TableUtils.dropTable(connectionSource, Region.class, true);
             // after we drop the old databases, we create the new ones
             onCreate(db, connectionSource);
         } catch (SQLException e) {
@@ -229,6 +235,20 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             creditCardRuntimeDao = getRuntimeExceptionDao(CreditCard.class);
         }
         return creditCardRuntimeDao;
+    }
+
+    public Dao<Region, Integer> getRegionDao() throws SQLException {
+        if (regionDao == null) {
+            regionDao = getDao(Region.class);
+        }
+        return regionDao;
+    }
+
+    public RuntimeExceptionDao<Region, Integer> getRegionRuntimeDao() {
+        if (regionRuntimeDao == null) {
+            regionRuntimeDao = getRuntimeExceptionDao(Region.class);
+        }
+        return regionRuntimeDao;
     }
     /**
      * Close the database connections and clear any cached DAOs.

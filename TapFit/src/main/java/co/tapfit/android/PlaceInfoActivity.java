@@ -5,9 +5,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import co.tapfit.android.fragment.ConfirmPurchaseFragment;
+import co.tapfit.android.fragment.PassFragment;
 import co.tapfit.android.fragment.PlaceCardFragment;
 import co.tapfit.android.fragment.WorkoutCardFragment;
 import co.tapfit.android.fragment.WorkoutListFragment;
+import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
 
@@ -18,12 +20,14 @@ public class PlaceInfoActivity extends BaseActivity {
     private static final String WORKOUT_LIST_FRAGMENT = "workout_fragment";
     private static final String WORKOUT_CARD_FRAGMENT = "workout_card_fragment";
     private static final String CONFIRM_PURCHASE_FRAGMENT = "confirm_purchase_fragment";
+    private static final String PASS_FRAGMENT = "pass_fragment";
     private Place mPlace;
 
     private PlaceCardFragment mPlaceCardFragment;
     private WorkoutListFragment mWorkoutListFragment;
     private WorkoutCardFragment mWorkoutCardFragment;
     private ConfirmPurchaseFragment mConfirmPurchaseFragment;
+    private PassFragment mPassFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,18 @@ public class PlaceInfoActivity extends BaseActivity {
         mConfirmPurchaseFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mConfirmPurchaseFragment, CONFIRM_PURCHASE_FRAGMENT).addToBackStack(WORKOUT_CARD_FRAGMENT).commit();
+
+    }
+
+    public void showPassFragment(Pass pass) {
+
+        mPassFragment = new PassFragment();
+        Bundle args = new Bundle();
+        args.putInt(PassFragment.PASS_ID, pass.id);
+
+        mPassFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mPassFragment, PASS_FRAGMENT).addToBackStack(CONFIRM_PURCHASE_FRAGMENT).commit();
 
     }
 }

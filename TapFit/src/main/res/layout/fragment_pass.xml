@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="@dimen/padding" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/workout_name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                style="@style/Font"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/workout_time"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                style="@style/SmallFont"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/workout_place"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                style="@style/SmallFont"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/workout_instructor"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                style="@style/SmallFont"
+                android:textColor="@color/black"/>
+
+
+            <TextView
+                android:id="@+id/instruction_title"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="7dp"
+                style="@style/SmallFont"
+                android:textStyle="bold"
+                android:text="Instructions"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
+                android:background="@drawable/text_background_round" />
+
+            <TextView
+                android:id="@+id/fine_print_title"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="7dp"
+                style="@style/SmallFont"
+                android:textStyle="bold"
+                android:text="Fine Print"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/fine_print"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
+                android:background="@drawable/text_background_round" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

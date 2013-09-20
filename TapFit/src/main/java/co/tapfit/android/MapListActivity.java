@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import co.tapfit.android.fragment.AccountFragment;
 import co.tapfit.android.fragment.CustomerSupportFragment;
+import co.tapfit.android.fragment.PassListFragment;
 import co.tapfit.android.fragment.TapfitInfoFragment;
 import co.tapfit.android.helper.Log;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.monolithic.sdk.impl.acc;
+import com.flurry.android.monolithic.sdk.impl.ft;
 
 import co.tapfit.android.fragment.MapListFragment;
 import co.tapfit.android.fragment.PlaceMapFragment;
@@ -50,6 +52,7 @@ public class MapListActivity extends BaseActivity {
     public static final String ACCOUNT = "account";
     public static final String CUSOMER_SUPPORT = "customer_support";
     public static final String TAPFIT_INFO = "tapfit_info";
+    public static final String PASS_LIST = "pass_list";
 
     private MapListFragment mFavoriteListFragment;
     private MapListFragment mMapListFragment;
@@ -57,6 +60,7 @@ public class MapListActivity extends BaseActivity {
     private AccountFragment mAccountFragment;
     private CustomerSupportFragment mCustomerSupportFragment;
     private TapfitInfoFragment mTapfitInfoFragment;
+    private PassListFragment mPassListFragment;
 
     private String mCurrentFragment;
 
@@ -105,6 +109,8 @@ public class MapListActivity extends BaseActivity {
 
         mTapfitInfoFragment = new TapfitInfoFragment();
 
+        mPassListFragment = new PassListFragment();
+
         replaceFragment(mMapListFragment, PLACE_LIST);
 
         mBottomButtonText.setText("View Map");
@@ -144,9 +150,12 @@ public class MapListActivity extends BaseActivity {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment, fragmentName)
-                .setCustomAnimations(R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom)
-                .addToBackStack(mCurrentFragment)
-                .commit();
+                .setCustomAnimations(R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom);
+
+        if (mCurrentFragment != null){
+            ft.addToBackStack(mCurrentFragment);
+        }
+        ft.commit();
 
         mCurrentFragment = fragmentName;
     }
@@ -286,8 +295,9 @@ public class MapListActivity extends BaseActivity {
 
             getSupportActionBar().setTitle("Passes");
 
-            Toast.makeText(this, "Implement passes page", 1000).show();
-            //TODO: Implement passes
+            replaceFragment(mPassListFragment, PASS_LIST);
+
+            mBottomButton.setVisibility(View.GONE);
         }
         else if (position == 3) {
 

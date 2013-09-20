@@ -62,11 +62,25 @@ public class FirstUseActivity extends Activity {
             @Override
             public void onClick(View view) {
                 SharePref.setBooleanPref(FirstUseActivity.this, SharePref.KEY_PREFS_FIRST_USE, false);
-                startActivity(new Intent(FirstUseActivity.this, MapListActivity.class));
-                finish();
+                endFirstUse();
             }
         });
+    }
 
+    @Override
+    public void onBackPressed(){
+        endFirstUse();
+    }
+
+    private void endFirstUse() {
+        if (!SharePref.getBooleanPref(FirstUseActivity.this, SharePref.SELECTED_REGION, false)){
+            startActivity(new Intent(FirstUseActivity.this, RegionListActivity.class));
+        }
+        else
+        {
+            startActivity(new Intent(FirstUseActivity.this, MapListActivity.class));
+        }
+        finish();
     }
 
 }

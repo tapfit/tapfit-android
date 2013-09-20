@@ -9,9 +9,30 @@ import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.download.HttpClientImageDownloader;
+import com.nostra13.universalimageloader.core.download.ImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
+
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by zackmartinsek on 9/9/13.
@@ -67,8 +88,24 @@ public class ImageCache {
                 .memoryCacheSize(3 * 1024)// You can pass your own memory cache implementation
                 .discCache(new UnlimitedDiscCache(cacheDir)) // You can pass your own disc cache implementation
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
+                .imageDownloader(new HttpClientImageDownloader(context, setUpHttpClient()))
                 .build();
 
         imageLoader.init(config);
+    }
+
+    public static HttpClient setUpHttpClient()
+    {
+        DefaultHttpClient ret = null;
+
+        //SETS UP PARAMETERS
+        HttpParams params = new BasicHttpParams();
+        //REGISTERS SCHEMES FOR BOTH HTTP AND HTTPS
+        SchemeRegistry registry = new SchemeRegistry();
+        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        registry.register(new Scheme("https", PlainSocketFactory.getSocketFactory(), 80));
+        ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(params, registry);
+        ret = new DefaultHttpClient(manager, params);
+        return ret;
     }
 }

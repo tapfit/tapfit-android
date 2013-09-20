@@ -804,7 +804,7 @@ public class UserRequest extends Request {
                     }
 
                     if (callback != null) {
-                        callback.sendCallback(dbWrapper.getPasses(), "Success getting favorites");
+                        callback.sendCallback(dbWrapper.getCurrentUser(), "Success getting my info");
                     }
                 }
             }

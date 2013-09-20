@@ -23,6 +23,12 @@ public class Pass {
     @DatabaseField
     public Boolean has_used;
 
+    @DatabaseField
+    public String instructions;
+
+    @DatabaseField
+    public String fine_print;
+
     @DatabaseField(foreign = true)
     public Workout workout;
 

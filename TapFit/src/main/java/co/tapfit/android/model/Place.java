@@ -20,12 +20,15 @@ import java.util.Iterator;
 
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.helper.Log;
 
 /**
  * Created by zackmartinsek on 9/7/13.
  */
 @DatabaseTable(tableName = "places")
 public class Place {
+
+    private static final String TAG = Place.class.getSimpleName();
 
     public Place()
     {
@@ -96,6 +99,7 @@ public class Place {
 
         while (currentTimes.hasNext()) {
             ClassTime currentTime = currentTimes.next();
+            Log.d(TAG, "place: " + name + ", currentTime: " + currentTime + ", now: " + DateTime.now());
             if (currentTime.classTime.compareTo(DateTime.now()) < 0) {
                 DatabaseWrapper.getInstance(context).deleteClassTime(currentTime);
                 classTimes.remove(currentTime);
@@ -119,7 +123,7 @@ public class Place {
         double minLat = Math.min(userLocation.latitude, this.address.lat);
         double minLon = Math.min(userLocation.longitude, this.address.lon);
 
-        double dLat = deg2rad( - minLat);
+        double dLat = deg2rad(maxLat - minLat);
         double dLon = deg2rad(minLon - maxLon);
 
         double a =

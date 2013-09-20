@@ -18,6 +18,7 @@ import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
 import co.tapfit.android.helper.Log;
+import co.tapfit.android.helper.ShareToFriends;
 import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
@@ -83,8 +84,7 @@ public class AccountFragment extends BaseFragment {
         setUpForm(R.id.invite_a_friend, "INVITE A FRIEND", "", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Implement share to friends
-                Toast.makeText(getActivity(), "Implement Share To Friends", 1000).show();
+                ShareToFriends.shareAppToFriends(getActivity());
             }
         });
 

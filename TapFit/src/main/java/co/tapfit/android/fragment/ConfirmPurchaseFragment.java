@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
+import co.tapfit.android.MapListActivity;
+import co.tapfit.android.PassActivity;
 import co.tapfit.android.PaymentsActivity;
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.model.CreditCard;
+import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
@@ -92,7 +95,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
             progressDialog.show();
             WorkoutRequest.buyWorkout(getActivity(), mWorkout, new ResponseCallback() {
                 @Override
-                public void sendCallback(Object responseObject, String message) {
+                public void sendCallback(final Object responseObject, String message) {
                     progressDialog.cancel();
                     if (responseObject != null) {
                         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
@@ -100,7 +103,9 @@ public class ConfirmPurchaseFragment extends BaseFragment {
                                 .setPositiveButton("See Pass", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.cancel();
+                                        Intent intent = new Intent(getActivity(), PassActivity.class);
+                                        intent.putExtra(PassFragment.PASS_ID, ((Pass) responseObject).id);
+                                        startActivity(intent);
                                     }
                                 }).create();
 
