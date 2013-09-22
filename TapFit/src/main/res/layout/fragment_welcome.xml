@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/dark_blue"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_height="@dimen/small_button_size"
+        android:layout_width="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/tapfit_logo"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:textColor="@color/white"
+        style="@style/LargeFont"
+        android:text="@string/welcome_message"/>
+
+    <Button
+        android:id="@+id/get_started"
+        android:layout_height="@dimen/normal_button_size"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Get Started"
+        android:textColor="@color/white"
+        style="@style/Font"
+        android:textStyle="bold"
+        android:background="@color/gray_blue"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

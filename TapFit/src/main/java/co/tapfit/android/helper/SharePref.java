@@ -54,6 +54,17 @@ public class SharePref {
     public static final String KEY_PREFS_FIRST_USE = "firstUse";
     public static final String SELECTED_REGION = "region";
 
+    public static final String PREF_MORNING = "morning";
+    public static final String PREF_AFTEROON = "afteroon";
+    public static final String PREF_EVENING = "evening";
+
+    public static final String PREF_YOGA = "yoga";
+    public static final String PREF_PILATES = "pilates";
+    public static final String PREF_DANCE = "dance";
+    public static final String PREF_SPIN = "spin";
+    public static final String PREF_CROSSFIT = "crossfit";
+    public static final String PREF_WEIGHTS = "weights";
+
     private SharePref() {
         // Do not allow this to be instantiated.
     }

@@ -9,10 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "credit_card")
 public class CreditCard {
 
-    @DatabaseField(generatedId = true)
-    public Integer id;
-
-    @DatabaseField
+    @DatabaseField(id = true)
     public String token;
 
     @DatabaseField

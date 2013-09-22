@@ -12,6 +12,8 @@ import co.tapfit.android.fragment.WorkoutListFragment;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
+import co.tapfit.android.request.PlaceRequest;
+import co.tapfit.android.request.ResponseCallback;
 
 public class PlaceInfoActivity extends BaseActivity {
 
@@ -39,6 +41,8 @@ public class PlaceInfoActivity extends BaseActivity {
         mPlace = dbWrapper.getPlace(getIntent().getIntExtra(PLACE_ID, -1));
 
         setUpFragments();
+
+        getWorkoutsFromServer();
     }
 
     private void setUpFragments() {
@@ -69,13 +73,6 @@ public class PlaceInfoActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // This ID represents the Home or Up button. In the case of this
-                // activity, the Up button is shown. Use NavUtils to allow users
-                // to navigate up one level in the application structure. For
-                // more details, see the Navigation pattern on Android Design:
-                //
-                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-                //
                 onBackPressed();
                 return true;
         }
@@ -128,15 +125,31 @@ public class PlaceInfoActivity extends BaseActivity {
 
     }
 
-    public void showPassFragment(Pass pass) {
+    public Boolean WORKOUT_CALLBACK_RECEIVED = false;
 
-        mPassFragment = new PassFragment();
-        Bundle args = new Bundle();
-        args.putInt(PassFragment.PASS_ID, pass.id);
-
-        mPassFragment.setArguments(args);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mPassFragment, PASS_FRAGMENT).addToBackStack(CONFIRM_PURCHASE_FRAGMENT).commit();
-
+    public void getWorkoutsFromServer() {
+        WORKOUT_CALLBACK_RECEIVED = false;
+        PlaceRequest.getWorkouts(getApplicationContext(), mPlace, workoutCallback);
     }
+
+    private ResponseCallback workoutCallback = new ResponseCallback() {
+        @Override
+        public void sendCallback(Object responseObject, String message) {
+            WORKOUT_CALLBACK_RECEIVED = true;
+            if (responseObject != null)
+            {
+                if (mWorkoutListFragment != null && mWorkoutListFragment.isResumed()) {
+                    mWorkoutListFragment.receivedWorkouts();
+                }
+                else if (mPlaceCardFragment != null && mPlaceCardFragment.isResumed())
+                {
+                    mPlaceCardFragment.receivedWorkouts();
+                }
+            }
+            else
+            {
+
+            }
+        }
+    };
 }

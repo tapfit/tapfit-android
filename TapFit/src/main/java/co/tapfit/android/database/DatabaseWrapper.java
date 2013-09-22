@@ -91,7 +91,7 @@ public class DatabaseWrapper {
             User currentUser = helper.getUserDao().queryForId(user.id);
 
             if (currentUser != null && user.credit_amount == null) {
-                user.credit_amount = currentUser.credit_amount;
+                //user.credit_amount = currentUser.credit_amount;
             }
 
             if (currentUser != null && user.auth_token == null) {
@@ -339,8 +339,9 @@ public class DatabaseWrapper {
             helper.getPassDao().createOrUpdate(pass);
 
             helper.getPlaceDao().update(pass.place);
-            helper.getWorkoutDao().update(pass.workout);
+            helper.getWorkoutDao().createOrUpdate(pass.workout);
             helper.getUserDao().update(pass.user);
+            helper.getInstructorDao().createOrUpdate(pass.workout.instructor);
         }
         catch (Exception e)
         {

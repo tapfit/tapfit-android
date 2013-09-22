@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
+import co.tapfit.android.CreditsActivity;
 import co.tapfit.android.MapListActivity;
 import co.tapfit.android.PaymentsActivity;
 import co.tapfit.android.PlaceInfoActivity;
@@ -33,6 +34,25 @@ public class AccountFragment extends BaseFragment {
     private User mUser;
 
     private static final String TAG = AccountFragment.class.getSimpleName();
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        mUser = dbWrapper.getCurrentUser();
+
+        if (mUser != null) {
+            setUpForm(R.id.credits, "CREDITS", "$" + Math.round(mUser.credit_amount), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), CreditsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,11 +78,11 @@ public class AccountFragment extends BaseFragment {
 
         DecimalFormat df = new DecimalFormat("0.00");
 
-        setUpForm(R.id.credits, "CREDITS", "$" + df.format(mUser.credit_amount), new View.OnClickListener() {
+        setUpForm(R.id.credits, "CREDITS", "$" + Math.round(mUser.credit_amount), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Implement share to friends
-                Toast.makeText(getActivity(), "Implement Credits", 1000).show();
+                Intent intent = new Intent(getActivity(), CreditsActivity.class);
+                startActivity(intent);
             }
         });
 

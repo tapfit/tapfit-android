@@ -86,7 +86,7 @@ public class Place {
     @ForeignCollectionField
     public ForeignCollection<Workout> workouts;
 
-    public void addClassTime(Context context, ClassTime classTime) {
+    public void addClassTime(DatabaseWrapper dbWrapper, ClassTime classTime) {
 
         if (classTimes == null) {
             classTimes = new ArrayList<ClassTime>();
@@ -99,9 +99,9 @@ public class Place {
 
         while (currentTimes.hasNext()) {
             ClassTime currentTime = currentTimes.next();
-            Log.d(TAG, "place: " + name + ", currentTime: " + currentTime + ", now: " + DateTime.now());
+            Log.d(TAG, "place: " + name + ", currentTime: " + currentTime.classTime + ", now: " + DateTime.now());
             if (currentTime.classTime.compareTo(DateTime.now()) < 0) {
-                DatabaseWrapper.getInstance(context).deleteClassTime(currentTime);
+                dbWrapper.deleteClassTime(currentTime);
                 classTimes.remove(currentTime);
             }
             if (currentTime.classTime.equals(classTime.classTime)) {

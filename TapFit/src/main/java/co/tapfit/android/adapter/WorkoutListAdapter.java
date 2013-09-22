@@ -7,6 +7,7 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public class WorkoutListAdapter extends BaseAdapter {
     }
 
     public void addSection(String section, Adapter adapter) {
+
         this.headers.add(section);
         this.sections.put(section, adapter);
     }

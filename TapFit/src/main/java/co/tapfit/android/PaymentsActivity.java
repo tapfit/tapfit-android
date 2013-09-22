@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -80,11 +81,14 @@ public class PaymentsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.content_frame).setVisibility(View.VISIBLE);
+                mAddCreditCardFragment = new AddCreditCardFragment();
                 getSupportFragmentManager().beginTransaction().add(R.id.content_frame, mAddCreditCardFragment, "Credit Card").commit();
                 //Intent intent = PaymentFormActivity.getSandboxStartIntent(PaymentsActivity.this, MERCHANT_ID, MERCHANT_SECRET);
                 //startActivityForResult(intent, 1);
             }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     AdapterView.OnItemClickListener editCardState = new AdapterView.OnItemClickListener() {
@@ -115,9 +119,7 @@ public class PaymentsActivity extends BaseActivity {
                                                     }
                                                 })
                                                 .show();
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         setCreditCardList();
                                     }
                                 }
@@ -127,31 +129,42 @@ public class PaymentsActivity extends BaseActivity {
                     .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            progress.setMessage("Deleting Card...");
-                            progress.show();
-                            CreditCard card = (CreditCard) adapterView.getItemAtPosition(position);
-                            UserRequest.deleteCreditCard(PaymentsActivity.this, card, new ResponseCallback() {
-                                @Override
-                                public void sendCallback(Object responseObject, String message) {
-                                    progress.cancel();
-                                    if (responseObject == null) {
-                                        AlertDialog dialog = new AlertDialog.Builder(PaymentsActivity.this)
-                                                .setMessage("Failed to delete card")
-                                                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        dialogInterface.cancel();
-                                                    }
-                                                })
-                                                .create();
-                                        dialog.show();
+                            if (dbWrapper.getCreditCards(mUser).size() < 2) {
+                                AlertDialog alertDialog = new AlertDialog.Builder(PaymentsActivity.this)
+                                        .setMessage("Need to have at least one card on file")
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.cancel();
+                                            }
+                                        }).create();
+
+                                alertDialog.show();
+                            } else {
+                                progress.setMessage("Deleting Card...");
+                                progress.show();
+                                CreditCard card = (CreditCard) adapterView.getItemAtPosition(position);
+                                UserRequest.deleteCreditCard(PaymentsActivity.this, card, new ResponseCallback() {
+                                    @Override
+                                    public void sendCallback(Object responseObject, String message) {
+                                        progress.cancel();
+                                        if (responseObject == null) {
+                                            AlertDialog dialog = new AlertDialog.Builder(PaymentsActivity.this)
+                                                    .setMessage("Failed to delete card")
+                                                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            dialogInterface.cancel();
+                                                        }
+                                                    })
+                                                    .create();
+                                            dialog.show();
+                                        } else {
+                                            setCreditCardList();
+                                        }
                                     }
-                                    else
-                                    {
-                                        setCreditCardList();
-                                    }
-                                }
-                            });
+                                });
+                            }
                         }
                     })
                     .create();
@@ -182,7 +195,18 @@ public class PaymentsActivity extends BaseActivity {
         }
         else
         {
-            super.onBackPressed();
+            setResult(RESULT_OK);
+            finish();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

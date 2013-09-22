@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,10 +40,19 @@ public class PlaceCardFragment extends BaseFragment {
 
     private ImageButton mSaveButton;
 
+    private FrameLayout mBottomButton;
+
     private ListView mWorkoutList;
     private PlaceScheduleListAdapter mWorkoutListAdapter;
 
     private Boolean toggledFavorite = false;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mPlace = dbWrapper.getPlace(getArguments().getInt(PlaceInfoActivity.PLACE_ID, -1));
+    }
 
 
     @Override
@@ -73,17 +83,21 @@ public class PlaceCardFragment extends BaseFragment {
         textView = (TextView) mView.findViewById(R.id.place_distance);
         textView.setText(String.format("%.1f", mPlace.getDistance()) + " miles away");
 
-        mWorkoutListAdapter = new PlaceScheduleListAdapter(getActivity(), dbWrapper.getUpcomingWorkouts(mPlace));
+        ImageView directionsMap = (ImageView) mView.findViewById(R.id.directions_map);
+
+
+        setUpSaveButton();
 
         mWorkoutList = (ListView) mView.findViewById(R.id.upcoming_class_list);
+
+        mWorkoutListAdapter = new PlaceScheduleListAdapter(getActivity(), dbWrapper.getUpcomingWorkouts(mPlace));
         mWorkoutList.setAdapter(mWorkoutListAdapter);
+
         mWorkoutList.setOnItemClickListener(openClassSchedule);
 
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
 
-        ImageView directionsMap = (ImageView) mView.findViewById(R.id.directions_map);
-
-        setUpSaveButton();
+        mWorkoutList.invalidate();
 
         String mapUrl = getGoogleMapsStaticUrl();
 
@@ -102,8 +116,13 @@ public class PlaceCardFragment extends BaseFragment {
         callPhoneNumber.setClickable(true);
         callPhoneNumber.setOnClickListener(callNumber);
 
-        PlaceRequest.getWorkouts(getActivity(), mPlace, workoutResponseCallback);
-
+        mBottomButton = (FrameLayout) mView.findViewById(R.id.bottom_button);
+        mBottomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
+            }
+        });
     }
 
     private AdapterView.OnItemClickListener openClassSchedule = new AdapterView.OnItemClickListener() {
@@ -112,6 +131,10 @@ public class PlaceCardFragment extends BaseFragment {
             Workout workout = (Workout) adapterView.getItemAtPosition(i);
             if (workout.equals(PlaceScheduleListAdapter.BOTTOM_BAR)) {
                 ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
+            }
+            else
+            {
+                ((PlaceInfoActivity) getActivity()).openWorkoutCardFromList(workout.id);
             }
         }
     };
@@ -227,19 +250,19 @@ public class PlaceCardFragment extends BaseFragment {
     };
 
     private int getListViewHeight() {
+        Log.d(TAG, "getListViewHeight: mWorkoutListAdapter: " + mWorkoutListAdapter + ", getActivity: " + getActivity());
         return (int) (getActivity().getResources().getDimension(R.dimen.normal_button_size) * mWorkoutListAdapter.getCount());
     }
 
-    ResponseCallback workoutResponseCallback = new ResponseCallback() {
-        @Override
-        public void sendCallback(Object responseObject, String message) {
-            mWorkoutListAdapter.updateWorkouts(dbWrapper.getUpcomingWorkouts(mPlace));
 
-            mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
+    public void receivedWorkouts(){
 
-            mWorkoutList.invalidate();
-        }
-    };
+        mWorkoutListAdapter.updateWorkouts(dbWrapper.getUpcomingWorkouts(mPlace));
+
+        mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
+
+        mWorkoutList.invalidate();
+    }
 
     @Override
     public void onPause(){

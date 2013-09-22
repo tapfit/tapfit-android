@@ -1,5 +1,6 @@
 package co.tapfit.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -10,12 +11,21 @@ import co.tapfit.android.fragment.PassFragment;
 
 public class PassActivity extends BaseActivity {
 
+    public static final Integer PURCHASE_PAGE = 1;
+    public static final Integer PASS_LIST_PAGE = 2;
+
+    public static final String CAME_FROM = "came_from";
+
+    private Integer mCameFrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_activity);
 
         PassFragment passFragment = new PassFragment();
+
+        mCameFrom = getIntent().getIntExtra(CAME_FROM, PASS_LIST_PAGE);
 
         Bundle args = new Bundle();
         args.putInt(PassFragment.PASS_ID, getIntent().getIntExtra(PassFragment.PASS_ID, -1));
@@ -50,6 +60,19 @@ public class PassActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCameFrom == PASS_LIST_PAGE) {
+            super.onBackPressed();
+        }
+        else
+        {
+            Intent intent = new Intent(this, MapListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
     
 }

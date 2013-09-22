@@ -2,6 +2,7 @@ package co.tapfit.android.application;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 
 import co.tapfit.android.database.DatabaseWrapper;
@@ -22,6 +23,7 @@ public class TapfitApplication extends Application {
     public void onCreate() {
 
         super.onCreate();
+        Crashlytics.start(this);
 
         // Set whether we're logging and at what level
         try {

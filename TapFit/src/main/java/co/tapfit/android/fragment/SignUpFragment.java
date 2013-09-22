@@ -55,7 +55,7 @@ public class SignUpFragment extends BaseFragment {
     private void setUpProgressDialog() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.getWindow().setGravity(Gravity.CENTER);
-        progressDialog.setTitle("Signing up....");
+        progressDialog.setMessage("Signing up....");
     }
 
     private void setUpAlertDialog() {

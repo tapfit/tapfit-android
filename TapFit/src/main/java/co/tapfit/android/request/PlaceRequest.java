@@ -19,8 +19,15 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 
 import co.tapfit.android.helper.DateTimeDeserializer;
+import co.tapfit.android.helper.StopWatch;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
@@ -38,6 +45,8 @@ public class PlaceRequest extends Request {
 
     public static final String LAT = "lat";
     public static final String LON = "lon";
+
+    private static StopWatch sw;
 
     public static boolean getPlaces(final Context context, LatLng location, boolean forceCall, ResponseCallback callback)
     {
@@ -72,10 +81,6 @@ public class PlaceRequest extends Request {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new GsonBuilder()
-                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
-                            .create();
-
                     JsonParser parser = new JsonParser();
 
                     try
@@ -88,27 +93,27 @@ public class PlaceRequest extends Request {
 
                         Log.d(TAG, "array count: " + array.size());
 
+                        ExecutorService execs = Executors.newFixedThreadPool(6, new ThreadFactory() {
+                            @Override
+                            public Thread newThread(Runnable runnable) {
+                                Thread thread = new Thread(runnable);
+
+                                thread.setPriority(Thread.MAX_PRIORITY - 3);
+
+                                return thread;
+                            }
+                        });
+
+                        List<Future<Integer>> results = new ArrayList<Future<Integer>>();
+
                         for (JsonElement element : array)
                         {
-                            Place place = gson.fromJson(element, Place.class);
-
-                            for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
-                                Log.d(TAG, "place: " + place.name + ", class_time: " + time);
-                                DateTime dateTime = DateTime.parse(time.getAsString());
-
-                                ClassTime classTime = new ClassTime(dateTime);
-                                classTime.place = place;
-                                dbWrapper.createClassTime(classTime);
-                                place.addClassTime(context, classTime);
-                            }
-
-                            Place oldPlace = dbWrapper.getPlace(place.id);
-                            if (oldPlace != null) {
-                                place.user = oldPlace.user;
-                            }
-
-                            dbWrapper.createOrUpdatePlace(place);
+                            Future<Integer> result = execs.submit(new ProcessPlace(element));
+                            results.add(result);
                         }
+
+                        execs.shutdown();
+
                     }
                     catch (Exception e)
                     {
@@ -117,17 +122,23 @@ public class PlaceRequest extends Request {
 
                     mWaitingForPlacesResponse = false;
                     Iterator iterator = callbacks.iterator();
+
                     while (iterator.hasNext()) {
                         ResponseCallback cb = (ResponseCallback) iterator.next();
-                        cb.sendCallback(json, json);
+                        cb.sendCallback(dbWrapper.getPlaces(), "Success");
                         iterator.remove();
                     }
+
+                    sw.stop();
+                    Log.d(TAG, "places request took: " + sw.getElapsedTime() + "ms");
                 }
             }
-
         };
 
         mWaitingForPlacesResponse = true;
+
+        sw = new StopWatch();
+        sw.start();
 
         Bundle args = new Bundle();
         args.putDouble(LAT, location.latitude);
@@ -142,6 +153,44 @@ public class PlaceRequest extends Request {
         context.startService(intent);
 
         return false;
+    }
+
+    private static class ProcessPlace implements Callable<Integer> {
+
+        private final JsonElement element;
+
+        private ProcessPlace(JsonElement jsonElement){
+            element = jsonElement;
+        }
+
+        public Integer call() throws InterruptedException {
+            return parsePlaceJson(element).id;
+        }
+    }
+
+    public static Place parsePlaceJson(JsonElement element) {
+        Place place = gson.fromJson(element, Place.class);
+
+        for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
+            //Log.d(TAG, "place: " + place.name + ", class_time: " + time);
+            DateTime dateTime = DateTime.parse(time.getAsString());
+
+            ClassTime classTime = new ClassTime(dateTime);
+            classTime.place = place;
+            dbWrapper.createClassTime(classTime);
+            place.addClassTime(dbWrapper, classTime);
+        }
+
+        Log.d(TAG, "place: + " + place.name + " times: " + place.classTimes.size());
+
+        Place oldPlace = dbWrapper.getPlace(place.id);
+        if (oldPlace != null) {
+            place.user = oldPlace.user;
+        }
+
+        dbWrapper.createOrUpdatePlace(place);
+
+        return place;
     }
 
     public static void favoritePlace(final Context context, final Place place, final User user, final ResponseCallback callback) {

@@ -13,6 +13,8 @@ import android.widget.ListView;
 import com.flurry.android.monolithic.sdk.impl.ada;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import co.tapfit.android.PassActivity;
@@ -34,7 +36,13 @@ public class PassListFragment extends BaseFragment {
 
         mView = inflater.inflate(R.layout.fragment_pass_list, null);
 
-        mPassAdapter = new PassListAdapter(getActivity(), dbWrapper.getPasses());
+        List<Pass> passes = dbWrapper.getPasses();
+
+        Collections.sort(passes);
+
+        Collections.reverse(passes);
+
+        mPassAdapter = new PassListAdapter(getActivity(), passes);
 
         mPassList = (ListView) mView.findViewById(R.id.pass_list);
 

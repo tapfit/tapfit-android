@@ -106,9 +106,8 @@ public class PlaceListAdapter extends BaseAdapter {
         holder.place_distance_text.setText(String.format("%.1f", place.getDistance()) + " mi");
 
         List<ClassTime> classTimes = DatabaseWrapper.getInstance(mContext.getApplicationContext()).getClassTimes(place.id);
-        if (classTimes.size() > 4){
-            classTimes = classTimes.subList(0, 4);
-        }
+
+        int timeCount = 0;
 
         String classTimeString = "";
         for (ClassTime classTime : classTimes) {
@@ -117,6 +116,10 @@ public class PlaceListAdapter extends BaseAdapter {
                 if ((DateTime.now()).compareTo(classTime.classTime) < 0)
                 {
                     classTimeString = classTimeString + WorkoutFormat.getDateTimeString(classTime.classTime) + " ";
+                    timeCount++;
+                    if (timeCount > 4) {
+                        break;
+                    }
                 }
             }
         }

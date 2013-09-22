@@ -1,11 +1,22 @@
 package co.tapfit.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ToggleButton;
 
+import co.tapfit.android.fragment.PreferencesFragment;
+import co.tapfit.android.fragment.WelcomeFragment;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.helper.SharePref;
 
 /*
@@ -49,22 +60,60 @@ DDD8D888888888888888888O$77777777777777777777OOOOOI+~~:::+?IOOZ77777?~:~~:=IIIO7
 7777777777777777777777777777777777777777777777777$OOOOOOOOO$7777777ZZ$77ZZ7Z7Z7ZZ7Z7Z77ZO7777$OZOZ77777777777777777ZOOOO8OOO888888888888888888888888888888888ZZ$
 */
 
-public class FirstUseActivity extends Activity {
+public class FirstUseActivity extends BaseActivity {
+
+    private WelcomeFragment mWelcomeFragment;
+    private static final String WELCOME = "welcome";
+
+    private static final String TAG = FirstUseActivity.class.getSimpleName();
+
+    private boolean mShowActionItem = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_use);
 
-        Button nextButton = (Button) findViewById(R.id.next_button);
+        getSupportActionBar().setTitle("Preferences");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().hide();
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharePref.setBooleanPref(FirstUseActivity.this, SharePref.KEY_PREFS_FIRST_USE, false);
-                endFirstUse();
-            }
-        });
+        mWelcomeFragment = new WelcomeFragment();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.content_frame, mWelcomeFragment, WELCOME).commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.first_use, menu);
+        if (mShowActionItem)
+        {
+            menu.findItem(R.id.action_next_button).setVisible(true);
+        }
+        else
+        {
+            menu.findItem(R.id.action_next_button).setVisible(false);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        Log.d(TAG, "onPrepareOptions.mShowActionItem: " + mShowActionItem);
+
+        if (mShowActionItem) {
+            menu.findItem(R.id.action_next_button).setVisible(true);
+        }
+        else
+        {
+            menu.findItem(R.id.action_next_button).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -72,15 +121,50 @@ public class FirstUseActivity extends Activity {
         endFirstUse();
     }
 
-    private void endFirstUse() {
-        if (!SharePref.getBooleanPref(FirstUseActivity.this, SharePref.SELECTED_REGION, false)){
-            startActivity(new Intent(FirstUseActivity.this, RegionListActivity.class));
-        }
-        else
-        {
-            startActivity(new Intent(FirstUseActivity.this, MapListActivity.class));
-        }
+    public void endFirstUse() {
+        startActivity(new Intent(FirstUseActivity.this, MapListActivity.class));
         finish();
     }
 
+    public void showPreferencesPage() {
+
+        getSupportActionBar().show();
+        mShowActionItem = true;
+        supportInvalidateOptionsMenu();
+        PreferencesFragment preferencesFragment = new PreferencesFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, preferencesFragment, "Preferences").commit();
+
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("TapFit is customizable!")
+                .setMessage("Let us find that perfect workout for you!")
+                .setPositiveButton("Let's go!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .setNegativeButton("Skip", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        endFirstUse();
+                    }
+                })
+                .create();
+
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_next_button:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

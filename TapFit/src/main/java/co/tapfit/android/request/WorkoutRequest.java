@@ -75,14 +75,7 @@ public class WorkoutRequest extends Request {
 
                             JsonElement receipt = object.get("receipt");
 
-                            pass = gson.fromJson(receipt, Pass.class);
-
-                            pass.workout = workout;
-                            pass.place = workout.place;
-
-                            pass.user = dbWrapper.getCurrentUser();
-
-                            dbWrapper.createOrUpdatePass(pass);
+                            pass = UserRequest.parsePassJson(receipt);
 
                             message = "Success buying pass";
                         }

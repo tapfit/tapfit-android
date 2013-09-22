@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding"
+    android:background="@color/gray"
+    tools:context=".CreditsActivity">
+
+    <Button
+        android:id="@+id/button_apply_code"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/normal_button_size"
+        android:text="Apply Promo Code"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        style="@style/Font"
+        android:background="@color/red"/>
+
+    <EditText
+        android:id="@+id/promo_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:hint="Enter promo code"
+        android:singleLine="true"
+        android:nextFocusDown="@id/button_apply_code"
+        android:layout_above="@id/button_apply_code"/>
+
+    <TextView
+        android:id="@+id/promo_code_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/black"
+        style="@style/Font"
+        android:gravity="center"
+        android:layout_above="@id/promo_code"
+        android:text="Have a promo code? Enter it below to claim your credits!"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_above="@id/promo_code_text"
+        android:textSize="50dp"
+        android:id="@+id/credit_amount"
+        android:textColor="@color/gray_blue"
+        android:text="$0"/>
+
+
+
+</RelativeLayout>

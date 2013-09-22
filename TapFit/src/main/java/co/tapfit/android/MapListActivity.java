@@ -30,6 +30,8 @@ import com.flurry.android.monolithic.sdk.impl.ft;
 
 import co.tapfit.android.fragment.MapListFragment;
 import co.tapfit.android.fragment.PlaceMapFragment;
+import co.tapfit.android.model.Place;
+import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
 
 public class MapListActivity extends BaseActivity {
@@ -45,6 +47,8 @@ public class MapListActivity extends BaseActivity {
 
     private TextView mBottomButtonText;
     private FrameLayout mBottomButton;
+
+    public Boolean WORKOUT_CALLBACK_RECEIVED = false;
 
     public static final String FAVORITES = "favorite";
     public static final String MAP = "map";
@@ -312,5 +316,8 @@ public class MapListActivity extends BaseActivity {
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
-    
+
+
+
+
 }

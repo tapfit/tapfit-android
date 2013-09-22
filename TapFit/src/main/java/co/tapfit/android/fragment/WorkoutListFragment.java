@@ -1,16 +1,20 @@
 package co.tapfit.android.fragment;
 
+import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +36,23 @@ public class WorkoutListFragment extends BaseFragment {
     private ListView mWorkoutList;
     private WorkoutListAdapter mWorkoutListAdapter;
 
+    private ProgressDialog progressDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_workout_list, null);
 
         mPlace = dbWrapper.getPlace(getArguments().getInt(PlaceInfoActivity.PLACE_ID, -1));
 
-        setUpWorkoutList();
+        if (((PlaceInfoActivity) getActivity()).WORKOUT_CALLBACK_RECEIVED) {
+            setUpWorkoutList();
+        }
+        else
+        {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading Workouts...");
+            progressDialog.show();
+        }
 
         return mView;
     }
@@ -62,6 +76,9 @@ public class WorkoutListFragment extends BaseFragment {
                 .toFormatter();
 
 
+        Collections.sort(workouts);
+
+        Collections.reverse(workouts);
 
         for (Workout workout : workouts) {
 
@@ -94,5 +111,12 @@ public class WorkoutListFragment extends BaseFragment {
             }
         });
 
+    }
+
+    public void receivedWorkouts()
+    {
+        setUpWorkoutList();
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.cancel();
     }
 }

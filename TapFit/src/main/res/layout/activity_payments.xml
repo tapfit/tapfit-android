@@ -2,26 +2,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding"
     tools:context=".PaymentsActivity">
 
-    <Button
-        android:id="@+id/add_card_button"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:text="Add Credit Card"
-        android:layout_alignParentBottom="true"
-        android:padding="5dp"
-        android:background="@color/blue"/>
+        android:padding="@dimen/padding">
+        <Button
+            android:id="@+id/add_card_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Add Credit Card"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp"
+            android:background="@color/blue"/>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/credit_card_list"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/add_card_button"
-        android:background="@drawable/list_view_background_round"
-        android:layout_centerHorizontal="true" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/credit_card_list"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/add_card_button"
+            android:background="@drawable/list_view_background_round"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/content_frame"

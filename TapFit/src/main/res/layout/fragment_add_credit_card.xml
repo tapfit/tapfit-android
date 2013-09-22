@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:padding="@dimen/padding"
+    android:layout_height="match_parent"
     android:background="@color/gray">
 
 
@@ -57,7 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/normal_button_size"
         android:layout_below="@id/credit_card_number"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
         android:text="Add Card"
         android:background="@color/blue"/>
 

@@ -19,6 +19,7 @@
     <string name="braintree_merchant_id_sandbox">ych94qxscjgy583h</string>
     <string name="braintree_merchant_key_sandbox">hby57z8c3c8hcskc</string>
     <string name="is_braintree_sandbox">true</string>
+    <string name="welcome_message">Welcome to TapFit!\n\nOur team of fitness experts has curated a list of the best gyms and studios in your area. Just browse, book, and go!</string>
 
     <string-array name="menu_list">
         <item>Home</item>
@@ -35,5 +36,6 @@
     <string name="title_activity_pass">PassActivity</string>
     <string name="title_activity_region_list">Locations</string>
     <string name="title_activity_web_view">WebView</string>
+    <string name="title_activity_credits">Credits</string>
 
 </resources>

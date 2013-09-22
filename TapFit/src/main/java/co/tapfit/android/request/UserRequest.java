@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import co.tapfit.android.helper.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.internal.cu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -100,13 +101,9 @@ public class UserRequest extends Request {
                             callback.sendCallback(user, "Success registering user");
                         }
                     }
-
-                    UserRequest.getPaymentMethods(context, null);
                 }
             }
-
         };
-
 
         Intent intent = new Intent(context, ApiService.class);
         intent.putExtra(ApiService.URL, getUrl(context) + "users/guest");
@@ -114,8 +111,6 @@ public class UserRequest extends Request {
         intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
 
         context.startService(intent);
-
-
     }
 
     public static final String EMAIL = "user[email]";
@@ -206,6 +201,112 @@ public class UserRequest extends Request {
 
     }
 
+    public static void redeemPromoCode(final Context context, String promoCode, final ResponseCallback callback) {
+
+        if (callback != null && !callbacks.contains(callback)){
+            callbacks.add(callback);
+        }
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    User user = null;
+
+                    String message = "Error requesting Promo Code";
+
+                    try
+                    {
+                        JsonElement element = parser.parse(json);
+
+                        Log.d(TAG, "userJson: " + json);
+
+                        JsonElement userElement = element.getAsJsonObject().get("user");
+                        if (userElement != null) {
+
+                            user = gson.fromJson(userElement, User.class);
+
+                            dbWrapper.createOrUpdateUser(user);
+
+                            Log.d(TAG, "userCredits: " + user.credit_amount);
+
+                            message = "Success getting promo code";
+                        }
+                        else
+                        {
+                            JsonElement errorElement = element.getAsJsonObject().get("error");
+                            if (errorElement != null) {
+                                message = errorElement.getAsString();
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                        if (callback != null) {
+                            callback.sendCallback(null, "Failed to register user");
+                        }
+                    }
+
+                    if (callback != null)
+                    {
+                        if (user == null)
+                        {
+                            callback.sendCallback(user, message);
+                        }
+                        else
+                        {
+                            callback.sendCallback(user, message);
+                        }
+                    }
+                }
+            }
+
+        };
+
+        User user = dbWrapper.getCurrentUser();
+        if (user != null && user.is_guest == false)
+        {
+
+            Bundle args = new Bundle();
+
+            args.putString("promo_code", promoCode);
+            args.putString(AUTH_TOKEN, user.auth_token);
+
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "me/promo_codes");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+            context.startService(intent);
+        }
+        else
+        {
+            if (callback != null) {
+                callback.sendCallback(null, "Need to register");
+            }
+        }
+    }
+
     public static final String LOGIN_EMAIL = "email";
     public static final String LOGIN_PASSWORD = "password";
 
@@ -277,6 +378,7 @@ public class UserRequest extends Request {
                     }
 
                     UserRequest.getPaymentMethods(context, null);
+                    UserRequest.getPasses(context, null);
                 }
             }
 
@@ -625,7 +727,7 @@ public class UserRequest extends Request {
 
                                 ClassTime classTime = new ClassTime(dateTime);
                                 dbWrapper.createClassTime(classTime);
-                                place.addClassTime(context, classTime);
+                                place.addClassTime(dbWrapper, classTime);
                             }
 
                             dbWrapper.createOrUpdatePlace(place);
@@ -701,7 +803,7 @@ public class UserRequest extends Request {
 
                         JsonArray array = object.getAsJsonArray("credit_cards");
 
-                        String default_card = object.getAsJsonObject("default").getAsString();
+                        String default_card = object.getAsJsonPrimitive("default").getAsString();
 
                         User currentUser = dbWrapper.getCurrentUser();
 
@@ -870,21 +972,7 @@ public class UserRequest extends Request {
 
                         for (JsonElement element : array)
                         {
-                            Pass pass = gson.fromJson(element, Pass.class);
-
-                            Workout workout = gson.fromJson(element.getAsJsonObject().get("workout_json"), Workout.class);
-
-                            Place place = gson.fromJson(element.getAsJsonObject().get("place_json"), Place.class);
-
-                            dbWrapper.createOrUpdatePlace(place);
-
-                            dbWrapper.createOrUpdateWorkout(workout);
-
-                            pass.workout = workout;
-                            pass.place = place;
-
-                            dbWrapper.createOrUpdatePass(pass);
-
+                            Pass pass = parsePassJson(element);
                         }
                     }
                     catch (Exception e)
@@ -902,7 +990,7 @@ public class UserRequest extends Request {
 
         User currentUser = dbWrapper.getCurrentUser();
 
-        if (currentUser == null) {
+        if (currentUser != null) {
 
             Bundle args = new Bundle();
             args.putString(AUTH_TOKEN, currentUser.auth_token);
@@ -920,6 +1008,22 @@ public class UserRequest extends Request {
             }
         }
 
+    }
+
+    public static Pass parsePassJson(JsonElement element) {
+        Pass pass = gson.fromJson(element, Pass.class);
+
+        Workout workout = gson.fromJson(element.getAsJsonObject().get("workout_json"), Workout.class);
+
+        Place place = PlaceRequest.parsePlaceJson(element.getAsJsonObject().get("place_json"));
+
+        pass.workout = workout;
+        pass.place = place;
+        pass.user = dbWrapper.getCurrentUser();
+
+        dbWrapper.createOrUpdatePass(pass);
+
+        return pass;
     }
 
 }

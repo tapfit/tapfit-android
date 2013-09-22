@@ -52,7 +52,7 @@
             android:name="co.tapfit.android.FirstUseActivity"
             android:label="@string/title_activity_base"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black" >
+            android:theme="@style/TapFit" >
         </activity>
         <activity
             android:name="co.tapfit.android.SplashActivity"
@@ -129,6 +129,12 @@
         <activity
             android:name="co.tapfit.android.WebViewActivity"
             android:label="@string/title_activity_web_view"
+            android:screenOrientation="portrait"
+            android:theme="@style/TapFit" >
+        </activity>
+        <activity
+            android:name="co.tapfit.android.CreditsActivity"
+            android:label="@string/title_activity_credits"
             android:screenOrientation="portrait"
             android:theme="@style/TapFit" >
         </activity>

@@ -20,6 +20,7 @@ import co.tapfit.android.PassActivity;
 import co.tapfit.android.PaymentsActivity;
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
@@ -38,6 +39,8 @@ public class ConfirmPurchaseFragment extends BaseFragment {
     private Workout mWorkout;
     private Place mPlace;
     private User mUser;
+
+    private static final Integer PAYMENT_ACTIVITY = 1;
 
     private Button mConfirmPurchase;
 
@@ -69,6 +72,14 @@ public class ConfirmPurchaseFragment extends BaseFragment {
         setUpForm(R.id.credits, "Your Credits", "$" + df.format(Math.round(mUser.credit_amount * 100.0) / 100.0));
         setUpForm(R.id.total, "Your Total", "$" + df.format(Math.round(Math.max(0, mWorkout.price - mUser.credit_amount) * 100.0) / 100.0));
 
+        setUpPayment();
+
+        mConfirmPurchase = (Button) mView.findViewById(R.id.confirm_purchase_button);
+        mConfirmPurchase.setOnClickListener(buyWorkout);
+    }
+
+    private void setUpPayment() {
+
         if (mUser.credit_cards != null && mUser.credit_cards.size() > 0) {
 
             CreditCard creditCard = dbWrapper.getDefaulCard(mUser);
@@ -83,8 +94,6 @@ public class ConfirmPurchaseFragment extends BaseFragment {
             setUpDefaultPaymentPrompt();
         }
 
-        mConfirmPurchase = (Button) mView.findViewById(R.id.confirm_purchase_button);
-        mConfirmPurchase.setOnClickListener(buyWorkout);
     }
 
     private View.OnClickListener buyWorkout = new View.OnClickListener() {
@@ -105,6 +114,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Intent intent = new Intent(getActivity(), PassActivity.class);
                                         intent.putExtra(PassFragment.PASS_ID, ((Pass) responseObject).id);
+                                        intent.putExtra(PassActivity.CAME_FROM, PassActivity.PURCHASE_PAGE);
                                         startActivity(intent);
                                     }
                                 }).create();
@@ -156,9 +166,23 @@ public class ConfirmPurchaseFragment extends BaseFragment {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getActivity(), PaymentsActivity.class);
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, PAYMENT_ACTIVITY);
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+
+            if(resultCode == getActivity().RESULT_OK){
+                setUpPayment();
+            }
+            if (resultCode == getActivity().RESULT_CANCELED) {
+                Log.d(TAG, "Didn't log in");
+            }
+        }
+    }
 
     private void setUpForm(Integer resource, String title, String value) {
         View form = mView.findViewById(resource);

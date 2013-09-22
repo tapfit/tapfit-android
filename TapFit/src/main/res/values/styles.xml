@@ -27,6 +27,10 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="LargeFont">
+        <item name="android:textSize">25dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
     <style name="Font">
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">#FFFFFF</item>

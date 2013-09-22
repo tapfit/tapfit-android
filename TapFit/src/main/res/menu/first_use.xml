@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tapfit="http://schemas.android.com/apk/res-auto" >
+    <item android:id="@+id/action_next_button"
+        android:title="Next"
+        android:icon="@drawable/skip_button"
+        tapfit:showAsAction="ifRoom|withText" />
+</menu>
