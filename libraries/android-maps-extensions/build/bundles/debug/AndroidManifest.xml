@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="11" android:versionName="1.6.0" package="com.google.android.gms">
+
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
+
+    <application android:name="pl.mg6.android.maps.extension">
+
+    </application>
+
+</manifest>

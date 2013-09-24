@@ -34,7 +34,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // name of the database file for your application -- change to something appropriate for your app
     private static final String DATABASE_NAME = "tapfit.db";
     // any time you make changes to your database objects, you may have to increase the database version
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
 
     // the DAO model we use to access the SimpleData table
     private Dao<Place, Integer> placeDao = null;
@@ -67,6 +67,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public DatabaseHelper(Context context) {
         //super(context, DATABASE_NAME, null, DATABASE_VERSION);
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
+
+        Log.d("DatabaseHelper", "Thread: " + Thread.currentThread().getName());
     }
 
     /**

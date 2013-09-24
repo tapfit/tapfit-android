@@ -1,5 +1,6 @@
 package co.tapfit.android;
 
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import co.tapfit.android.fragment.AccountFragment;
 import co.tapfit.android.fragment.CustomerSupportFragment;
 import co.tapfit.android.fragment.PassListFragment;
 import co.tapfit.android.fragment.TapfitInfoFragment;
+import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,11 +24,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.monolithic.sdk.impl.acc;
 import com.flurry.android.monolithic.sdk.impl.ft;
+import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.fragment.MapListFragment;
 import co.tapfit.android.fragment.PlaceMapFragment;
@@ -66,18 +70,22 @@ public class MapListActivity extends BaseActivity {
     private TapfitInfoFragment mTapfitInfoFragment;
     private PassListFragment mPassListFragment;
 
+    private ProgressDialog progressDialog;
+
     private String mCurrentFragment;
+
+    private ProgressBar mLoadingBar;
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+        PlaceRequest.removeCallback(placesCallback);
+    }
 
     public void setAccountFragment(AccountFragment accountFragment) {
         this.mAccountFragment = accountFragment;
     }
-
-    private ResponseCallback callback = new ResponseCallback() {
-        @Override
-        public void sendCallback(Object responseObject, String message) {
-            Log.d(TAG, "Received the callback");
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +96,45 @@ public class MapListActivity extends BaseActivity {
 
         initializeFragments();
 
+        if (!PlaceRequest.GOT_INITIAL_PLACES) {
+
+            if (PlaceRequest.getPlaces(getApplicationContext(), LocationServices.getLatLng(), false, placesCallback)) {
+                Log.d(TAG, "got places, returned true");
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage("Loading locations");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
+            }
+        }
     }
+
+    public void getPlaces(LatLng location) {
+        PlaceRequest.getPlaces(getApplicationContext(), location, true, placesCallback);
+    }
+
+    public ResponseCallback placesCallback = new ResponseCallback() {
+        @Override
+        public void sendCallback(Object responseObject, String message) {
+            if (progressDialog != null && progressDialog.isShowing()){
+                progressDialog.cancel();
+            }
+            if (mCurrentFragment == PLACE_LIST)
+            {
+                mMapListFragment.receivedPlacesCallback();
+            }
+            else if (mCurrentFragment == MAP)
+            {
+                mPlaceMapFragment.receivedPlacesCallback();
+            }
+        }
+    };
 
     private void initializeFragments() {
 
         mBottomButtonText = (TextView) findViewById(R.id.bottom_button_text);
         mBottomButton = (FrameLayout) findViewById(R.id.bottom_button);
+
+        mLoadingBar = (ProgressBar) findViewById(R.id.loading_bar);
 
         mMapListFragment = new MapListFragment();
         Bundle args = new Bundle();
@@ -124,7 +165,7 @@ public class MapListActivity extends BaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        mBottomButton.setBackgroundResource(R.color.dark_gray);
+                        mBottomButton.setBackgroundResource(R.color.light_blue);
                         if (mPlaceMapFragment.isVisible())
                         {
                             replaceFragment(mMapListFragment, PLACE_LIST);
@@ -134,13 +175,14 @@ public class MapListActivity extends BaseActivity {
                         }
                         else
                         {
+                            mPlaceMapFragment.setLoadingBar(mLoadingBar);
                             replaceFragment(mPlaceMapFragment, MAP);
 
                             mBottomButtonText.setText("View List");
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        mBottomButton.setBackgroundResource(R.color.light_gray);
+                        mBottomButton.setBackgroundResource(R.color.blue);
                         break;
                 }
                 return true;
@@ -280,7 +322,7 @@ public class MapListActivity extends BaseActivity {
 
         if (position == 0) {
 
-            getSupportActionBar().setTitle("tapfit");
+            getSupportActionBar().setTitle("TapFit");
 
             replaceFragment(mMapListFragment, PLACE_LIST);
 
@@ -316,8 +358,4 @@ public class MapListActivity extends BaseActivity {
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
-
-
-
-
 }

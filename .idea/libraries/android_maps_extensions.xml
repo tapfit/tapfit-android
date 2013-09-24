@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="android-maps-extensions">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/libraries/android-maps-extensions" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/libraries/android-maps-extensions/src" />
+      <root url="file://$PROJECT_DIR$/libraries/android-maps-extensions/test" />
+      <root url="file://$PROJECT_DIR$/libraries/android-maps-extensions/build/source/r/release" />
+      <root url="file://$PROJECT_DIR$/libraries/android-maps-extensions/build/source/buildConfig/release" />
+    </SOURCES>
+  </library>
+</component>

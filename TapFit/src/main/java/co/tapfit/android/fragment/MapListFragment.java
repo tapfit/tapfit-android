@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import co.tapfit.android.MapListActivity;
@@ -16,6 +18,7 @@ import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.adapter.PlaceListAdapter;
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.model.Place;
 
 /**
@@ -27,8 +30,14 @@ public class MapListFragment extends BaseFragment {
     ListView mPlaceList;
 
     public static final String LIST_TYPE = "list_type";
+    public static final String LAT = "lat";
+    public static final String LON = "lon";
     public static final int MAP_LIST = 0;
     public static final int FAVORITE_LIST = 1;
+
+    private static int mCurrentListType = MAP_LIST;
+
+    private static LatLng mLocation;
 
     PlaceListAdapter mPlaceListAdapter;
 
@@ -45,10 +54,14 @@ public class MapListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_map_list, null);
-        if (getArguments().getInt(LIST_TYPE) == MAP_LIST) {
+
+        mCurrentListType = getArguments().getInt(LIST_TYPE);
+
+        if (mCurrentListType == MAP_LIST) {
+            mLocation = new LatLng(getArguments().getDouble(LAT, LocationServices.getLatLng().latitude), getArguments().getDouble(LON, LocationServices.getLatLng().longitude));
             initializeMapList();
         }
-        else if (getArguments().getInt(LIST_TYPE) == FAVORITE_LIST) {
+        else if (mCurrentListType == FAVORITE_LIST) {
             initializeFavoriteList();
         }
 
@@ -58,14 +71,28 @@ public class MapListFragment extends BaseFragment {
 
     private void initializeMapList() {
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
-        List<Place> places = dbWrapper.getPlaces();
+        List<Place> places = dbWrapper.getPlaces(mLocation, 35);
+
         if (places != null) {
 
-            mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWrapper.getPlaces());
+            mPlaceListAdapter = new PlaceListAdapter(getActivity(), places);
 
             mPlaceList.setAdapter(mPlaceListAdapter);
 
             mPlaceList.setOnItemClickListener(placeListClickListener);
+        }
+    }
+
+    public void receivedPlacesCallback() {
+        if (mCurrentListType == MAP_LIST) {
+            updatePlaceList();
+        }
+    }
+
+    private void updatePlaceList() {
+        List<Place> places = dbWrapper.getPlaces(mLocation, 35);
+        if (places != null) {
+            mPlaceListAdapter.replaceAll(places);
         }
     }
 
@@ -98,6 +125,5 @@ public class MapListFragment extends BaseFragment {
             startActivity(intent);
         }
     };
-
 
 }

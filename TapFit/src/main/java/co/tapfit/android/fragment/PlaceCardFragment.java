@@ -97,7 +97,9 @@ public class PlaceCardFragment extends BaseFragment {
 
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
 
-        mWorkoutList.invalidate();
+        if (PlaceInfoActivity.WORKOUT_CALLBACK_RECEIVED) {
+            receivedWorkouts();
+        }
 
         String mapUrl = getGoogleMapsStaticUrl();
 

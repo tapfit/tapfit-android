@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import co.tapfit.android.helper.Log;
 
+import com.flurry.android.monolithic.sdk.impl.ca;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,10 +44,16 @@ public class PlaceRequest extends Request {
 
     private static boolean mWaitingForPlacesResponse = false;
 
+    public static boolean GOT_INITIAL_PLACES = false;
+
     public static final String LAT = "lat";
     public static final String LON = "lon";
 
     private static StopWatch sw;
+
+    public static void removeCallback(ResponseCallback callback) {
+        callbacks.remove(callback);
+    }
 
     public static boolean getPlaces(final Context context, LatLng location, boolean forceCall, ResponseCallback callback)
     {
@@ -93,12 +100,12 @@ public class PlaceRequest extends Request {
 
                         Log.d(TAG, "array count: " + array.size());
 
-                        ExecutorService execs = Executors.newFixedThreadPool(6, new ThreadFactory() {
+                        ExecutorService execs = Executors.newFixedThreadPool(1, new ThreadFactory() {
                             @Override
                             public Thread newThread(Runnable runnable) {
                                 Thread thread = new Thread(runnable);
 
-                                thread.setPriority(Thread.MAX_PRIORITY - 3);
+                                thread.setPriority(Thread.MIN_PRIORITY + 1);
 
                                 return thread;
                             }
@@ -108,6 +115,7 @@ public class PlaceRequest extends Request {
 
                         for (JsonElement element : array)
                         {
+
                             Future<Integer> result = execs.submit(new ProcessPlace(element));
                             results.add(result);
                         }
@@ -120,12 +128,14 @@ public class PlaceRequest extends Request {
                         Log.d(TAG, "Exception: " + e, e);
                     }
 
+                    Log.d(TAG, "Setting mWaitingForPlacesResponse to false");
                     mWaitingForPlacesResponse = false;
+                    GOT_INITIAL_PLACES = true;
                     Iterator iterator = callbacks.iterator();
 
                     while (iterator.hasNext()) {
                         ResponseCallback cb = (ResponseCallback) iterator.next();
-                        cb.sendCallback(dbWrapper.getPlaces(), "Success");
+                        cb.sendCallback(new Place(), "Success");
                         iterator.remove();
                     }
 
@@ -169,19 +179,26 @@ public class PlaceRequest extends Request {
     }
 
     public static Place parsePlaceJson(JsonElement element) {
+
+        Gson gson = getGson();
         Place place = gson.fromJson(element, Place.class);
 
-        for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
-            //Log.d(TAG, "place: " + place.name + ", class_time: " + time);
-            DateTime dateTime = DateTime.parse(time.getAsString());
+        try
+        {
+            for (JsonElement time : element.getAsJsonObject().getAsJsonArray("class_times")) {
+                //Log.d(TAG, "place: " + place.name + ", class_time: " + time);
+                DateTime dateTime = DateTime.parse(time.getAsString());
 
-            ClassTime classTime = new ClassTime(dateTime);
-            classTime.place = place;
-            dbWrapper.createClassTime(classTime);
-            place.addClassTime(dbWrapper, classTime);
+                ClassTime classTime = new ClassTime(dateTime);
+                classTime.place = place;
+                //dbWrapper.createClassTime(classTime);
+                place.addClassTime(dbWrapper, classTime);
+            }
         }
-
-        Log.d(TAG, "place: + " + place.name + " times: " + place.classTimes.size());
+        catch (Exception e)
+        {
+            Log.d(TAG, "caught exception: " + place.name, e);
+        }
 
         Place oldPlace = dbWrapper.getPlace(place.id);
         if (oldPlace != null) {

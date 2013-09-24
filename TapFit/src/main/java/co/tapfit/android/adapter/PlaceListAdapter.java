@@ -22,6 +22,7 @@ import org.joda.time.LocalDate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,9 @@ public class PlaceListAdapter extends BaseAdapter {
         super();
 
         mPlaceData = new ArrayList<Place>(places);
+
+        Collections.sort(mPlaceData);
+
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageScaleType ist = ImageScaleType.EXACTLY_STRETCHED;
@@ -102,7 +106,13 @@ public class PlaceListAdapter extends BaseAdapter {
 
         mImageLoader.displayImage(place.cover_photo, holder.place_image, mOptions);
         holder.place_name_text.setText(place.name);
-        holder.place_price_text.setText("$" + Math.round(place.lowest_price));
+        if (place.lowest_price != null) {
+            holder.place_price_text.setText("$" + Math.round(place.lowest_price));
+        }
+        else
+        {
+            holder.place_price_text.setText("");
+        }
         holder.place_distance_text.setText(String.format("%.1f", place.getDistance()) + " mi");
 
         List<ClassTime> classTimes = DatabaseWrapper.getInstance(mContext.getApplicationContext()).getClassTimes(place.id);
@@ -111,7 +121,6 @@ public class PlaceListAdapter extends BaseAdapter {
 
         String classTimeString = "";
         for (ClassTime classTime : classTimes) {
-            Log.d(TAG, "place: " + place.name + ", classTime: " + classTime.classTime);
             if (LocalDate.now().getDayOfYear() == classTime.classTime.getDayOfYear()) {
                 if ((DateTime.now()).compareTo(classTime.classTime) < 0)
                 {
@@ -145,6 +154,13 @@ public class PlaceListAdapter extends BaseAdapter {
         holder.place_class_time_text.setText(classTimeString);
 
         return view;
+    }
+
+    public void replaceAll(List<Place> places) {
+        mPlaceData.clear();
+        mPlaceData.addAll(places);
+        Collections.sort(mPlaceData);
+        notifyDataSetChanged();
     }
 
     private class ViewHolder {

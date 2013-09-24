@@ -42,10 +42,6 @@ public class UserRequest extends Request {
 
     public static void registerGuest(final Context context, final ResponseCallback callback) {
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
-
         ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
@@ -119,10 +115,6 @@ public class UserRequest extends Request {
     public static final String LAST_NAME = "user[last_name]";
 
     public static void registerUser(final Context context, Bundle args, final ResponseCallback callback) {
-
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -202,10 +194,6 @@ public class UserRequest extends Request {
     }
 
     public static void redeemPromoCode(final Context context, String promoCode, final ResponseCallback callback) {
-
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -312,10 +300,6 @@ public class UserRequest extends Request {
 
     public static void loginUser(final Context context, Bundle args, final ResponseCallback callback) {
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
-
         ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
@@ -398,10 +382,6 @@ public class UserRequest extends Request {
 
     public static void logoutUser(final Context context, final ResponseCallback callback) {
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
-
         ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
@@ -453,10 +433,6 @@ public class UserRequest extends Request {
     public static final String TOKEN = "token";
 
     public static void setDefaultCard(final Context context, final CreditCard card, final ResponseCallback callback) {
-
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -528,10 +504,6 @@ public class UserRequest extends Request {
     }
 
     public static void deleteCreditCard(final Context context, final CreditCard card, final ResponseCallback callback) {
-
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -607,9 +579,6 @@ public class UserRequest extends Request {
     }
 
     public static void addPaymentMethod(final Context context, Bundle args, final ResponseCallback callback) {
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -684,10 +653,6 @@ public class UserRequest extends Request {
     }
 
     public static void favorites(final Context context, final ResponseCallback callback) {
-
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -772,9 +737,6 @@ public class UserRequest extends Request {
 
     public static void getPaymentMethods(final Context context, final ResponseCallback callback) {
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
 
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
@@ -861,10 +823,6 @@ public class UserRequest extends Request {
 
     public static void getMyInfo(final Context context, final ResponseCallback callback) {
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
-
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
@@ -937,10 +895,6 @@ public class UserRequest extends Request {
 
     public static void getPasses(final Context context, final ResponseCallback callback) {
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
-
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
@@ -1011,6 +965,8 @@ public class UserRequest extends Request {
     }
 
     public static Pass parsePassJson(JsonElement element) {
+        Gson gson = getGson();
+
         Pass pass = gson.fromJson(element, Pass.class);
 
         Workout workout = gson.fromJson(element.getAsJsonObject().get("workout_json"), Workout.class);

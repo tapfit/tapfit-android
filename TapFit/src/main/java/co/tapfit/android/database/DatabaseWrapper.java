@@ -1,17 +1,26 @@
 package co.tapfit.android.database;
 
 import android.content.Context;
+import android.graphics.PointF;
+
+import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
 
 import com.flurry.android.monolithic.sdk.impl.up;
+import com.google.android.gms.maps.model.LatLng;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
+import com.j256.ormlite.stmt.Where;
 
 import org.joda.time.DateTime;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import co.tapfit.android.helper.SharePref;
+import co.tapfit.android.model.Address;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Instructor;
@@ -42,6 +51,78 @@ public class DatabaseWrapper {
     private DatabaseWrapper(Context context) {
         mContext = context;
         helper = new DatabaseHelper(context);
+    }
+
+    public List<Place> getPlaces(LatLng location, float radius) {
+        try
+        {
+            PointF center = new PointF((float) location.latitude, (float) location.longitude);
+            PointF p1 = calculateDerivedPosition(center, radius, 0);
+            PointF p2 = calculateDerivedPosition(center, radius, 90);
+            PointF p3 = calculateDerivedPosition(center, radius, 180);
+            PointF p4 = calculateDerivedPosition(center, radius, 270);
+
+            String[] params = new String[] { String.valueOf(p3.x), String.valueOf(p1.x), String.valueOf(p2.y), String.valueOf(p4.y) };
+
+            for (String param : params) {
+                Log.d(TAG, "param: " + param);
+            }
+
+            GenericRawResults<String[]> fakeResults = helper.getPlaceDao().queryRaw("select places.*, a.*" +
+                    " FROM places" +
+                    " INNER JOIN address a ON places.address_id = a.id");
+
+            Log.d(TAG, "fakeResults.count: " + fakeResults.getResults().size());
+
+
+            QueryBuilder<Address, Integer> addressBuilder = helper.getAddressDao().queryBuilder();
+
+            addressBuilder.where().between("lat", p3.x, p1.x).and().between("lon", p4.y, p2.y);
+
+            helper.getAddressDao().query(addressBuilder.prepare());
+
+            QueryBuilder<Place, Integer> builder = helper.getPlaceDao().queryBuilder();
+
+            builder.join(addressBuilder);
+
+            return helper.getPlaceDao().query(builder.prepare());
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get places with location: " + location.latitude + ", " + location.longitude, e);
+            return null;
+        }
+    }
+
+    public static PointF calculateDerivedPosition(PointF point,
+                                                  double range, double bearing)
+    {
+        double EarthRadius = 6371; // mi
+
+        double latA = Math.toRadians(point.x);
+        double lonA = Math.toRadians(point.y);
+        double angularDistance = range / EarthRadius;
+        double trueCourse = Math.toRadians(bearing);
+
+        double lat = Math.asin(
+                Math.sin(latA) * Math.cos(angularDistance) +
+                        Math.cos(latA) * Math.sin(angularDistance)
+                                * Math.cos(trueCourse));
+
+        double dlon = Math.atan2(
+                Math.sin(trueCourse) * Math.sin(angularDistance)
+                        * Math.cos(latA),
+                Math.cos(angularDistance) - Math.sin(latA) * Math.sin(lat));
+
+        double lon = ((lonA + dlon + Math.PI) % (Math.PI * 2)) - Math.PI;
+
+        lat = Math.toDegrees(lat);
+        lon = Math.toDegrees(lon);
+
+        PointF newPoint = new PointF((float) lat, (float) lon);
+
+        return newPoint;
+
     }
 
     public List<Place> getPlaces()
@@ -114,7 +195,12 @@ public class DatabaseWrapper {
 
         try
         {
-            helper.getClassTimeDao().create(classTime);
+            QueryBuilder<ClassTime, Integer> builder = helper.getClassTimeDao().queryBuilder();
+            builder.where().eq("place_id", classTime.place.id).and().eq("classTime", classTime.classTime);
+            List<ClassTime> times = helper.getClassTimeDao().query(builder.prepare());
+            if (times.size() < 1) {
+                helper.getClassTimeDao().create(classTime);
+            }
         }
         catch (Exception e)
         {
@@ -136,10 +222,21 @@ public class DatabaseWrapper {
         }
     }
 
-    public void deleteClassTime(ClassTime classTime) {
+    public void deleteClassTime(ClassTime classTime, Integer placeId) {
         try
         {
-            helper.getClassTimeDao().delete(classTime);
+            QueryBuilder<ClassTime, Integer> builder = helper.getClassTimeDao().queryBuilder();
+            builder.where().eq("place_id", placeId).and().eq("classTime", classTime.classTime);
+            final List<ClassTime> times = helper.getClassTimeDao().query(builder.prepare());
+            helper.getClassTimeDao().callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (ClassTime time : times) {
+                        helper.getClassTimeDao().delete(time);
+                    }
+                    return null;
+                }
+            });
         }
         catch (Exception e)
         {
@@ -297,13 +394,22 @@ public class DatabaseWrapper {
     public List<Workout> getUpcomingWorkouts(Place place) {
         try
         {
-            QueryBuilder<Workout, Integer> builder = helper.getWorkoutDao().queryBuilder();
-            builder.where().eq("place_id", place.id).and().gt("start_time", DateTime.now());
-            return helper.getWorkoutDao().query(builder.prepare());
+
+            if (place.facility_type == null || place.facility_type == 0) {
+                QueryBuilder<Workout, Integer> builder = helper.getWorkoutDao().queryBuilder();
+                builder.where().eq("place_id", place.id).and().gt("start_time", DateTime.now());
+                return helper.getWorkoutDao().query(builder.prepare());
+            }
+            else
+            {
+                QueryBuilder<Workout, Integer> builder = helper.getWorkoutDao().queryBuilder();
+                builder.where().eq("place_id", place.id).and().gt("end_time", DateTime.now());
+                return helper.getWorkoutDao().query(builder.prepare());
+            }
         }
         catch (Exception e)
         {
-            Log.d(TAG, "Failed to get upcoming workouts for place: " + place.id);
+            Log.d(TAG, "Failed to get upcoming workouts for place: " + place.id, e);
             return null;
         }
     }

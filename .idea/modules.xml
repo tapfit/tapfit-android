@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/TapFit/TapFit.iml" filepath="$PROJECT_DIR$/TapFit/TapFit.iml" />
       <module fileurl="file://$PROJECT_DIR$/TapFitProject.iml" filepath="$PROJECT_DIR$/TapFitProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/VenmoTouch.iml" filepath="$PROJECT_DIR$/libraries/venmo-touch-android-1.0.0-b2/VenmoTouch/VenmoTouch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/android-maps-extensions/android-maps-extensions.iml" filepath="$PROJECT_DIR$/libraries/android-maps-extensions/android-maps-extensions.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/countly-sdk-android/countly-sdk-android.iml" filepath="$PROJECT_DIR$/libraries/countly-sdk-android/countly-sdk-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/gradle/gradle.iml" filepath="$PROJECT_DIR$/gradle/gradle.iml" />
     </modules>

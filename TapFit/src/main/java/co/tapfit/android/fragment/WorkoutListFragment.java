@@ -3,12 +3,14 @@ package co.tapfit.android.fragment;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
@@ -36,6 +38,8 @@ public class WorkoutListFragment extends BaseFragment {
     private ListView mWorkoutList;
     private WorkoutListAdapter mWorkoutListAdapter;
 
+    private TextView mNoWorkoutText;
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -60,6 +64,10 @@ public class WorkoutListFragment extends BaseFragment {
     private void setUpWorkoutList() {
 
         mWorkoutList = (ListView) mView.findViewById(R.id.workout_list);
+
+        mNoWorkoutText = (TextView) mView.findViewById(R.id.no_workout_text);
+
+        mNoWorkoutText.setGravity(Gravity.CENTER);
 
         mWorkoutListAdapter = new WorkoutListAdapter(getActivity());
 
@@ -110,6 +118,16 @@ public class WorkoutListFragment extends BaseFragment {
 
             }
         });
+
+        if (mWorkoutListAdapter.getCount() < 1) {
+            mWorkoutList.setVisibility(View.GONE);
+            mNoWorkoutText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mWorkoutList.setVisibility(View.VISIBLE);
+            mNoWorkoutText.setVisibility(View.GONE);
+        }
 
     }
 

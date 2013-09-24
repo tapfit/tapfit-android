@@ -23,7 +23,7 @@
                 android:layout_height="50dp"
                 android:layout_width="match_parent"
                 android:clickable="true"
-                android:background="#d3d3d3"
+                android:background="@color/blue"
                 android:layout_alignParentBottom="true">
 
                 <TextView
@@ -31,6 +31,14 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center" />
+
+                <ProgressBar
+                    android:id="@+id/loading_bar"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="7dp"
+                    android:layout_gravity="right"
+                    android:visibility="gone"/>
 
             </FrameLayout>
             <RelativeLayout

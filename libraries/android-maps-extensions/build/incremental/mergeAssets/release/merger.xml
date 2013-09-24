@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/android-maps-extensions/src/main/assets" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/android-maps-extensions/src/release/assets" />
+    </dataSet>
+
+</merger>

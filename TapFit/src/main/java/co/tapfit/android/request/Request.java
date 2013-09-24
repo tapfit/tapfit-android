@@ -20,10 +20,16 @@ import co.tapfit.android.helper.DateTimeDeserializer;
 public class Request {
 
     protected static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+           // .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+           // .create();
 
-    protected static Gson gson = new GsonBuilder()
+    protected static Gson getGson(){
+        Gson gson = new GsonBuilder()
             .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
             .create();
+        return gson;
+    }
+
 
     public static final String AUTH_TOKEN = "auth_token";
 

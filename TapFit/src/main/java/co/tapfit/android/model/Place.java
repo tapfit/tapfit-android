@@ -2,6 +2,7 @@ package co.tapfit.android.model;
 
 import android.content.Context;
 
+import com.flurry.android.monolithic.sdk.impl.cl;
 import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.CloseableWrappedIterable;
@@ -26,7 +27,7 @@ import co.tapfit.android.helper.Log;
  * Created by zackmartinsek on 9/7/13.
  */
 @DatabaseTable(tableName = "places")
-public class Place {
+public class Place implements Comparable<Place> {
 
     private static final String TAG = Place.class.getSimpleName();
 
@@ -55,6 +56,9 @@ public class Place {
 
     @DatabaseField
     public Double lowest_price;
+
+    @DatabaseField
+    public Integer facility_type;
 
     @DatabaseField
     public Float distance;
@@ -91,6 +95,7 @@ public class Place {
         if (classTimes == null) {
             classTimes = new ArrayList<ClassTime>();
             classTimes.add(classTime);
+            dbWrapper.createClassTime(classTime);
             return;
         }
         Iterator<ClassTime> currentTimes = classTimes.iterator();
@@ -99,29 +104,46 @@ public class Place {
 
         while (currentTimes.hasNext()) {
             ClassTime currentTime = currentTimes.next();
-            Log.d(TAG, "place: " + name + ", currentTime: " + currentTime.classTime + ", now: " + DateTime.now());
+            //Log.d(TAG, "place: " + name + ", currentTime: " + currentTime.classTime + ", now: " + DateTime.now());
             if (currentTime.classTime.compareTo(DateTime.now()) < 0) {
-                dbWrapper.deleteClassTime(currentTime);
+                dbWrapper.deleteClassTime(currentTime, id);
                 classTimes.remove(currentTime);
             }
             if (currentTime.classTime.equals(classTime.classTime)) {
                 shouldAdd = false;
             }
         }
-        if (shouldAdd)
+        if (shouldAdd) {
             classTimes.add(classTime);
+            dbWrapper.createClassTime(classTime);
+        }
     }
 
     public double getDistance() {
 
         LatLng userLocation = LocationServices.getLatLng();
 
+        return distanceBetweenPoints(userLocation, new LatLng(address.lat, address.lon));
+    }
+
+    private static double deg2rad(double deg)
+    {
+        return deg * (Math.PI / 180);
+    }
+
+    private double rad2deg(double rad)
+    {
+        return rad * (180 / Math.PI);
+    }
+
+    public static double distanceBetweenPoints(LatLng target, LatLng source) {
+
         double R = 6371;
 
-        double maxLat = Math.max(userLocation.latitude, this.address.lat);
-        double maxLon = Math.max(userLocation.longitude, this.address.lon);
-        double minLat = Math.min(userLocation.latitude, this.address.lat);
-        double minLon = Math.min(userLocation.longitude, this.address.lon);
+        double maxLat = Math.max(target.latitude, source.latitude);
+        double maxLon = Math.max(target.longitude, source.longitude);
+        double minLat = Math.min(target.latitude, source.latitude);
+        double minLon = Math.min(target.longitude, source.longitude);
 
         double dLat = deg2rad(maxLat - minLat);
         double dLon = deg2rad(minLon - maxLon);
@@ -136,13 +158,40 @@ public class Place {
         return d;
     }
 
-    private double deg2rad(double deg)
-    {
-        return deg * (Math.PI / 180);
+    @Override
+    public int compareTo(Place place) {
+
+        if (this == place) {
+            return 0;
+        }
+
+        double thisDistance = this.getDistance();
+        double otherDistance = place.getDistance();
+
+        if (thisDistance > otherDistance) {
+            return 1;
+        }
+        else if (thisDistance < otherDistance) {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
-    private double rad2deg(double rad)
-    {
-        return rad * (180 / Math.PI);
+    @Override
+    public boolean equals(Object other) {
+        if (other == null)
+        {
+            return false;
+        }
+
+        if (this.getClass() != other.getClass())
+        {
+            return false;
+        }
+
+        return this.id.equals(((Place) other).id);
     }
 }

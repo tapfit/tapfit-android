@@ -38,6 +38,7 @@ dependencies {
     compile files ('libs/braintree-android-encryption-1.0.0.jar', 'libs/FLurry_3.2.2.jar')
     compile project (':libraries:countly-sdk-android')
     compile project (':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch')
+    compile project (':libraries:android-maps-extensions')
     compile files (':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch/libs/venmo-touch.jar')
     compile 'com.crashlytics.android:crashlytics:1.+'
 

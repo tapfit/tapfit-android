@@ -35,7 +35,13 @@ public class TapfitApplication extends Application {
         // This should be the first LogCat entry specific to this application
         Log.v(TAG, "onCreate()");
 
-        dbWrapper = DatabaseWrapper.getInstance(getApplicationContext());
+        Thread newThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dbWrapper = DatabaseWrapper.getInstance(getApplicationContext());
+            }
+        });
+        newThread.start();
         ImageCache.initImageLoader(getApplicationContext());
     }
 

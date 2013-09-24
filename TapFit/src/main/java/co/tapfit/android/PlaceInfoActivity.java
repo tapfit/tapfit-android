@@ -125,7 +125,7 @@ public class PlaceInfoActivity extends BaseActivity {
 
     }
 
-    public Boolean WORKOUT_CALLBACK_RECEIVED = false;
+    public static Boolean WORKOUT_CALLBACK_RECEIVED = false;
 
     public void getWorkoutsFromServer() {
         WORKOUT_CALLBACK_RECEIVED = false;

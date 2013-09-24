@@ -52,7 +52,16 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
     }
 
     private void setWorkoutList(List<Workout> workouts) {
-        mWorkouts = new ArrayList<Workout>(workouts);
+        if (workouts == null){
+            mWorkouts = new ArrayList<Workout>();
+        }
+        else if (workouts.size() > 0){
+            mWorkouts = new ArrayList<Workout>(workouts);
+        }
+        else
+        {
+            mWorkouts = new ArrayList<Workout>();
+        }
 
         Collections.sort(mWorkouts);
 
