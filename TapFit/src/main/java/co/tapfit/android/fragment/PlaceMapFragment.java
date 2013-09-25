@@ -1,5 +1,7 @@
 package co.tapfit.android.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -36,8 +38,10 @@ import java.util.logging.LogRecord;
 
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.helper.RegionBounds;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.request.PlaceRequest;
+import co.tapfit.android.view.TouchableWrapper;
 import pl.mg6.android.maps.extensions.ClusterOptions;
 import pl.mg6.android.maps.extensions.ClusterOptionsProvider;
 import pl.mg6.android.maps.extensions.ClusteringSettings;
@@ -50,7 +54,7 @@ import pl.mg6.android.maps.extensions.SupportMapFragment;
 /**
  * Created by zackmartinsek on 9/9/13.
  */
-public class PlaceMapFragment extends SupportMapFragment {
+public class PlaceMapFragment extends SupportMapFragment implements TouchableWrapper.UpdateMapAfterUserInterection {
 
     private static String TAG = PlaceMapFragment.class.getSimpleName();
     private GoogleMap mMap;
@@ -62,12 +66,20 @@ public class PlaceMapFragment extends SupportMapFragment {
     private CameraPosition mCameraPosition;
     private LatLngBounds mCurrentBounds;
 
+    private CameraPosition mMapLocation;
+
+    private Boolean mIsTouched = false;
+
+    private View mContentView;
+    public TouchableWrapper mTouchView;
+
+    private Boolean mHasShownOutOfAreaMessage = false;
+
     private HashMap<String, Place> mMarkerIds = new HashMap<String, Place>();
 
     @Override
     public void onResume() {
         super.onResume();
-        mMarkerIds = new HashMap<String, Place>();
         ((MapListActivity) getParentActivity()).getBottomButton().setVisibility(View.VISIBLE);
         ((MapListActivity) getParentActivity()).getBottomButtonText().setText("View List");
     }
@@ -99,17 +111,60 @@ public class PlaceMapFragment extends SupportMapFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
+        mContentView = super.onCreateView(inflater, container, savedInstanceState);
 
-        setMapTransparent((ViewGroup) root);
+        setMapTransparent((ViewGroup) mContentView);
 
-        return root;
+        mTouchView = new TouchableWrapper(getActivity(), this);
+        mTouchView.addView(mContentView);
+
+        return mTouchView;
     }
+
+    @Override
+    public View getView() {
+        return mContentView;
+    }
+
+    public CameraPosition getMapLocationCenter()
+    {
+        return mMap.getCameraPosition();
+    }
+
 
     private GoogleMap.OnCameraChangeListener cameraChangeListener = new GoogleMap.OnCameraChangeListener() {
         @Override
         public void onCameraChange(CameraPosition cameraPosition) {
-            if (Place.distanceBetweenPoints(cameraPosition.target, mCameraPosition.target) > 20) {
+
+            Log.d(TAG, "onCameraChange: " + mMap.getCameraPosition().target.latitude + ", " + mMap.getCameraPosition().target.longitude);
+
+            if (mIsTouched) {
+                mIsTouched = false;
+
+                mLoadingBar.setVisibility(View.VISIBLE);
+                ((MapListActivity) getParentActivity()).getPlaces(cameraPosition.target);
+                mCameraPosition = cameraPosition;
+
+                if (RegionBounds.isInRegion(cameraPosition.target)) {
+                    mHasShownOutOfAreaMessage = false;
+                    ((MapListActivity) getActivity()).setHasShownOutOfAreaMessage(false);
+                }
+                else if (!mHasShownOutOfAreaMessage) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setMessage("Purchasing is only available in select U.S. cities at the moment. You can still use TapFit to find nearby gyms and studios!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            })
+                            .create();
+                    alertDialog.show();
+                    mHasShownOutOfAreaMessage = true;
+                    ((MapListActivity) getActivity()).setHasShownOutOfAreaMessage(true);
+                }
+            }
+            /*if (Place.distanceBetweenPoints(cameraPosition.target, mCameraPosition.target) > 20) {
                 mLoadingBar.setVisibility(View.VISIBLE);
                 ((MapListActivity) getParentActivity()).getPlaces(cameraPosition.target);
                 mCurrentBounds = mMap.getProjection().getVisibleRegion().latLngBounds;
@@ -127,7 +182,7 @@ public class PlaceMapFragment extends SupportMapFragment {
                 ((MapListActivity) getParentActivity()).getPlaces(cameraPosition.target);
                 mCurrentBounds = mMap.getProjection().getVisibleRegion().latLngBounds;
                 mCameraPosition = cameraPosition;
-            }
+            }*/
 
         }
     };
@@ -169,10 +224,21 @@ public class PlaceMapFragment extends SupportMapFragment {
         mMap.setOnInfoWindowClickListener(clickMarker);
         mMap.setOnCameraChangeListener(cameraChangeListener);
 
-        CameraPosition position = CameraPosition.builder()
-                .target(LocationServices.getInstance(getParentActivity().getApplicationContext()).getLatLng())
-                .zoom(14)
-                .build();
+        CameraPosition position;
+
+        if (mMapLocation != null) {
+            position = CameraPosition.builder()
+                    .target(mMapLocation.target)
+                    .zoom(mMapLocation.zoom)
+                    .build();
+        }
+        else
+        {
+            position = CameraPosition.builder()
+                    .target(LocationServices.getInstance(getParentActivity().getApplicationContext()).getLatLng())
+                    .zoom(14)
+                    .build();
+        }
 
         mCameraPosition = position;
 
@@ -197,8 +263,6 @@ public class PlaceMapFragment extends SupportMapFragment {
         Thread newThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "about to add locations, Thread: " + Thread.currentThread().getName());
-
 
                 final List<Place> places = dbWrapper.getPlaces(mCameraPosition.target, 50);
 
@@ -284,5 +348,18 @@ public class PlaceMapFragment extends SupportMapFragment {
 
     public void setLoadingBar(ProgressBar loadingBar) {
         mLoadingBar = loadingBar;
+    }
+
+    public void setLocation(CameraPosition location) {
+        mMapLocation = location;
+    }
+
+    @Override
+    public void onUpdateMapAfterUserInterection() {
+        mIsTouched = true;
+    }
+
+    public void setHasShowOutOfAreaMessage(Boolean hasShownOutOfAreaMessage) {
+        mHasShownOutOfAreaMessage = hasShownOutOfAreaMessage;
     }
 }

@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashActivity"
-    android:background="@color/red" >
+    android:background="@color/splash_red" >
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:id="@+id/logo"
         android:src="@drawable/splash_page"/>

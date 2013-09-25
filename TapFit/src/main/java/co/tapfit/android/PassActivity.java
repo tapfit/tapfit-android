@@ -8,6 +8,8 @@ import android.view.MenuItem;
 
 import co.tapfit.android.BaseActivity;
 import co.tapfit.android.fragment.PassFragment;
+import co.tapfit.android.model.Pass;
+import co.tapfit.android.model.Workout;
 
 public class PassActivity extends BaseActivity {
 
@@ -28,11 +30,15 @@ public class PassActivity extends BaseActivity {
         mCameFrom = getIntent().getIntExtra(CAME_FROM, PASS_LIST_PAGE);
 
         Bundle args = new Bundle();
+        Integer passId = getIntent().getIntExtra(PassFragment.PASS_ID, -1);
+        Pass pass = dbWrapper.getPass(passId);
+        Workout workout = dbWrapper.getWorkout(pass.workout.id);
         args.putInt(PassFragment.PASS_ID, getIntent().getIntExtra(PassFragment.PASS_ID, -1));
 
         passFragment.setArguments(args);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(workout.name);
 
         getSupportFragmentManager().beginTransaction().add(R.id.content_frame, passFragment).commit();
     }

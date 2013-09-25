@@ -21,6 +21,13 @@
     <string name="is_braintree_sandbox">true</string>
     <string name="welcome_message">Welcome to TapFit!\n\nOur team of fitness experts has curated a list of the best gyms and studios in your area. Just browse, book, and go!</string>
 
+    <string name="stock_yoga_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/66.jpg</string>
+    <string name="stock_pilates_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/55.jpg</string>
+    <string name="stock_dance_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/33.jpg</string>
+    <string name="stock_cardio_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/64.jpg</string>
+    <string name="stock_gym_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/65.jpg</string>
+
+
     <string-array name="menu_list">
         <item>Home</item>
         <item>Favorites</item>

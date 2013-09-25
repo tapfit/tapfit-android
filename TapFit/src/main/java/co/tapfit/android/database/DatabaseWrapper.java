@@ -6,6 +6,7 @@ import android.graphics.PointF;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
 
+import com.flurry.android.monolithic.sdk.impl.add;
 import com.flurry.android.monolithic.sdk.impl.up;
 import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -62,19 +63,6 @@ public class DatabaseWrapper {
             PointF p3 = calculateDerivedPosition(center, radius, 180);
             PointF p4 = calculateDerivedPosition(center, radius, 270);
 
-            String[] params = new String[] { String.valueOf(p3.x), String.valueOf(p1.x), String.valueOf(p2.y), String.valueOf(p4.y) };
-
-            for (String param : params) {
-                Log.d(TAG, "param: " + param);
-            }
-
-            GenericRawResults<String[]> fakeResults = helper.getPlaceDao().queryRaw("select places.*, a.*" +
-                    " FROM places" +
-                    " INNER JOIN address a ON places.address_id = a.id");
-
-            Log.d(TAG, "fakeResults.count: " + fakeResults.getResults().size());
-
-
             QueryBuilder<Address, Integer> addressBuilder = helper.getAddressDao().queryBuilder();
 
             addressBuilder.where().between("lat", p3.x, p1.x).and().between("lon", p4.y, p2.y);
@@ -90,6 +78,18 @@ public class DatabaseWrapper {
         catch (Exception e)
         {
             Log.d(TAG, "Failed to get places with location: " + location.latitude + ", " + location.longitude, e);
+            return null;
+        }
+    }
+
+    public static Address getAddress(Integer addressId) {
+        try
+        {
+            return helper.getAddressDao().queryForId(addressId);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get address: " + addressId);
             return null;
         }
     }
@@ -191,12 +191,12 @@ public class DatabaseWrapper {
         }
     }
 
-    public void createClassTime(ClassTime classTime) {
+    public void createClassTime(ClassTime classTime, Integer placeId) {
 
         try
         {
             QueryBuilder<ClassTime, Integer> builder = helper.getClassTimeDao().queryBuilder();
-            builder.where().eq("place_id", classTime.place.id).and().eq("classTime", classTime.classTime);
+            builder.where().eq("place_id", placeId).and().eq("classTime", classTime.classTime);
             List<ClassTime> times = helper.getClassTimeDao().query(builder.prepare());
             if (times.size() < 1) {
                 helper.getClassTimeDao().create(classTime);

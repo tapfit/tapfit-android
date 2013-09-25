@@ -10,6 +10,17 @@
         android:layout_width="match_parent"
         android:background="@android:color/transparent"
         android:divider="#FFFFFF"
-        android:dividerHeight="5dp"/>
+        android:dividerHeight="1px"/>
+
+    <TextView
+        android:id="@+id/no_studios_close_by"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No Facilities Are Close By You"
+        style="@style/Font"
+        android:textColor="@color/black"
+        android:visibility="gone" />
 
 </FrameLayout>

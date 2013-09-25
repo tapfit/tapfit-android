@@ -6,10 +6,4 @@
         android:endColor=  "#FF000000"
         android:angle="270"
         />
-
-    <padding
-        android:left="5dp"
-        android:right="5dp" />
-
-    <corners android:radius="@dimen/rounded_edges"/>
 </shape>

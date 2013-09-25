@@ -691,7 +691,6 @@ public class UserRequest extends Request {
                                 DateTime dateTime = DateTime.parse(time.getAsString());
 
                                 ClassTime classTime = new ClassTime(dateTime);
-                                dbWrapper.createClassTime(classTime);
                                 place.addClassTime(dbWrapper, classTime);
                             }
 
@@ -823,6 +822,8 @@ public class UserRequest extends Request {
 
     public static void getMyInfo(final Context context, final ResponseCallback callback) {
 
+        setDatabaseWrapper(context);
+
         final ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
@@ -909,11 +910,6 @@ public class UserRequest extends Request {
                     String json = resultData.getString(ApiService.REST_RESULT);
                     Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    Gson gson = new GsonBuilder()
-                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
-                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                            .create();
-
                     JsonParser parser = new JsonParser();
 
                     try
@@ -921,8 +917,6 @@ public class UserRequest extends Request {
                         JsonObject object = parser.parse(json).getAsJsonObject();
 
                         JsonArray array = object.getAsJsonArray("receipts");
-
-                        User currentUser = dbWrapper.getCurrentUser();
 
                         for (JsonElement element : array)
                         {

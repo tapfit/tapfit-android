@@ -34,6 +34,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import co.tapfit.android.R;
+
 /**
  * Created by zackmartinsek on 9/9/13.
  */
@@ -51,6 +53,31 @@ public class ImageCache {
 
     private ImageCache() {
 
+    }
+
+    public static String getCoverPhotoUrl(String category) {
+
+        if (category == null) {
+            return mResources.getString(R.string.stock_gym_url);
+        }
+        else if (category.equals("Yoga"))
+        {
+            return mResources.getString(R.string.stock_yoga_url);
+        }
+        else if (category.equals("Pilates Barre"))
+        {
+            return mResources.getString(R.string.stock_pilates_url);
+        } else if (category.equals("Dance"))
+        {
+            return mResources.getString(R.string.stock_dance_url);
+        }
+        else if (category.equals("Cardio"))
+        {
+            return mResources.getString(R.string.stock_cardio_url);
+        }
+        else {
+            return mResources.getString(R.string.stock_gym_url);
+        }
     }
 
     public static int convertDpToPixels(int dp) {

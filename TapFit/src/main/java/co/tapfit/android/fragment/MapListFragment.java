@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,6 +20,7 @@ import co.tapfit.android.R;
 import co.tapfit.android.adapter.PlaceListAdapter;
 import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.Place;
 
 /**
@@ -28,6 +30,7 @@ public class MapListFragment extends BaseFragment {
 
     View mView;
     ListView mPlaceList;
+    TextView mNoPlaceText;
 
     public static final String LIST_TYPE = "list_type";
     public static final String LAT = "lat";
@@ -39,6 +42,8 @@ public class MapListFragment extends BaseFragment {
 
     private static LatLng mLocation;
 
+    private static final String TAG = MapListFragment.class.getSimpleName();
+
     PlaceListAdapter mPlaceListAdapter;
 
     @Override
@@ -48,6 +53,7 @@ public class MapListFragment extends BaseFragment {
         if (getArguments().getInt(LIST_TYPE) == MAP_LIST) {
             ((MapListActivity) getActivity()).getBottomButton().setVisibility(View.VISIBLE);
             ((MapListActivity) getActivity()).getBottomButtonText().setText("View Map");
+            updatePlaceList();
         }
     }
 
@@ -58,7 +64,10 @@ public class MapListFragment extends BaseFragment {
         mCurrentListType = getArguments().getInt(LIST_TYPE);
 
         if (mCurrentListType == MAP_LIST) {
-            mLocation = new LatLng(getArguments().getDouble(LAT, LocationServices.getLatLng().latitude), getArguments().getDouble(LON, LocationServices.getLatLng().longitude));
+
+            if (mLocation == null){
+                mLocation = new LatLng(getArguments().getDouble(LAT, LocationServices.getLatLng().latitude), getArguments().getDouble(LON, LocationServices.getLatLng().longitude));
+            }
             initializeMapList();
         }
         else if (mCurrentListType == FAVORITE_LIST) {
@@ -70,16 +79,23 @@ public class MapListFragment extends BaseFragment {
     }
 
     private void initializeMapList() {
+        Log.d(TAG, "initializeMapList: " + mLocation.latitude + ", " + mLocation.longitude);
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
+        mNoPlaceText = (TextView) mView.findViewById(R.id.no_studios_close_by);
         List<Place> places = dbWrapper.getPlaces(mLocation, 35);
 
-        if (places != null) {
+        if (places != null && places.size() > 0) {
 
             mPlaceListAdapter = new PlaceListAdapter(getActivity(), places);
 
             mPlaceList.setAdapter(mPlaceListAdapter);
 
             mPlaceList.setOnItemClickListener(placeListClickListener);
+        }
+        else {
+            mPlaceList.setVisibility(View.GONE);
+
+            mNoPlaceText.setVisibility(View.VISIBLE);
         }
     }
 
@@ -90,9 +106,19 @@ public class MapListFragment extends BaseFragment {
     }
 
     private void updatePlaceList() {
-        List<Place> places = dbWrapper.getPlaces(mLocation, 35);
-        if (places != null) {
-            mPlaceListAdapter.replaceAll(places);
+        Log.d(TAG, "updatePlaceList: " + mLocation.latitude + ", " + mLocation.longitude);
+
+        if (mPlaceListAdapter == null)
+        {
+            initializeMapList();
+        }
+        else
+        {
+            List<Place> places = dbWrapper.getPlaces(mLocation, 35);
+            if (places != null)
+            {
+                mPlaceListAdapter.replaceAll(places);
+            }
         }
     }
 
@@ -126,4 +152,8 @@ public class MapListFragment extends BaseFragment {
         }
     };
 
+    public void updateLocation(LatLng position) {
+        Log.d(TAG, "updateLocation: " + position.latitude + ", " + position.longitude);
+        mLocation = position;
+    }
 }

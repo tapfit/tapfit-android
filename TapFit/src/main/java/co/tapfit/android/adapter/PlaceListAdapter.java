@@ -1,6 +1,8 @@
 package co.tapfit.android.adapter;
 
 import android.content.Context;
+
+import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -65,7 +67,6 @@ public class PlaceListAdapter extends BaseAdapter {
                 .cacheOnDisc(true)
                 .cacheInMemory(true)
                 .imageScaleType(ist)
-                .displayer(new RoundedBackgroundDisplayer(mContext.getResources().getDimension(R.dimen.rounded_edges)))
                 .build();
 
         mImageLoader = ImageLoader.getInstance();
@@ -104,7 +105,14 @@ public class PlaceListAdapter extends BaseAdapter {
 
         Place place = (Place) getItem(i);
 
-        mImageLoader.displayImage(place.cover_photo, holder.place_image, mOptions);
+        if (place.cover_photo == null)
+        {
+            mImageLoader.displayImage(ImageCache.getCoverPhotoUrl(place.category), holder.place_image, mOptions);
+        }
+        else
+        {
+            mImageLoader.displayImage(place.cover_photo, holder.place_image, mOptions);
+        }
         holder.place_name_text.setText(place.name);
         if (place.lowest_price != null) {
             holder.place_price_text.setText("$" + Math.round(place.lowest_price));
@@ -116,6 +124,8 @@ public class PlaceListAdapter extends BaseAdapter {
         holder.place_distance_text.setText(String.format("%.1f", place.getDistance()) + " mi");
 
         List<ClassTime> classTimes = DatabaseWrapper.getInstance(mContext.getApplicationContext()).getClassTimes(place.id);
+
+        Log.d(TAG, "classTime count: " + classTimes.size());
 
         int timeCount = 0;
 
@@ -133,7 +143,6 @@ public class PlaceListAdapter extends BaseAdapter {
             }
         }
 
-        Log.d(TAG, "classTime: " + classTimeString);
         if (classTimeString.equals("")) {
             for (ClassTime classTime : classTimes) {
                 if (LocalDate.now().getDayOfYear() + 1 == classTime.classTime.getDayOfYear()) {
@@ -147,7 +156,7 @@ public class PlaceListAdapter extends BaseAdapter {
             classTimeString = "No Schedule Available";
         }
 
-        if (classTimeString.equals("")) {
+        if (place.facility_type != null && place.facility_type > 0) {
             classTimeString = "Dropin passes available";
         }
 

@@ -9,6 +9,7 @@ import co.tapfit.android.database.DatabaseWrapper;
 import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.Log;
 import co.tapfit.android.R;
+import co.tapfit.android.helper.RegionBounds;
 
 /**
  * Created by zackmartinsek on 9/9/13.
@@ -43,6 +44,7 @@ public class TapfitApplication extends Application {
         });
         newThread.start();
         ImageCache.initImageLoader(getApplicationContext());
+        RegionBounds.getInstance(getApplicationContext());
     }
 
 }

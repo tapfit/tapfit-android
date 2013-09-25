@@ -36,9 +36,9 @@ public class PlaceInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_info);
         // Show the Up button in the action bar.
-        setupActionBar();
-
         mPlace = dbWrapper.getPlace(getIntent().getIntExtra(PLACE_ID, -1));
+
+        setupActionBar();
 
         setUpFragments();
 
@@ -59,6 +59,7 @@ public class PlaceInfoActivity extends BaseActivity {
      */
     private void setupActionBar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(mPlace.name);
     }
 
     @Override

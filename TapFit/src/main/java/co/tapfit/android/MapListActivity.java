@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.flurry.android.monolithic.sdk.impl.acc;
 import com.flurry.android.monolithic.sdk.impl.ft;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.fragment.MapListFragment;
@@ -51,6 +52,8 @@ public class MapListActivity extends BaseActivity {
 
     private TextView mBottomButtonText;
     private FrameLayout mBottomButton;
+
+    private CameraPosition mMapLocation;
 
     public Boolean WORKOUT_CALLBACK_RECEIVED = false;
 
@@ -76,6 +79,8 @@ public class MapListActivity extends BaseActivity {
 
     private ProgressBar mLoadingBar;
 
+    private Boolean mHasShownOutOfAreaMessage = false;
+
     @Override
     public void onPause(){
         super.onPause();
@@ -95,6 +100,8 @@ public class MapListActivity extends BaseActivity {
         initializeActionBar();
 
         initializeFragments();
+
+        mMapLocation = CameraPosition.fromLatLngZoom(LocationServices.getLatLng(), 14);
 
         if (!PlaceRequest.GOT_INITIAL_PLACES) {
 
@@ -168,6 +175,9 @@ public class MapListActivity extends BaseActivity {
                         mBottomButton.setBackgroundResource(R.color.light_blue);
                         if (mPlaceMapFragment.isVisible())
                         {
+                            CameraPosition position = mPlaceMapFragment.getMapLocationCenter();
+                            mMapListFragment.updateLocation(position.target);
+                            mMapLocation = position;
                             replaceFragment(mMapListFragment, PLACE_LIST);
 
                             mBottomButtonText.setText("View Map");
@@ -176,6 +186,8 @@ public class MapListActivity extends BaseActivity {
                         else
                         {
                             mPlaceMapFragment.setLoadingBar(mLoadingBar);
+                            mPlaceMapFragment.setLocation(mMapLocation);
+                            mPlaceMapFragment.setHasShowOutOfAreaMessage(mHasShownOutOfAreaMessage);
                             replaceFragment(mPlaceMapFragment, MAP);
 
                             mBottomButtonText.setText("View List");
@@ -190,6 +202,10 @@ public class MapListActivity extends BaseActivity {
         });
 
         mBottomButton.setOnClickListener(switchMapAndList);
+    }
+
+    public void setHasShownOutOfAreaMessage(Boolean hasShownOutOfAreaMessage) {
+        mHasShownOutOfAreaMessage = hasShownOutOfAreaMessage;
     }
 
     private void replaceFragment(Fragment fragment, String fragmentName) {

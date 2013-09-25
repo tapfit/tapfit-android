@@ -68,22 +68,6 @@
                     android:background="@android:color/transparent"/>
 
                 <TextView
-                    android:id="@+id/description_header"
-                    android:paddingBottom="7dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    style="@style/SmallFont"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/place_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
-                    android:background="@drawable/text_background_round" />
-
-                <TextView
                     android:id="@+id/upcoming_header"
                     android:paddingBottom="7dp"
                     android:paddingTop="10dp"
@@ -102,9 +86,26 @@
                     android:background="@drawable/list_view_background_round" />
 
                 <TextView
-                    android:id="@+id/directions_header"
-                    android:paddingBottom="7dp"
+                    android:id="@+id/description_header"
                     android:paddingTop="10dp"
+                    android:paddingBottom="7dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    style="@style/SmallFont"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/place_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
+                    android:background="@drawable/text_background_round" />
+
+                <TextView
+                    android:id="@+id/directions_header"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="14dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/SmallFont"
@@ -113,7 +114,8 @@
 
                 <FrameLayout
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
+                    android:layout_width="match_parent" >
+
                     <ImageView
                         android:id="@+id/directions_map"
                         android:layout_width="match_parent"

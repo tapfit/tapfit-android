@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
 import co.tapfit.android.adapter.PlaceScheduleListAdapter;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.model.Address;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
@@ -69,7 +73,12 @@ public class PlaceCardFragment extends BaseFragment {
     private void setUpPlaceCardViews() {
 
         ImageView imageView = (ImageView) mView.findViewById(R.id.place_image);
-        imageCache.loadImageForPlacePage(imageView, mPlace.cover_photo);
+        if (mPlace.cover_photo == null) {
+            imageCache.loadImageForPlacePage(imageView, ImageCache.getCoverPhotoUrl(mPlace.category));
+        }
+        else {
+            imageCache.loadImageForPlacePage(imageView, mPlace.cover_photo);
+        }
 
         TextView textView = (TextView) mView.findViewById(R.id.place_description);
         textView.setText(mPlace.source_description);
@@ -82,6 +91,16 @@ public class PlaceCardFragment extends BaseFragment {
 
         textView = (TextView) mView.findViewById(R.id.place_distance);
         textView.setText(String.format("%.1f", mPlace.getDistance()) + " miles away");
+
+        Address address = dbWrapper.getAddress(mPlace.address.id);
+
+        String addressString = address.line1;
+        if (address.line2 != null){
+            addressString = addressString + " " + address.line2;
+        }
+        addressString = addressString + "\n" + address.city + ", " + address.state;
+        textView = (TextView) mView.findViewById(R.id.directions_header);
+        textView.setText(addressString);
 
         ImageView directionsMap = (ImageView) mView.findViewById(R.id.directions_map);
 
@@ -125,6 +144,10 @@ public class PlaceCardFragment extends BaseFragment {
                 ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
             }
         });
+
+        if (mPlace.can_buy == null || mPlace.can_buy == false) {
+            mBottomButton.setVisibility(View.GONE);
+        }
     }
 
     private AdapterView.OnItemClickListener openClassSchedule = new AdapterView.OnItemClickListener() {
