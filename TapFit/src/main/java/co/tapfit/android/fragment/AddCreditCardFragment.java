@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import co.tapfit.android.PaymentsActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.BraintreePayments;
 import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.User;
@@ -51,6 +52,13 @@ public class AddCreditCardFragment extends BaseFragment {
     private Button mAddCreditCard;
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        AnalyticsHelper.getInstance(getActivity()).logEvent("Add Credit Card");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_add_credit_card, null);
@@ -76,6 +84,9 @@ public class AddCreditCardFragment extends BaseFragment {
         mAddCreditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AnalyticsHelper.getInstance(getActivity()).logEvent("Added Credit Card");
+
                 if (mSingleLineCardEntry.isValid()){
                     progressDialog = new ProgressDialog(getActivity());
                     progressDialog.setMessage("Adding Credit Card...");

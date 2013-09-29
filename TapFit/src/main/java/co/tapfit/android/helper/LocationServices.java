@@ -20,10 +20,10 @@ public class LocationServices implements LocationListener {
 
     private static final Integer mGPSMillisecondsToWait = 30 * 60 * 1000;
 
-    private LocationManager mLocationManager;
+    private static LocationManager mLocationManager;
     private String mProvider;
     private static Location mLocation;
-    private Timer gpsTimer;
+    private static Timer gpsTimer;
 
     private static final String TAG = LocationServices.class.getSimpleName();
 
@@ -44,11 +44,13 @@ public class LocationServices implements LocationListener {
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         mLocation = getBestLocation();
 
-        startRecording();
-
     }
 
-    public void startRecording() {
+    public static void stopRecording() {
+        mLocationManager.removeUpdates(ourInstance);
+    }
+
+    public static void startRecording() {
         gpsTimer.cancel();
         gpsTimer = new Timer();
         long checkInterval = mGPSMillisecondsToWait;
@@ -56,27 +58,7 @@ public class LocationServices implements LocationListener {
         // receive updates
         for (String s : mLocationManager.getAllProviders()) {
             mLocationManager.requestLocationUpdates(s, checkInterval,
-                    minDistance, new LocationListener() {
-
-                @Override
-                public void onStatusChanged(String provider,
-                                            int status, Bundle extras) {}
-
-                @Override
-                public void onProviderEnabled(String provider) {}
-
-                @Override
-                public void onProviderDisabled(String provider) {}
-
-                @Override
-                public void onLocationChanged(Location location) {
-                    // if this is a gps location, we can use it
-                    if (location.getProvider().equals(
-                            LocationManager.GPS_PROVIDER)) {
-                        doLocationUpdate(location, true);
-                    }
-                }
-            });
+                    minDistance, ourInstance);
         }
         // start the gps receiver thread
         gpsTimer.scheduleAtFixedRate(new TimerTask() {
@@ -89,7 +71,7 @@ public class LocationServices implements LocationListener {
         }, 0, checkInterval);
     }
 
-    public void doLocationUpdate(Location l, boolean force) {
+    public static void doLocationUpdate(Location l, boolean force) {
         long minDistance = 10;
         Log.d(TAG, "update received:" + l);
         if (l == null) {
@@ -116,7 +98,7 @@ public class LocationServices implements LocationListener {
         // upload/store your location here
     }
 
-    private Location getBestLocation() {
+    private static Location getBestLocation() {
         Location gpslocation = getLocationByProvider(LocationManager.GPS_PROVIDER);
         Location networkLocation =
                 getLocationByProvider(LocationManager.NETWORK_PROVIDER);
@@ -158,7 +140,7 @@ public class LocationServices implements LocationListener {
     /**
      * get the last known location from a specific provider (network/gps)
      */
-    private Location getLocationByProvider(String provider) {
+    private static Location getLocationByProvider(String provider) {
         Location location = null;
         try {
             if (mLocationManager.isProviderEnabled(provider)) {
@@ -172,7 +154,10 @@ public class LocationServices implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        mLocation = location;
+        if (location.getProvider().equals(
+                LocationManager.GPS_PROVIDER)) {
+            doLocationUpdate(location, true);
+        }
     }
 
     @Override

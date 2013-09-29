@@ -9,17 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 
 import co.tapfit.android.MapListActivity;
 import co.tapfit.android.PassActivity;
 import co.tapfit.android.PaymentsActivity;
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.helper.AnalyticsHelper;
+import co.tapfit.android.helper.CreditCardImage;
 import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Pass;
@@ -42,7 +46,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
 
     private static final Integer PAYMENT_ACTIVITY = 1;
 
-    private Button mConfirmPurchase;
+    private FrameLayout mConfirmPurchase;
 
     public static final String WORKOUT_ID = "workout_id";
 
@@ -74,7 +78,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
 
         setUpPayment();
 
-        mConfirmPurchase = (Button) mView.findViewById(R.id.confirm_purchase_button);
+        mConfirmPurchase = (FrameLayout) mView.findViewById(R.id.bottom_button);
         mConfirmPurchase.setOnClickListener(buyWorkout);
     }
 
@@ -102,6 +106,13 @@ public class ConfirmPurchaseFragment extends BaseFragment {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Purchasing " + mWorkout.name);
             progressDialog.show();
+
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("Workout", String.valueOf(mWorkout.id));
+            args.put("Price", String.valueOf(mWorkout.price));
+
+            AnalyticsHelper.getInstance(getActivity()).logEvent("Purchased Workout", args);
+
             WorkoutRequest.buyWorkout(getActivity(), mWorkout, new ResponseCallback() {
                 @Override
                 public void sendCallback(final Object responseObject, String message) {
@@ -143,7 +154,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
     private void setUpPaymentPrompt(CreditCard creditCard) {
         View view = mView.findViewById(R.id.payments);
         ImageView imageView = (ImageView) view.findViewById(R.id.button_icon);
-        imageCache.loadImageForPlacePage(imageView, creditCard.image_url);
+        imageView.setImageResource(CreditCardImage.getCreditCardImageFromUrl(creditCard.image_url));
         imageView.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.content_title)).setText("****" + creditCard.last_four);
         view.setClickable(true);
@@ -165,6 +176,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
     View.OnClickListener showPayments = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            AnalyticsHelper.getInstance(getActivity()).logEvent("Go To Payments Page");
             Intent intent = new Intent(getActivity(), PaymentsActivity.class);
             startActivityForResult(intent, PAYMENT_ACTIVITY);
         }

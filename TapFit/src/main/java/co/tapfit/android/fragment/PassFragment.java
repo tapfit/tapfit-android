@@ -9,7 +9,10 @@ import android.widget.TextView;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.HashMap;
+
 import co.tapfit.android.R;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
@@ -30,6 +33,18 @@ public class PassFragment extends BaseFragment {
     private Place mPlace;
 
     private DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE, MMMM d 'at' h:mma");
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mPass = dbWrapper.getPass(getArguments().getInt(PASS_ID));
+
+        HashMap<String, String> args = new HashMap<String, String>();
+        args.put("Pass", String.valueOf(mPass.id));
+
+        AnalyticsHelper.getInstance(getActivity()).logEvent("Pass");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.tapfit.android.R;
+import co.tapfit.android.helper.CreditCardImage;
 import co.tapfit.android.helper.ImageCache;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.CreditCard;
 
 /**
@@ -72,7 +74,10 @@ public class CreditCardAdapter extends BaseAdapter {
 
         CreditCard creditCard = mCreditCards.get(i);
 
-        mImageCache.loadImageForPlacePage(holder.card_icon, creditCard.image_url);
+        Log.d(TAG, "Credit card image: " + creditCard.image_url);
+
+        holder.card_icon.setImageResource(CreditCardImage.getCreditCardImageFromUrl(creditCard.image_url));
+
         holder.card_number.setText("*****" + creditCard.last_four);
         if (creditCard.default_card) {
             holder.default_icon.setVisibility(View.VISIBLE);

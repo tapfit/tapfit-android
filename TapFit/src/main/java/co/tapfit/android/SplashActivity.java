@@ -9,6 +9,8 @@ import android.view.Menu;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.apache.http.client.protocol.RequestProxyAuthentication;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,7 +44,6 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
-
 
         splashTimer.schedule(new TimerTask() {
             @Override
@@ -107,10 +108,10 @@ public class SplashActivity extends Activity {
             if (SharePref.getBooleanPref(SplashActivity.this, SharePref.KEY_PREFS_FIRST_USE, true)) {
                 intent = new Intent(SplashActivity.this, FirstUseActivity.class);
             }
-            else if (!SharePref.getBooleanPref(SplashActivity.this, SharePref.SELECTED_REGION, false))
+            /*else if (!SharePref.getBooleanPref(SplashActivity.this, SharePref.SELECTED_REGION, false))
             {
                 intent = new Intent(SplashActivity.this, RegionListActivity.class);
-            }
+            }*/
             else
             {
                 intent = new Intent(SplashActivity.this, MapListActivity.class);

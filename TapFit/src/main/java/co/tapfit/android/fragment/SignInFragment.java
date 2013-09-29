@@ -133,13 +133,13 @@ public class SignInFragment extends BaseFragment {
             }
             else
             {
-                alertDialog.setTitle("Success!").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                alertDialog.setTitle("Welcome Back!").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ((SignInActivity) getActivity()).signUpSuccess();
                     }
                 })
-                .setMessage("Sign in Success").show();
+                .setMessage("You are now signed in to TapFit. Enjoy your workout!").show();
             }
         }
     };

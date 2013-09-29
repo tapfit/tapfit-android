@@ -3,34 +3,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/bottom_button"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_width="match_parent"
         android:clickable="true"
-        android:padding="3dp"
-        android:orientation="vertical"
-        android:background="@color/blue"
+        android:background="@color/dark_blue"
         android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/confirm_purchase_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".7"
-            android:background="@color/dark_gray"
-            android:text="Confirm Purchase" />
 
         <TextView
             android:id="@+id/bottom_button_text"
-            android:layout_height="0dp"
-            android:layout_weight=".3"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/tapfit_secure"/>
+            style="@style/Font.Button"
+            android:text="Confirm Purchase"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <ScrollView
         android:layout_height="match_parent"

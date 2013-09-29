@@ -4,46 +4,23 @@
     android:background="@android:color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/bottom_button"
         android:layout_height="50dp"
         android:layout_width="match_parent"
-        android:background="@color/blue"
+        android:clickable="true"
+        android:background="@color/dark_blue"
         android:layout_alignParentBottom="true">
 
-        <LinearLayout
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight=".6"
-            android:orientation="vertical" >
+        <TextView
+            android:id="@+id/bottom_button_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            style="@style/Font.Button"
+            android:text="Buy"/>
 
-            <TextView
-                android:id="@+id/bottom_button_text"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/white"
-                android:text="Workout starts in"/>
-
-            <TextView
-                android:id="@+id/button_bottom_countdown"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/button_bottom_buy_button"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight=".4"
-            android:layout_margin="5dp"
-            android:background="@color/light_blue"
-            android:text="Buy!"
-            android:textColor="@color/white"/>
-
-    </LinearLayout>
+    </FrameLayout>
 
     <ScrollView
         android:layout_height="match_parent"
@@ -114,6 +91,7 @@
                     android:id="@+id/workout_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.2"
                     android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
                     android:background="@drawable/text_background_round" />
 
@@ -132,6 +110,7 @@
                     android:id="@+id/fine_print_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.2"
                     android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
                     android:background="@drawable/text_background_round" />
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.flurry.android.monolithic.sdk.impl.ada;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import co.tapfit.android.PassActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.SignInActivity;
 import co.tapfit.android.adapter.PassListAdapter;
 import co.tapfit.android.model.Pass;
 
@@ -30,12 +32,31 @@ public class PassListFragment extends BaseFragment {
     private View mView;
     private ListView mPassList;
     private PassListAdapter mPassAdapter;
+    private TextView mNoPassText;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setUpView();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_pass_list, null);
 
+        if (dbWrapper.getCurrentUser() == null) {
+            Intent signInIntent = new Intent(getActivity(), SignInActivity.class);
+            startActivity(signInIntent);
+        }
+
+        setUpView();
+
+        return mView;
+    }
+
+    private void setUpView() {
         List<Pass> passes = dbWrapper.getPasses();
 
         Collections.sort(passes);
@@ -46,18 +67,27 @@ public class PassListFragment extends BaseFragment {
 
         mPassList = (ListView) mView.findViewById(R.id.pass_list);
 
-        mPassList.setAdapter(mPassAdapter);
+        mNoPassText = (TextView) mView.findViewById(R.id.no_pass_text);
 
-        mPassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (passes.size() > 0) {
 
-                Intent intent = new Intent(getActivity(), PassActivity.class);
-                intent.putExtra(PassFragment.PASS_ID, ((Pass) adapterView.getItemAtPosition(i)).id);
-                startActivity(intent);
-            }
-        });
+            mPassList.setAdapter(mPassAdapter);
 
-        return mView;
+            mPassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    Intent intent = new Intent(getActivity(), PassActivity.class);
+                    intent.putExtra(PassFragment.PASS_ID, ((Pass) adapterView.getItemAtPosition(i)).id);
+                    startActivity(intent);
+                }
+            });
+        }
+        else
+        {
+            mPassList.setVisibility(View.GONE);
+            mNoPassText.setVisibility(View.VISIBLE);
+
+        }
     }
 }

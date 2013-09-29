@@ -92,8 +92,6 @@ public class Place implements Comparable<Place> {
 
     public void addClassTime(DatabaseWrapper dbWrapper, ClassTime classTime) {
 
-        Log.d(TAG, "place: " + name + ", classTime: " + classTime.classTime);
-
         if (classTimes == null) {
             classTimes = new ArrayList<ClassTime>();
             classTimes.add(classTime);
@@ -108,7 +106,6 @@ public class Place implements Comparable<Place> {
             ClassTime currentTime = currentTimes.next();
             //Log.d(TAG, "place: " + name + ", currentTime: " + currentTime.classTime + ", now: " + DateTime.now());
             if (currentTime.classTime.compareTo(DateTime.now()) < 0) {
-                Log.d(TAG, "place: " + name + ", delete time: " + classTime.classTime);
                 dbWrapper.deleteClassTime(currentTime, id);
                 classTimes.remove(currentTime);
             }
@@ -117,7 +114,6 @@ public class Place implements Comparable<Place> {
             }
         }
         if (shouldAdd) {
-            Log.d(TAG, "place: " + name + ", add classTime: " + classTime.classTime);
             classTimes.add(classTime);
             dbWrapper.createClassTime(classTime, id);
         }

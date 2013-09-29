@@ -68,6 +68,8 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
 
     private CameraPosition mMapLocation;
 
+    private Integer mSentCallToDB = 0;
+
     private Boolean mIsTouched = false;
 
     private View mContentView;
@@ -142,6 +144,8 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
                 mIsTouched = false;
 
                 mLoadingBar.setVisibility(View.VISIBLE);
+                mSentCallToDB++;
+                Log.d(TAG, "Sending places call. mSentCallToDB: " + mSentCallToDB);
                 ((MapListActivity) getParentActivity()).getPlaces(cameraPosition.target);
                 mCameraPosition = cameraPosition;
 
@@ -164,6 +168,8 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
                     ((MapListActivity) getActivity()).setHasShownOutOfAreaMessage(true);
                 }
             }
+
+            addLocationIcons();
             /*if (Place.distanceBetweenPoints(cameraPosition.target, mCameraPosition.target) > 20) {
                 mLoadingBar.setVisibility(View.VISIBLE);
                 ((MapListActivity) getParentActivity()).getPlaces(cameraPosition.target);
@@ -190,14 +196,20 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
 
     public void receivedPlacesCallback() {
         addLocationIcons();
-        mLoadingBar.setVisibility(View.GONE);
+        mSentCallToDB--;
+        Log.d(TAG, "Received places call. mSentCallToDB: " + mSentCallToDB);
+        if (mSentCallToDB <= 0) {
+            mLoadingBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        mLoadingBar.setVisibility(View.GONE);
+        if (mLoadingBar != null) {
+            mLoadingBar.setVisibility(View.GONE);
+        }
     }
 
 
@@ -260,14 +272,16 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
 
     private void addLocationIcons(){
 
+        final CameraPosition cameraPosition = mMap.getCameraPosition();
+
         Thread newThread = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                final List<Place> places = dbWrapper.getPlaces(mCameraPosition.target, 50);
+                final List<Place> places = dbWrapper.getPlaces(cameraPosition.target, 50);
 
                 //final List<Place> places = new ArrayList<Place>();
-                Log.d(TAG, "finishing getting locations from db");
+                Log.d(TAG, "Camera Position: " + cameraPosition.target.latitude + ", " + cameraPosition.target.longitude);
 
                 if (places == null){
                     return;

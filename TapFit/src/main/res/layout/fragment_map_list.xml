@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
+        android:padding="10dp"
         android:text="No Facilities Are Close By You"
         style="@style/Font"
         android:textColor="@color/black"

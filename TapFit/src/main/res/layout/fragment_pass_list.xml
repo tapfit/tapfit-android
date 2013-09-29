@@ -10,4 +10,16 @@
         android:layout_width="match_parent"
         android:background="@drawable/list_view_background_round"/>
 
+    <TextView
+        android:id="@+id/no_pass_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="You have no passes. Once you start using TapFit, your passes will be shown here."
+        style="@style/Font"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
 </LinearLayout>

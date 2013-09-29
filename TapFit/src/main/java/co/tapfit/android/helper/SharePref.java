@@ -86,10 +86,7 @@ public class SharePref {
      */
     public static boolean getBooleanPref(Context context, String key, boolean defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if (key.equals(KEY_PREFS_FIRST_USE)){
-            return true;
-        }
-        else if (key.equals(SELECTED_REGION)){
+        if (key.equals(SELECTED_REGION)){
             return false;
         }
         else {

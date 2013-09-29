@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="rounded_edges">20px</dimen>
-    <dimen name="place_image_size">150dp</dimen>
+    <dimen name="place_image_size">230dp</dimen>
     <dimen name="normal_text_size">15dp</dimen>
     <dimen name="small_button_size">40dp</dimen>
     <dimen name="normal_button_size">50dp</dimen>

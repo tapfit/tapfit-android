@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import java.util.HashMap;
 
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
@@ -56,6 +59,11 @@ public class PlaceCardFragment extends BaseFragment {
         super.onResume();
 
         mPlace = dbWrapper.getPlace(getArguments().getInt(PlaceInfoActivity.PLACE_ID, -1));
+
+        HashMap<String, String> args = new HashMap<String, String>();
+        args.put("Place", mPlace.name);
+
+        AnalyticsHelper.getInstance(getActivity()).logEvent("Place Card", args);
     }
 
 
@@ -81,7 +89,13 @@ public class PlaceCardFragment extends BaseFragment {
         }
 
         TextView textView = (TextView) mView.findViewById(R.id.place_description);
-        textView.setText(mPlace.source_description);
+        if (mPlace.source_description == null || mPlace.source_description.equals("")) {
+            textView.setText(R.string.no_description);
+        }
+        else
+        {
+            textView.setText(mPlace.source_description);
+        }
 
         textView = (TextView) mView.findViewById(R.id.place_name);
         textView.setText(mPlace.name);
@@ -104,6 +118,7 @@ public class PlaceCardFragment extends BaseFragment {
 
         ImageView directionsMap = (ImageView) mView.findViewById(R.id.directions_map);
 
+        directionsMap.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, imageCache.convertDpToPixels(100)));
 
         setUpSaveButton();
 
@@ -141,6 +156,7 @@ public class PlaceCardFragment extends BaseFragment {
         mBottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AnalyticsHelper.getInstance(getActivity()).logEvent("Book a Pass");
                 ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
             }
         });
@@ -155,10 +171,14 @@ public class PlaceCardFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Workout workout = (Workout) adapterView.getItemAtPosition(i);
             if (workout.equals(PlaceScheduleListAdapter.BOTTOM_BAR)) {
+                AnalyticsHelper.getInstance(getActivity()).logEvent("View Class Schedule");
                 ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
             }
             else
             {
+                HashMap<String, String> args = new HashMap<String, String>();
+                args.put("Workout", String.valueOf(workout.id));
+                AnalyticsHelper.getInstance(getActivity()).logEvent("View Class");
                 ((PlaceInfoActivity) getActivity()).openWorkoutCardFromList(workout.id);
             }
         }
@@ -248,13 +268,21 @@ public class PlaceCardFragment extends BaseFragment {
         width = width - imageCache.convertDpToPixels(40);
         int height = imageCache.convertDpToPixels(80);
 
-        return "http://maps.googleapis.com/maps/api/staticmap?center=" + mPlace.address.lat + "," + mPlace.address.lon + "&zoom=19&size=" + width + "x" + height + "&sensor=false";
+        String url = "http://maps.googleapis.com/maps/api/staticmap?center=" + mPlace.address.lat + "," + mPlace.address.lon + "&zoom=19&size=" + width + "x" + height + "&sensor=false";
+
+        Log.d(TAG, "Google Maps Static URL: " + url);
+
+        return url;
     }
 
     private View.OnClickListener callNumber = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("Place", mPlace.name);
+
+            AnalyticsHelper.getInstance(getActivity()).logEvent("Call Number", args);
             String url = "tel:" + mPlace.phone_number;
             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
             startActivity(intent);
@@ -265,6 +293,9 @@ public class PlaceCardFragment extends BaseFragment {
         @Override
         public void onClick(View view) {
 
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("Place", mPlace.name);
+            AnalyticsHelper.getInstance(getActivity()).logEvent("Get Directions", args);
             String url = "http://maps.google.com/maps?saddr=" + LocationServices.getLatLng().latitude + "," + LocationServices.getLatLng().longitude + "&daddr="
                     + mPlace.address.lat + "," + mPlace.address.lon;
 

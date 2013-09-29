@@ -20,6 +20,7 @@ import com.venmo.touch.client.VenmoTouchClient;
 
 import co.tapfit.android.adapter.CreditCardAdapter;
 import co.tapfit.android.fragment.AddCreditCardFragment;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
@@ -42,6 +43,8 @@ public class PaymentsActivity extends BaseActivity {
         super.onResume();
 
         setCreditCardList();
+
+        AnalyticsHelper.getInstance(this).logEvent("Payments Page");
 
     }
 

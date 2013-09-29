@@ -59,6 +59,8 @@ public class SignInActivity extends BaseActivity {
         args.putString(UserRequest.PASSWORD, password);
         mSignUpFragment.setArguments(args);
 
+        getSupportActionBar().setTitle("Sign Up");
+
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mSignUpFragment, SIGN_UP_FRAGMENT).commit();
 
 
@@ -70,6 +72,8 @@ public class SignInActivity extends BaseActivity {
         args.putString(UserRequest.EMAIL, email);
         args.putString(UserRequest.PASSWORD, password);
         mSignInFragment.setArguments(args);
+
+        getSupportActionBar().setTitle("Sign In");
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mSignInFragment, SIGN_IN_FRAGMENT).commit();
 
@@ -110,13 +114,6 @@ public class SignInActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // This ID represents the Home or Up button. In the case of this
-                // activity, the Up button is shown. Use NavUtils to allow users
-                // to navigate up one level in the application structure. For
-                // more details, see the Navigation pattern on Android Design:
-                //
-                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-                //
                 onBackPressed();
                 return true;
         }

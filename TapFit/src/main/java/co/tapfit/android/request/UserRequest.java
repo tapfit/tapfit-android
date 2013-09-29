@@ -779,6 +779,8 @@ public class UserRequest extends Request {
                                 creditCard.default_card = false;
                             }
 
+                            Log.d(TAG, "credit card image: " + creditCard.image_url);
+
                             dbWrapper.addCreditCardToUser(currentUser, creditCard);
                         }
                     }
@@ -857,6 +859,10 @@ public class UserRequest extends Request {
                             dbWrapper.createOrUpdateUser(user);
 
                             SharePref.setIntPref(context, SharePref.CURRENT_USER_ID, user.id);
+                        }
+                        else
+                        {
+                            SharePref.setIntPref(context, SharePref.CURRENT_USER_ID, -1);
                         }
                     }
                     catch (Exception e)

@@ -1,12 +1,16 @@
 package co.tapfit.android.application;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 
+import co.tapfit.android.MapListActivity;
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.ImageCache;
+import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
 import co.tapfit.android.R;
 import co.tapfit.android.helper.RegionBounds;
@@ -45,6 +49,7 @@ public class TapfitApplication extends Application {
         newThread.start();
         ImageCache.initImageLoader(getApplicationContext());
         RegionBounds.getInstance(getApplicationContext());
+        AnalyticsHelper.getInstance(getApplicationContext());
     }
 
 }

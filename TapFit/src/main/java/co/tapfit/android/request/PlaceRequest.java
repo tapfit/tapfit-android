@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.helper.StopWatch;
@@ -49,27 +50,30 @@ public class PlaceRequest extends Request {
     public static final String LAT = "lat";
     public static final String LON = "lon";
 
+    private static final Handler handler = new Handler();
+
     private static StopWatch sw;
 
-    public static void removeCallback(ResponseCallback callback) {
+    public static void removeCallback(ResponseCallback callback)
+    {
         callbacks.remove(callback);
     }
 
-    public static boolean getPlaces(final Context context, LatLng location, boolean forceCall, ResponseCallback callback)
+    public static boolean getPlaces(final Context context, final LatLng location, boolean forceCall, ResponseCallback callback)
     {
         setDatabaseWrapper(context);
 
-        if (callback != null && !callbacks.contains(callback)){
+        if (callback != null){
             callbacks.add(callback);
         }
 
         if (mWaitingForPlacesResponse && !forceCall)
             return true;
 
-        ResultReceiver receiver = new ResultReceiver(new Handler()){
+        ResultReceiver receiver = new ResultReceiver(new Handler()) {
 
             @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData)
+            protected void onReceiveResult(final int resultCode, final Bundle resultData)
             {
                 if (resultCode == 0)
                 {
@@ -85,62 +89,76 @@ public class PlaceRequest extends Request {
                 }
                 else
                 {
-                    String json = resultData.getString(ApiService.REST_RESULT);
-                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+                    Thread thread = new Thread(new Runnable() {
 
-                    JsonParser parser = new JsonParser();
+                        @Override
+                        public void run() {
+                            String json = resultData.getString(ApiService.REST_RESULT);
+                            Log.d(TAG, "code: " + resultCode + ", json: " + json);
 
-                    try
-                    {
-                        JsonObject object = parser.parse(json).getAsJsonObject();
+                            JsonParser parser = new JsonParser();
 
-                        JsonArray array = object.getAsJsonArray("places");
+                            Log.d(TAG, "Place Request result receiver: " + Thread.currentThread().getName());
+                            Log.d(TAG, "LocationRequested: " + location.latitude + ", " + location.longitude);
 
-                        //User currentUser = dbWrapper.getCurrentUser();
+                            final List<Integer> places = new ArrayList<Integer>();
+                            try
+                            {
+                                JsonObject object = parser.parse(json).getAsJsonObject();
 
-                        Log.d(TAG, "array count: " + array.size());
+                                JsonArray array = object.getAsJsonArray("places");
 
-                        ExecutorService execs = Executors.newFixedThreadPool(1, new ThreadFactory() {
-                            @Override
-                            public Thread newThread(Runnable runnable) {
-                                Thread thread = new Thread(runnable);
+                                ExecutorService execs = Executors.newFixedThreadPool(8, new ThreadFactory() {
+                                    @Override
+                                    public Thread newThread(Runnable runnable) {
+                                        Thread thread = new Thread(runnable);
 
-                                thread.setPriority(Thread.MIN_PRIORITY + 1);
+                                        thread.setPriority(Thread.NORM_PRIORITY + 1);
 
-                                return thread;
+                                        return thread;
+                                    }
+                                });
+                                for (JsonElement element : array)
+                                {
+                                    //places.add(parsePlaceJson(element).id);
+                                    execs.execute(new ProcessPlace(element));
+                                }
+
+
+                                execs.shutdown();
+                                execs.awaitTermination(10, TimeUnit.SECONDS);
+
+                                Log.d(TAG, "Finished processing location: " + location.latitude + ", " + location.longitude);
+
                             }
-                        });
+                            catch (Exception e)
+                            {
+                                Log.d(TAG, "Exception: " + e, e);
+                            }
 
-                        List<Future<Integer>> results = new ArrayList<Future<Integer>>();
 
-                        for (JsonElement element : array)
-                        {
+                            mWaitingForPlacesResponse = false;
+                            GOT_INITIAL_PLACES = true;
+                            Log.d(TAG, "GOT_INITIAL_PLACES set to true");
 
-                            Future<Integer> result = execs.submit(new ProcessPlace(element));
-                            results.add(result);
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Iterator iterator = callbacks.iterator();
+
+                                    while (iterator.hasNext()) {
+                                        ResponseCallback cb = (ResponseCallback) iterator.next();
+                                        cb.sendCallback(places, "Success");
+                                        iterator.remove();
+                                    }
+
+                                    sw.stop();
+                                }
+                            });
+                            Log.d(TAG, "places request took: " + sw.getElapsedTime() + "ms");
                         }
-
-                        execs.shutdown();
-
-                    }
-                    catch (Exception e)
-                    {
-                        Log.d(TAG, "Exception: " + e, e);
-                    }
-
-                    Log.d(TAG, "Setting mWaitingForPlacesResponse to false");
-                    mWaitingForPlacesResponse = false;
-                    GOT_INITIAL_PLACES = true;
-                    Iterator iterator = callbacks.iterator();
-
-                    while (iterator.hasNext()) {
-                        ResponseCallback cb = (ResponseCallback) iterator.next();
-                        cb.sendCallback(new Place(), "Success");
-                        iterator.remove();
-                    }
-
-                    sw.stop();
-                    Log.d(TAG, "places request took: " + sw.getElapsedTime() + "ms");
+                    });
+                    thread.start();
                 }
             }
         };
@@ -165,7 +183,7 @@ public class PlaceRequest extends Request {
         return false;
     }
 
-    private static class ProcessPlace implements Callable<Integer> {
+    private static class ProcessPlace implements Runnable {
 
         private final JsonElement element;
 
@@ -173,8 +191,9 @@ public class PlaceRequest extends Request {
             element = jsonElement;
         }
 
-        public Integer call() throws InterruptedException {
-            return parsePlaceJson(element).id;
+        @Override
+        public void run() {
+            parsePlaceJson(element);
         }
     }
 

@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
 
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
@@ -33,7 +36,19 @@ public class WorkoutCardFragment extends BaseFragment {
     private Workout mWorkout;
     private Place mPlace;
 
-    private Button mBuyButton;
+    private FrameLayout mBuyButton;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mWorkout = dbWrapper.getWorkout(getArguments().getInt(WORKOUT_ID, -1));
+
+        mPlace = dbWrapper.getPlace(getArguments().getInt(PlaceInfoActivity.PLACE_ID, -1));
+
+        HashMap<String, String> args = new HashMap<String, String>();
+        args.put("Workout", String.valueOf(mWorkout.id));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,12 +81,19 @@ public class WorkoutCardFragment extends BaseFragment {
         textView.setText(WorkoutFormat.getInstructor(mWorkout.instructor));
 
         textView = (TextView) mView.findViewById(R.id.workout_description);
-        textView.setText(mWorkout.source_description);
+        if (mWorkout.source_description == null)
+        {
+            textView.setText(R.string.no_description);
+        }
+        else
+        {
+            textView.setText(mWorkout.source_description);
+        }
 
         textView = (TextView) mView.findViewById(R.id.fine_print_text);
         textView.setText(mWorkout.fine_print);
 
-        mBuyButton = (Button) mView.findViewById(R.id.button_bottom_buy_button);
+        mBuyButton = (FrameLayout) mView.findViewById(R.id.bottom_button);
         mBuyButton.setOnClickListener(confirmPurchase);
     }
 
@@ -81,13 +103,17 @@ public class WorkoutCardFragment extends BaseFragment {
 
             User user = dbWrapper.getCurrentUser();
 
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("Workout", String.valueOf(mWorkout.id));
+
             if (user != null)
             {
-
+                args.put("User", String.valueOf(user.id));
                 ((PlaceInfoActivity) getActivity()).confirmPurchasePage(mWorkout);
             }
             else
             {
+                args.put("User", "Signed Out");
                 Intent loginActivity = new Intent(getActivity(), SignInActivity.class);
                 startActivityForResult(loginActivity, 1);
             }

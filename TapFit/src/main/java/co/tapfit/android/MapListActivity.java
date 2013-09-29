@@ -1,11 +1,13 @@
 package co.tapfit.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +16,11 @@ import co.tapfit.android.fragment.AccountFragment;
 import co.tapfit.android.fragment.CustomerSupportFragment;
 import co.tapfit.android.fragment.PassListFragment;
 import co.tapfit.android.fragment.TapfitInfoFragment;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
+
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -28,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.flurry.android.monolithic.sdk.impl.acc;
 import com.flurry.android.monolithic.sdk.impl.ft;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -38,6 +44,7 @@ import co.tapfit.android.fragment.PlaceMapFragment;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
+import ly.count.android.api.Countly;
 
 public class MapListActivity extends BaseActivity {
 
@@ -57,20 +64,18 @@ public class MapListActivity extends BaseActivity {
 
     public Boolean WORKOUT_CALLBACK_RECEIVED = false;
 
+    private View mTapfitLogo;
+
     public static final String FAVORITES = "favorite";
     public static final String MAP = "map";
     public static final String PLACE_LIST = "place_list";
     public static final String ACCOUNT = "account";
-    public static final String CUSOMER_SUPPORT = "customer_support";
-    public static final String TAPFIT_INFO = "tapfit_info";
     public static final String PASS_LIST = "pass_list";
 
     private MapListFragment mFavoriteListFragment;
     private MapListFragment mMapListFragment;
     private PlaceMapFragment mPlaceMapFragment;
     private AccountFragment mAccountFragment;
-    private CustomerSupportFragment mCustomerSupportFragment;
-    private TapfitInfoFragment mTapfitInfoFragment;
     private PassListFragment mPassListFragment;
 
     private ProgressDialog progressDialog;
@@ -80,6 +85,48 @@ public class MapListActivity extends BaseActivity {
     private ProgressBar mLoadingBar;
 
     private Boolean mHasShownOutOfAreaMessage = false;
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if (mCurrentFragment.equals(PLACE_LIST) || mCurrentFragment.equals(MAP)) {
+            AnalyticsHelper.getInstance(this).logEvent("Browse");
+        }
+        else if (mCurrentFragment.equals(FAVORITES)) {
+            AnalyticsHelper.getInstance(this).logEvent("Favorites");
+        }
+        else if (mCurrentFragment.equals(ACCOUNT)) {
+            AnalyticsHelper.getInstance(this).logEvent("Account");
+        }
+        else if (mCurrentFragment.equals(PASS_LIST)) {
+            AnalyticsHelper.getInstance(this).logEvent("Passes");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FlurryAgent.onStartSession(this, getString(R.string.flurry_api_key));
+        Countly.sharedInstance().onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        FlurryAgent.onEndSession(this);
+        Countly.sharedInstance().onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+
+        AnalyticsHelper.getInstance(getApplicationContext()).sendEndOfSessionEvent();
+
+        super.onDestroy();
+    }
 
     @Override
     public void onPause(){
@@ -95,6 +142,10 @@ public class MapListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Countly.sharedInstance().init(this, getString(R.string.countly_server), getString(R.string.countly_app_key));
+        Log.d(TAG, "onCreate");
+
         setContentView(R.layout.activity_map_list);
 
         initializeActionBar();
@@ -103,8 +154,9 @@ public class MapListActivity extends BaseActivity {
 
         mMapLocation = CameraPosition.fromLatLngZoom(LocationServices.getLatLng(), 14);
 
-        if (!PlaceRequest.GOT_INITIAL_PLACES) {
 
+        if (!PlaceRequest.GOT_INITIAL_PLACES) {
+            Log.d(TAG, "GOT_INITIAL_PLACES is false");
             if (PlaceRequest.getPlaces(getApplicationContext(), LocationServices.getLatLng(), false, placesCallback)) {
                 Log.d(TAG, "got places, returned true");
                 progressDialog = new ProgressDialog(this);
@@ -157,13 +209,9 @@ public class MapListActivity extends BaseActivity {
 
         mAccountFragment = new AccountFragment();
 
-        mCustomerSupportFragment = new CustomerSupportFragment();
-
-        mTapfitInfoFragment = new TapfitInfoFragment();
-
         mPassListFragment = new PassListFragment();
 
-        replaceFragment(mMapListFragment, PLACE_LIST);
+        replaceFragment(mMapListFragment, PLACE_LIST, true);
 
         mBottomButtonText.setText("View Map");
 
@@ -172,13 +220,13 @@ public class MapListActivity extends BaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        mBottomButton.setBackgroundResource(R.color.light_blue);
+                        mBottomButton.setBackgroundResource(R.color.blue);
                         if (mPlaceMapFragment.isVisible())
                         {
                             CameraPosition position = mPlaceMapFragment.getMapLocationCenter();
                             mMapListFragment.updateLocation(position.target);
                             mMapLocation = position;
-                            replaceFragment(mMapListFragment, PLACE_LIST);
+                            addMapList();
 
                             mBottomButtonText.setText("View Map");
 
@@ -188,13 +236,13 @@ public class MapListActivity extends BaseActivity {
                             mPlaceMapFragment.setLoadingBar(mLoadingBar);
                             mPlaceMapFragment.setLocation(mMapLocation);
                             mPlaceMapFragment.setHasShowOutOfAreaMessage(mHasShownOutOfAreaMessage);
-                            replaceFragment(mPlaceMapFragment, MAP);
+                            replaceFragment(mPlaceMapFragment, MAP, true);
 
                             mBottomButtonText.setText("View List");
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        mBottomButton.setBackgroundResource(R.color.blue);
+                        mBottomButton.setBackgroundResource(R.color.dark_blue);
                         break;
                 }
                 return true;
@@ -208,14 +256,14 @@ public class MapListActivity extends BaseActivity {
         mHasShownOutOfAreaMessage = hasShownOutOfAreaMessage;
     }
 
-    private void replaceFragment(Fragment fragment, String fragmentName) {
+    private void replaceFragment(Fragment fragment, String fragmentName, boolean addToBackStack) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment, fragmentName)
                 .setCustomAnimations(R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom);
 
-        if (mCurrentFragment != null){
-            ft.addToBackStack(mCurrentFragment);
+        if (addToBackStack) {
+            ft.addToBackStack(null);
         }
         ft.commit();
 
@@ -235,7 +283,13 @@ public class MapListActivity extends BaseActivity {
                 R.layout.menu_list_item, R.id.menu_item, mMenuOptions));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+        getSupportActionBar().setCustomView(R.layout.action_bar_logo);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+
+
         mTitle = mDrawerTitle = getTitle();
+
+        getSupportActionBar().setTitle("");
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
@@ -271,9 +325,9 @@ public class MapListActivity extends BaseActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        Log.d(TAG, "drawOpen: " + drawerOpen);
-        menu.findItem(R.id.action_menu).setVisible(!drawerOpen);
+        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        //Log.d(TAG, "drawOpen: " + drawerOpen);
+        //menu.findItem(R.id.action_menu).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -311,11 +365,15 @@ public class MapListActivity extends BaseActivity {
     }
 
     public void showCustomerSupport() {
-        replaceFragment(mCustomerSupportFragment, CUSOMER_SUPPORT);
+        Intent intent = new Intent(this, ExtraSettingsActivity.class);
+        intent.putExtra(ExtraSettingsActivity.PAGE, ExtraSettingsActivity.CUSTOMER_SUPPORT);
+        startActivity(intent);
     }
 
     public void showTapfitInfo() {
-        replaceFragment(mTapfitInfoFragment, TAPFIT_INFO);
+        Intent intent = new Intent(this, ExtraSettingsActivity.class);
+        intent.putExtra(ExtraSettingsActivity.PAGE, ExtraSettingsActivity.TAPFIT_INFO);
+        startActivity(intent);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -338,9 +396,10 @@ public class MapListActivity extends BaseActivity {
 
         if (position == 0) {
 
-            getSupportActionBar().setTitle("TapFit");
+            getSupportActionBar().setTitle("");
 
-            replaceFragment(mMapListFragment, PLACE_LIST);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
+            addMapList();
 
             mBottomButton.setVisibility(View.VISIBLE);
             mBottomButtonText.setText("View Map");
@@ -349,7 +408,8 @@ public class MapListActivity extends BaseActivity {
 
             getSupportActionBar().setTitle("Favorites");
 
-            replaceFragment(mFavoriteListFragment, FAVORITES);
+            replaceFragment(mFavoriteListFragment, FAVORITES, true);
+            getSupportActionBar().setDisplayShowCustomEnabled(false);
 
             mBottomButton.setVisibility(View.GONE);
         }
@@ -357,7 +417,8 @@ public class MapListActivity extends BaseActivity {
 
             getSupportActionBar().setTitle("Passes");
 
-            replaceFragment(mPassListFragment, PASS_LIST);
+            replaceFragment(mPassListFragment, PASS_LIST, true);
+            getSupportActionBar().setDisplayShowCustomEnabled(false);
 
             mBottomButton.setVisibility(View.GONE);
         }
@@ -365,7 +426,8 @@ public class MapListActivity extends BaseActivity {
 
             getSupportActionBar().setTitle("Account");
 
-            replaceFragment(mAccountFragment, ACCOUNT);
+            replaceFragment(mAccountFragment, ACCOUNT, true);
+            getSupportActionBar().setDisplayShowCustomEnabled(false);
 
             mBottomButton.setVisibility(View.GONE);
         }
@@ -373,5 +435,10 @@ public class MapListActivity extends BaseActivity {
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    private void addMapList() {
+        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        replaceFragment(mMapListFragment, PLACE_LIST, true);
     }
 }

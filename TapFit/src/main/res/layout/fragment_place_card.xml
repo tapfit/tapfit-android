@@ -9,7 +9,7 @@
         android:layout_height="50dp"
         android:layout_width="match_parent"
         android:clickable="true"
-        android:background="@color/blue"
+        android:background="@color/dark_blue"
         android:layout_alignParentBottom="true">
 
         <TextView
@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:text="BOOK A PASS"/>
+            style="@style/Font.Button"
+            android:text="Book A Pass"/>
 
     </FrameLayout>
 
@@ -99,6 +100,7 @@
                     android:id="@+id/place_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.2"
                     android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
                     android:background="@drawable/text_background_round" />
 

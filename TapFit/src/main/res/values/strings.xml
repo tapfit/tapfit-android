@@ -3,8 +3,8 @@
 
     <string name="app_name">TapFit</string>
     <string name="action_settings">Settings</string>
-    <string name="tapfit_api">http://staging.tapfit.co/api/</string>
-    <string name="tapfit_url">http://staging.tapfit.co/</string>
+    <string name="tapfit_api">http://www.tapfit.co/api/</string>
+    <string name="tapfit_url">http://www.tapfit.co/</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_base">BaseActivity</string>
     <string name="drawer_open">Open navigation drawer</string>
@@ -13,20 +13,22 @@
     <string name="first_use">Place Holder for First Use Activity</string>
     <string name="tapfit_terms">By confirming the purchase, I agree to TapFit\'s Terms of Use and Privacy Policy</string>
     <string name="tapfit_secure">Information is sent over a secure connection.</string>
-    <string name="braintree_encryption_debug">MIIBCgKCAQEAulUZkkzhyBDqY8heTV34RVnbmawkcgWosUKc/XHRg5XgHbdBB3ncNVTqG3sLhSb/4fTHa5mzbtTkx4NKuaot59RF1ZSw6eFndMabfxSVkW2M0F20mRgxlVsYjGR3yM3eVcrQBRtZ99lV8ck61NfDGt6AOSJh1CGthaijXi0HTZ6iGJK9N7AK/cw2pKM3k97yFGEzU7LuVVBAiZK7Nmlxy1CgRBsBr1SGc4+EKA6BSSGqSa0TjGINWJVG8D0jjJqvZfLSPcc9Vx/Viol8qF6sjZIsuiUPsIrWqc/m98xROq/HuAltEBUNhEh7ryjEbG4+jFWkn8Qwe3JmRzCQ1XpNpwIDAQAB</string>
-    <string name="braintree_encryption_release">MIIBCgKCAQEAyq1NFunBHmKeauBGuN1RX+JzD507Ck/bSJ186DXtW4cusdlK0SdervoMXAdpF/2I5SRtMxXR7P6mEiQaGUD+4j7jBsMqdl6JZ+BTQJ4uFM8pI85dtbAo3IUJPiEAloYYjnrX3ZSRetkPQaqr5spG5EjgOsPUNFV8tEzing271hirDABDTw7OvE9e6MdAFJxQNY7SBJDTW0Qa7a/jOIipwO4S2LffcRcddu46NTzoRqEd3KTiZ5QouUdc1BHUCamiINa9GcfInKqoW8E1BROvj8vVwBX6yjYr3aLvLS4AxacUBHLSmcZ6PyyEQpUNulIL1xbZhigwZv7QHpt1radpqwIDAQAB</string>
-    <string name="flurry_api_key">X59K4VB95Q2SYM67X4KX</string>
-    <string name="braintree_merchant_id_sandbox">ych94qxscjgy583h</string>
-    <string name="braintree_merchant_key_sandbox">hby57z8c3c8hcskc</string>
-    <string name="is_braintree_sandbox">true</string>
     <string name="welcome_message">Welcome to TapFit!\n\nOur team of fitness experts has curated a list of the best gyms and studios in your area. Just browse, book, and go!</string>
-
+    <string name="no_description">No description is available</string>
     <string name="stock_yoga_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/66.jpg</string>
     <string name="stock_pilates_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/55.jpg</string>
     <string name="stock_dance_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/33.jpg</string>
     <string name="stock_cardio_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/64.jpg</string>
     <string name="stock_gym_url">https://s3-us-west-2.amazonaws.com/tapfit-production/images/large/65.jpg</string>
+    <string name="braintree_encryption_debug">MIIBCgKCAQEAulUZkkzhyBDqY8heTV34RVnbmawkcgWosUKc/XHRg5XgHbdBB3ncNVTqG3sLhSb/4fTHa5mzbtTkx4NKuaot59RF1ZSw6eFndMabfxSVkW2M0F20mRgxlVsYjGR3yM3eVcrQBRtZ99lV8ck61NfDGt6AOSJh1CGthaijXi0HTZ6iGJK9N7AK/cw2pKM3k97yFGEzU7LuVVBAiZK7Nmlxy1CgRBsBr1SGc4+EKA6BSSGqSa0TjGINWJVG8D0jjJqvZfLSPcc9Vx/Viol8qF6sjZIsuiUPsIrWqc/m98xROq/HuAltEBUNhEh7ryjEbG4+jFWkn8Qwe3JmRzCQ1XpNpwIDAQAB</string>
+    <string name="braintree_encryption_release">MIIBCgKCAQEAyq1NFunBHmKeauBGuN1RX+JzD507Ck/bSJ186DXtW4cusdlK0SdervoMXAdpF/2I5SRtMxXR7P6mEiQaGUD+4j7jBsMqdl6JZ+BTQJ4uFM8pI85dtbAo3IUJPiEAloYYjnrX3ZSRetkPQaqr5spG5EjgOsPUNFV8tEzing271hirDABDTw7OvE9e6MdAFJxQNY7SBJDTW0Qa7a/jOIipwO4S2LffcRcddu46NTzoRqEd3KTiZ5QouUdc1BHUCamiINa9GcfInKqoW8E1BROvj8vVwBX6yjYr3aLvLS4AxacUBHLSmcZ6PyyEQpUNulIL1xbZhigwZv7QHpt1radpqwIDAQAB</string>
+    <string name="flurry_api_key">X59K4VB95Q2SYM67X4KX</string>
+    <string name="is_braintree_sandbox">false</string>
+    <string name="google_maps_release">AIzaSyDpnZq59YOyye7xDDqFQiVsuCg494ekp8g</string>
+    <string name="google_maps_debug">AIzaSyDczDCIEQBJ5-XRbMF8bGpHo-e65c_5JdY</string>
 
+    <string name="countly_server">https://cloud.count.ly</string>
+    <string name="countly_app_key">9fadcb78fb2f19ec12ff1fe255fa4d836a9c0212</string>
 
     <string-array name="menu_list">
         <item>Home</item>
@@ -44,5 +46,6 @@
     <string name="title_activity_region_list">Locations</string>
     <string name="title_activity_web_view">WebView</string>
     <string name="title_activity_credits">Credits</string>
+    <string name="title_activity_extra_settings">ExtraSettingsActivity</string>
 
 </resources>

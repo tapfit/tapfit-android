@@ -158,6 +158,8 @@ public class ApiService extends IntentService {
                             StatusLine responseStatus = response.getStatusLine();
                             int statusCode = responseStatus != null ? responseStatus.getStatusCode() : 0;
 
+                            Log.d(TAG, "Thread: " + Thread.currentThread().getName());
+
                             // Our ResultReceiver allows us to communicate back the results to the caller. This
                             // class has a method named send() that can send back a code and a Bundle
                             // of data. ResultReceiver and IntentService abstract away all the IPC code

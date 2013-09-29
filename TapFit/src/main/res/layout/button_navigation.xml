@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:scaleType="fitCenter"
         android:layout_centerVertical="true"
+        android:paddingRight="5dp"
         android:adjustViewBounds="true"
         android:visibility="gone"/>
 

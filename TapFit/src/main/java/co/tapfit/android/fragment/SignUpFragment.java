@@ -137,12 +137,12 @@ public class SignUpFragment extends BaseFragment {
             }
             else
             {
-                alertDialog.setTitle("Success!").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                alertDialog.setTitle("Welcome!").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ((SignInActivity) getActivity()).signUpSuccess();
                     }
-                }).setMessage("Sign up Success").show();
+                }).setMessage("You are now a part of TapFit. Enjoy your workout!").show();
             }
         }
     };

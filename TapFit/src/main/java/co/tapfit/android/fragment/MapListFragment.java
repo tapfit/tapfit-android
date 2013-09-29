@@ -17,8 +17,10 @@ import java.util.List;
 import co.tapfit.android.MapListActivity;
 import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
+import co.tapfit.android.SignInActivity;
 import co.tapfit.android.adapter.PlaceListAdapter;
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.Place;
@@ -55,6 +57,9 @@ public class MapListFragment extends BaseFragment {
             ((MapListActivity) getActivity()).getBottomButtonText().setText("View Map");
             updatePlaceList();
         }
+        else if (getArguments().getInt(LIST_TYPE) == FAVORITE_LIST) {
+            initializeFavoriteList();
+        }
     }
 
     @Override
@@ -71,6 +76,11 @@ public class MapListFragment extends BaseFragment {
             initializeMapList();
         }
         else if (mCurrentListType == FAVORITE_LIST) {
+
+            if (dbWrapper.getCurrentUser() == null) {
+                Intent signInIntent = new Intent(getActivity(), SignInActivity.class);
+                startActivity(signInIntent);
+            }
             initializeFavoriteList();
         }
 
@@ -125,15 +135,22 @@ public class MapListFragment extends BaseFragment {
     private void initializeFavoriteList() {
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
 
+        mNoPlaceText = (TextView) mView.findViewById(R.id.no_studios_close_by);
         List<Place> places = dbWrapper.getFavorites();
 
-        if (places != null) {
+        if (places != null && places.size() > 0) {
 
             mPlaceListAdapter = new PlaceListAdapter(getActivity(), dbWrapper.getFavorites());
 
             mPlaceList.setAdapter(mPlaceListAdapter);
 
             mPlaceList.setOnItemClickListener(placeListClickListener);
+        }
+        else
+        {
+            mNoPlaceText.setText("Favorites will be shown here once you save your favorite locations.");
+            mNoPlaceText.setVisibility(View.VISIBLE);
+            mPlaceList.setVisibility(View.VISIBLE);
         }
     }
 

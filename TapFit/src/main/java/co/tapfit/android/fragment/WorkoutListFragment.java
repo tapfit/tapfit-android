@@ -25,6 +25,7 @@ import co.tapfit.android.PlaceInfoActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.adapter.WorkoutAdapter;
 import co.tapfit.android.adapter.WorkoutListAdapter;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
 
@@ -41,6 +42,13 @@ public class WorkoutListFragment extends BaseFragment {
     private TextView mNoWorkoutText;
 
     private ProgressDialog progressDialog;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        AnalyticsHelper.getInstance(getActivity()).logEvent("Workout List");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,7 +111,15 @@ public class WorkoutListFragment extends BaseFragment {
             }
         }
 
-        for (String dateString : sections.keySet()) {
+        ArrayList<String> keys = new ArrayList<String>(sections.keySet());
+
+        /*for (int i = keys.size() - 1; i >= 0; i--){
+            String dateString = keys.get(i);
+            mWorkoutListAdapter.addSection(dateString, new WorkoutAdapter(getActivity(), sections.get(dateString)));
+        }*/
+
+        for (int i = 0; i < keys.size(); i++) {
+            String dateString = keys.get(i);
             mWorkoutListAdapter.addSection(dateString, new WorkoutAdapter(getActivity(), sections.get(dateString)));
         }
 

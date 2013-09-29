@@ -4,7 +4,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="@dimen/small_button_size"
     android:padding="2dp"
-    android:background="@color/blue">
+    android:background="@color/dark_blue">
 
     <TextView
         android:id="@+id/header_date_text"

@@ -33,15 +33,12 @@ public class TouchableWrapper extends FrameLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.d(TAG, "Received disptachTouchEvent: " + ev);
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 lastTouched = SystemClock.uptimeMillis();
-                Log.d(TAG, "Action Down: " + lastTouched);
                 break;
             case MotionEvent.ACTION_UP:
                 final long now = SystemClock.uptimeMillis();
-                Log.d(TAG, "Action Up: now: " + now + ", lastTouched: " + lastTouched + ", SCROLL_TIME: " + SCROLL_TIME);
                 if (now - lastTouched > SCROLL_TIME) {
                     // Update the map
                     updateMapAfterUserInterection.onUpdateMapAfterUserInterection();

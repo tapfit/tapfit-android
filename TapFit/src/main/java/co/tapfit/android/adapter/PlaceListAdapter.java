@@ -125,8 +125,6 @@ public class PlaceListAdapter extends BaseAdapter {
 
         List<ClassTime> classTimes = DatabaseWrapper.getInstance(mContext.getApplicationContext()).getClassTimes(place.id);
 
-        Log.d(TAG, "classTime count: " + classTimes.size());
-
         int timeCount = 0;
 
         String classTimeString = "";
@@ -134,7 +132,7 @@ public class PlaceListAdapter extends BaseAdapter {
             if (LocalDate.now().getDayOfYear() == classTime.classTime.getDayOfYear()) {
                 if ((DateTime.now()).compareTo(classTime.classTime) < 0)
                 {
-                    classTimeString = classTimeString + WorkoutFormat.getDateTimeString(classTime.classTime) + " ";
+                    classTimeString = classTimeString + WorkoutFormat.getDateTimeString(classTime.classTime) + "   ";
                     timeCount++;
                     if (timeCount > 4) {
                         break;

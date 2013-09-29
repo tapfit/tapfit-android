@@ -5,19 +5,26 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.WindowManager;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import co.tapfit.android.R;
+import co.tapfit.android.application.TapfitApplication;
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.LocationServices;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.request.UserRequest;
+import ly.count.android.api.Countly;
 
 public class BaseActivity extends ActionBarActivity {
 
@@ -27,13 +34,14 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FlurryAgent.onStartSession(this, getResources().getString(R.string.flurry_api_key));
+
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        FlurryAgent.onEndSession(this);
+
     }
 
     @Override
@@ -42,9 +50,14 @@ public class BaseActivity extends ActionBarActivity {
 
         dbWrapper = DatabaseWrapper.getInstance(getApplicationContext());
 
-        UserRequest.getMyInfo(getApplicationContext(), null);
-    }
 
+
+        UserRequest.getMyInfo(getApplicationContext(), null);
+
+        if (Build.VERSION.SDK_INT < 11) {
+            getSupportActionBar().setIcon(getResources().getDrawable(R.drawable.transparent_icon));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,7 +67,7 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         if (!isNetworkAvailable()) {
@@ -72,6 +85,7 @@ public class BaseActivity extends ActionBarActivity {
         }
 
         LocationServices.getInstance(getApplicationContext());
+        LocationServices.startRecording();
     }
 
     private boolean isNetworkAvailable() {
@@ -80,5 +94,11 @@ public class BaseActivity extends ActionBarActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-    
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocationServices.stopRecording();
+    }
 }

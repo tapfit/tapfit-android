@@ -4,25 +4,26 @@
     android:layout_height="match_parent"
     tools:context=".PaymentsActivity">
 
+    <Button
+        android:id="@+id/add_card_button"
+        android:layout_height="@dimen/normal_button_size"
+        android:layout_width="match_parent"
+        android:text="Add Credit Card"
+        style="@style/Font.Button"
+        android:layout_alignParentBottom="true"
+        android:background="@color/dark_blue"/>
+
     <RelativeLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_above="@id/add_card_button"
         android:padding="@dimen/padding">
-        <Button
-            android:id="@+id/add_card_button"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Add Credit Card"
-            android:layout_alignParentBottom="true"
-            android:padding="5dp"
-            android:background="@color/blue"/>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/credit_card_list"
             android:layout_alignParentTop="true"
-            android:layout_above="@id/add_card_button"
             android:background="@drawable/list_view_background_round"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>

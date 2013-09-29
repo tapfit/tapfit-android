@@ -69,6 +69,12 @@ public class FirstUseActivity extends BaseActivity {
 
     private boolean mShowActionItem = false;
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Log.d(TAG, "onPause");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +128,8 @@ public class FirstUseActivity extends BaseActivity {
     }
 
     public void endFirstUse() {
+        Log.d(TAG, "Ending first User");
+        SharePref.setBooleanPref(this, SharePref.KEY_PREFS_FIRST_USE, false);
         startActivity(new Intent(FirstUseActivity.this, MapListActivity.class));
         finish();
     }
