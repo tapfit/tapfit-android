@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res" >
+            <file
+                name="numberpicker_up_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_selected.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_pressed.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_disabled_focused.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_focused_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_disabled_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_normal_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_disabled_focused.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_focused_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_input_normal.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_input_pressed.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_input_selected.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_disabled_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_disabled.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_normal.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_disabled_focused_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_disabled_focused_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_normal_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_input_disabled.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_disabled_focused_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_pressed.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_normal.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_disabled_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed_holo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_pressed_holo.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_disabled_focused_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_normal_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_focused_holo_dark.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed_holo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_pressed_holo.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_selected.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_down_disabled.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_normal_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-mdpi/numberpicker_up_focused_holo_light.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_selected.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_pressed.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_disabled_focused.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_focused_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_disabled_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_normal_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_disabled_focused.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_focused_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_input_normal.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_input_pressed.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_input_selected.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_disabled_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_disabled.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_normal.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_disabled_focused_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_disabled_focused_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_normal_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_input_disabled.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_disabled_focused_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_pressed.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_normal.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_disabled_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed_holo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_pressed_holo.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_disabled_focused_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_normal_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_focused_holo_dark.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed_holo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_pressed_holo.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_selected.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_down_disabled.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_normal_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-xhdpi/numberpicker_up_focused_holo_light.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_btn_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_down_btn_holo_light.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="numberpicker_down_btn_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_down_btn_holo_dark.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="numberpicker_input"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_input.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="numberpicker_down_btn"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_down_btn.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="numberpicker_up_btn"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_up_btn.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="numberpicker_up_btn_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_up_btn_holo_dark.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="numberpicker_up_btn_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable/numberpicker_up_btn_holo_light.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/values/styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="NumberPickerInputText"
+                    parent="@android:style/Widget.EditText" >
+                    <item name="android:textAppearance">
+@style/NumberPickerInputText
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                    <item name="android:singleLine">
+true
+                    </item>
+                    <item name="android:background">
+@drawable/numberpicker_input
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerUpButton"
+                    parent="@android:style/Widget.ImageButton" >
+                    <item name="android:background">
+@drawable/numberpicker_up_btn
+                    </item>
+                    <item name="android:paddingTop">
+10dp
+                    </item>
+                    <item name="android:paddingBottom">
+10dp
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerDownButton"
+                    parent="@android:style/Widget.ImageButton" >
+                    <item name="android:background">
+@drawable/numberpicker_down_btn
+                    </item>
+                    <item name="android:paddingTop">
+10dp
+                    </item>
+                    <item name="android:paddingBottom">
+10dp
+                    </item>
+                </style>
+            </file>
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/values/strings.xml"
+                qualifiers="" >
+                <string name="dialog_cancel" >Cancel
+                </string>
+                <string name="dialog_picker_title" >Choose a number
+                </string>
+                <string name="dialog_set_number" >Set
+                </string>
+            </file>
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/values/attrs.xml"
+                qualifiers="" >
+                <attr
+                    name="numberPickerStyle"
+                    format="reference" />
+                <attr
+                    name="numberPickerInputTextStyle"
+                    format="reference" />
+                <attr
+                    name="numberPickerDownButtonStyle"
+                    format="reference" />
+
+                <declare-styleable name="numberpicker" >
+                    <attr
+                        name="startRange"
+                        format="integer" />
+                    <attr
+                        name="endRange"
+                        format="integer" />
+                    <attr
+                        name="defaultValue"
+                        format="integer" />
+                    <attr
+                        name="maxValue"
+                        format="integer" />
+                    <attr
+                        name="wrap"
+                        format="boolean" />
+                </declare-styleable>
+
+                <attr
+                    name="numberPickerUpButtonStyle"
+                    format="reference" />
+            </file>
+            <file
+                name="numberpicker_up_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_up_selected.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_down_pressed.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_up_disabled_focused.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_down_disabled_focused.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_input_normal.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_input_pressed.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_input_selected.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_up_disabled.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_down_normal.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_input_disabled.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_up_pressed.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_up_normal.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_down_selected.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-ldpi/numberpicker_down_disabled.9.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/values-v11/styles.xml"
+                qualifiers="v11" >
+
+                <style
+                    name="NumberPickerInputText"
+                    parent="@android:style/Widget.Holo.EditText" >
+                    <item name="android:paddingTop">
+5dp
+                    </item>
+                    <item name="android:paddingBottom">
+5dp
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                    <item name="android:singleLine">
+true
+                    </item>
+                    <item name="android:textSize">
+20dp
+                    </item>
+                    <item name="android:textColor">
+#FFFFFF
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:background">
+@null
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerDownButtonLight"
+                    parent="@android:style/Widget.Holo.Light.ImageButton" >
+                    <item name="android:background">
+@null
+                    </item>
+                    <item name="android:src">
+@drawable/numberpicker_down_btn_holo_light
+                    </item>
+                    <item name="android:paddingTop">
+5dp
+                    </item>
+                    <item name="android:paddingBottom">
+5dp
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerUpButton"
+                    parent="@android:style/Widget.Holo.ImageButton" >
+                    <item name="android:background">
+@null
+                    </item>
+                    <item name="android:src">
+@drawable/numberpicker_up_btn_holo_dark
+                    </item>
+                    <item name="android:paddingTop">
+10dp
+                    </item>
+                    <item name="android:paddingBottom">
+10dp
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerInputTextLight"
+                    parent="@android:style/Widget.Holo.Light.EditText" >
+                    <item name="android:paddingTop">
+13sp
+                    </item>
+                    <item name="android:paddingBottom">
+13sp
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                    <item name="android:singleLine">
+true
+                    </item>
+                    <item name="android:textSize">
+18sp
+                    </item>
+                    <item name="android:background">
+@null
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerUpButtonLight"
+                    parent="@android:style/Widget.Holo.Light.ImageButton" >
+                    <item name="android:background">
+@null
+                    </item>
+                    <item name="android:src">
+@drawable/numberpicker_up_btn_holo_light
+                    </item>
+                    <item name="android:paddingTop">
+5dp
+                    </item>
+                    <item name="android:paddingBottom">
+5dp
+                    </item>
+                </style>
+
+                <style
+                    name="NumberPickerDownButton"
+                    parent="@android:style/Widget.Holo.ImageButton" >
+                    <item name="android:background">
+@null
+                    </item>
+                    <item name="android:src">
+@drawable/numberpicker_down_btn_holo_dark
+                    </item>
+                    <item name="android:paddingTop">
+10dp
+                    </item>
+                    <item name="android:paddingBottom">
+10dp
+                    </item>
+                </style>
+            </file>
+            <file
+                name="number_picker"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/layout/number_picker.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="pref_number_picker"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/layout/pref_number_picker.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dialog_number_picker"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/layout/dialog_number_picker.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="numberpicker_up_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_selected.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_pressed.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_disabled_focused.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_focused_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_disabled_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_normal_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_disabled_focused.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_focused_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_input_normal.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_input_pressed.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_input_selected.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_disabled_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_disabled.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_normal.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_disabled_focused_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_disabled_focused_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_normal_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_normal_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_input_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_input_disabled.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_disabled_focused_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_pressed.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_normal.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_disabled_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_pressed_holo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_pressed_holo.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_disabled_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_disabled_focused_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_normal_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_focused_holo_dark"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_focused_holo_dark.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_pressed_holo"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_pressed_holo.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_selected"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_selected.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_down_disabled"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_down_disabled.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_normal_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_normal_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="numberpicker_up_focused_holo_light"
+                path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/res/drawable-hdpi/numberpicker_up_focused_holo_light.png"
+                qualifiers="hdpi"
+                type="drawable" />
+        </source>
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/build/res/rs/release" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/home/zackmartinsek/AndroidStudioProjects/TapFitProject/libraries/numberpicker/src/release/res" />
+    </dataSet>
+
+</merger>

@@ -52,6 +52,19 @@
                 android:text="Sign In"
                 style="@style/Font.Button"
                 android:background="@color/dark_blue"/>
+
+            <TextView
+                android:id="@+id/forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Forgot Password?"
+                android:layout_below="@id/signup_button"
+                style="@style/SmallFont"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/blue_link"
+                android:clickable="true" />
+
         </RelativeLayout>
 
 </RelativeLayout>

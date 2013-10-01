@@ -295,6 +295,83 @@ public class UserRequest extends Request {
         }
     }
 
+    public static void resetPassword(final Context context, String email, final ResponseCallback callback) {
+
+        ResultReceiver receiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                if (resultCode == 0)
+                {
+                    Log.d(TAG, "Failed to get result");
+                    if (callback != null){
+                        callback.sendCallback(false, "Cannot communicate with our servers.");
+                    }
+                }
+                else
+                {
+                    String json = resultData.getString(ApiService.REST_RESULT);
+                    Log.d(TAG, "code: " + resultCode + ", json: " + json);
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
+                            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                            .create();
+
+                    JsonParser parser = new JsonParser();
+
+                    String message = "Failed to reset password";
+                    Boolean success = false;
+                    try
+                    {
+                        JsonElement element = parser.parse(json);
+
+                        Log.d(TAG, "userJson: " + json);
+
+                        JsonElement errorElement = element.getAsJsonObject().get("errors");
+                        if (errorElement == null) {
+                            success = true;
+                            message = "Successfully redeemed code";
+                        }
+                        else
+                        {
+                            if (errorElement != null) {
+                                message = errorElement.getAsString();
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(TAG, "Exception: " + e);
+                        if (callback != null) {
+                            callback.sendCallback(false, "Cannot communicate with our servers");
+                        }
+                    }
+
+                    if (callback != null)
+                    {
+                        callback.sendCallback(success, message);
+                    }
+                }
+            }
+
+        };
+
+        Bundle args = new Bundle();
+
+        args.putString("email", email);
+
+        Intent intent = new Intent(context, ApiService.class);
+        intent.putExtra(ApiService.URL, getUrl(context) + "users/forgotpassword");
+        intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+        intent.putExtra(ApiService.PARAMS, args);
+        intent.putExtra(ApiService.RESULT_RECEIVER, receiver);
+
+        context.startService(intent);
+    }
+
     public static final String LOGIN_EMAIL = "email";
     public static final String LOGIN_PASSWORD = "password";
 

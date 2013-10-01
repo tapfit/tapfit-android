@@ -1,26 +1,24 @@
 package co.tapfit.android.fragment;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ToggleButton;
 
-import com.venmo.touch.view.SingleLineCardEntryView;
+import com.michaelnovakjr.numberpicker.NumberPicker;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import co.tapfit.android.FirstUseActivity;
-import co.tapfit.android.MapListActivity;
 import co.tapfit.android.R;
-import co.tapfit.android.helper.BraintreePayments;
+import co.tapfit.android.helper.Search;
+import co.tapfit.android.helper.SharePref;
 
 /**
  * Created by zackmartinsek on 9/20/13.
@@ -42,7 +40,13 @@ public class PreferencesFragment extends BaseFragment {
     private ToggleButton mDance;
     private ToggleButton mWeights;
 
+    private ToggleButton mLowPrice;
+    private ToggleButton mMedPrice;
+    private ToggleButton mHighPrice;
+
     private Button mButton;
+
+    private Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,29 +69,72 @@ public class PreferencesFragment extends BaseFragment {
             progressDialog.setMessage("Finding your workouts...");
             progressDialog.show();
 
+            savePreferencesToShared();
+
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
+
                 @Override
                 public void run() {
-                    progressDialog.cancel();
-                    ((FirstUseActivity) getActivity()).endFirstUse();
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            progressDialog.cancel();
+                            getActivity().onBackPressed();
+                        }
+                    });
                 }
             }, 3000);
+
+
 
         }
     };
 
+    private void savePreferencesToShared() {
+
+        SharePref.setBooleanPref(getActivity(), Search.TIME_MORNING, mMorning.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.TIME_AFTERNOON, mAfternoon.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.TIME_EVENING, mEvening.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.WORKOUT_CROSSFIT, mCrossfit.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.WORKOUT_DANCE, mDance.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.WORKOUT_PILATES, mPilates.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.WORKOUT_SPIN, mSpin.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.WORKOUT_WEIGHTS, mWeights.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.WORKOUT_YOGA, mYoga.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.PRICE_LOW, mLowPrice.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.PRICE_MED, mMedPrice.isChecked());
+        SharePref.setBooleanPref(getActivity(), Search.PRICE_HIGH, mHighPrice.isChecked());
+
+    }
+
     private void getToggleButtons() {
 
         mMorning = (ToggleButton) mView.findViewById(R.id.morning_toggle);
+        mMorning.setChecked(SharePref.getBooleanPref(getActivity(), Search.TIME_MORNING, false));
         mAfternoon = (ToggleButton) mView.findViewById(R.id.afternoon_toggle);
+        mAfternoon.setChecked(SharePref.getBooleanPref(getActivity(), Search.TIME_AFTERNOON, false));
         mEvening = (ToggleButton) mView.findViewById(R.id.evening_toggle);
+        mEvening.setChecked(SharePref.getBooleanPref(getActivity(), Search.TIME_EVENING, false));
         mYoga = (ToggleButton) mView.findViewById(R.id.yoga_toggle);
+        mYoga.setChecked(SharePref.getBooleanPref(getActivity(), Search.WORKOUT_YOGA, false));
         mPilates = (ToggleButton) mView.findViewById(R.id.pilates_toggle);
+        mPilates.setChecked(SharePref.getBooleanPref(getActivity(), Search.WORKOUT_PILATES, false));
         mSpin = (ToggleButton) mView.findViewById(R.id.cardio_toggle);
+        mSpin.setChecked(SharePref.getBooleanPref(getActivity(), Search.WORKOUT_SPIN, false));
         mDance = (ToggleButton) mView.findViewById(R.id.dance_toggle);
+        mDance.setChecked(SharePref.getBooleanPref(getActivity(), Search.WORKOUT_DANCE, false));
         mWeights = (ToggleButton) mView.findViewById(R.id.weights_toggle);
+        mWeights.setChecked(SharePref.getBooleanPref(getActivity(), Search.WORKOUT_WEIGHTS, false));
         mCrossfit = (ToggleButton) mView.findViewById(R.id.crossfit_toggle);
+        mCrossfit.setChecked(SharePref.getBooleanPref(getActivity(), Search.WORKOUT_CROSSFIT, false));
+        mLowPrice = (ToggleButton) mView.findViewById(R.id.low_price_toggle);
+        mLowPrice.setChecked(SharePref.getBooleanPref(getActivity(), Search.PRICE_LOW, false));
+        mMedPrice = (ToggleButton) mView.findViewById(R.id.med_price_toggle);
+        mMedPrice.setChecked(SharePref.getBooleanPref(getActivity(), Search.PRICE_MED, false));
+        mHighPrice = (ToggleButton) mView.findViewById(R.id.high_price_toggle);
+        mHighPrice.setChecked(SharePref.getBooleanPref(getActivity(), Search.PRICE_HIGH, false));
 
         if (Build.VERSION.SDK_INT < 11) {
             changeToggleButtonTextColor(mMorning);
@@ -99,6 +146,9 @@ public class PreferencesFragment extends BaseFragment {
             changeToggleButtonTextColor(mDance);
             changeToggleButtonTextColor(mWeights);
             changeToggleButtonTextColor(mCrossfit);
+            changeToggleButtonTextColor(mLowPrice);
+            changeToggleButtonTextColor(mMedPrice);
+            changeToggleButtonTextColor(mHighPrice);
         }
     }
 

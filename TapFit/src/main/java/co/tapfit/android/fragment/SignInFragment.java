@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.internal.di;
 
+import co.tapfit.android.BaseActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
 import co.tapfit.android.request.ResponseCallback;
@@ -31,11 +33,19 @@ public class SignInFragment extends BaseFragment {
     private EditText mPassword;
 
     private Button mSignIn;
+    private TextView mForgotPasswordLink;
 
     private FrameLayout mShowSignUp;
 
     AlertDialog.Builder alertDialog;
     ProgressDialog progressDialog;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((BaseActivity) getActivity()).getSupportActionBar().setTitle("Sign In");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +93,17 @@ public class SignInFragment extends BaseFragment {
 
         mShowSignUp = (FrameLayout) mView.findViewById(R.id.bottom_button);
         mShowSignUp.setOnClickListener(showSingUp);
+
+        mForgotPasswordLink = (TextView) mView.findViewById(R.id.forgot_password);
+        mForgotPasswordLink.setOnClickListener(showForgotPassword);
     }
+
+    private View.OnClickListener showForgotPassword = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            ((SignInActivity)getActivity()).showForgotPasswordFragment(mEmail.getText().toString());
+        }
+    };
 
     private View.OnClickListener showSingUp = new View.OnClickListener() {
         @Override

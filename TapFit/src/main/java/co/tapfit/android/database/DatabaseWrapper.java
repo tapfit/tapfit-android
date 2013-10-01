@@ -1,6 +1,7 @@
 package co.tapfit.android.database;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.graphics.PointF;
 
 import co.tapfit.android.helper.LocationServices;
@@ -10,18 +11,27 @@ import com.flurry.android.monolithic.sdk.impl.add;
 import com.flurry.android.monolithic.sdk.impl.up;
 import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
+import co.tapfit.android.helper.Range;
+import co.tapfit.android.helper.Search;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Address;
+import co.tapfit.android.model.Category;
+import co.tapfit.android.model.CategoryPlace;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.Instructor;
@@ -30,6 +40,7 @@ import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Region;
 import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
+import co.tapfit.android.view.TouchableWrapper;
 
 /**
  * Created by zackmartinsek on 9/8/13.
@@ -518,6 +529,35 @@ public class DatabaseWrapper {
         }
     }
 
+    public void createCategoryPlace(CategoryPlace relation) {
+        try
+        {
+            QueryBuilder<CategoryPlace, Integer> builder = helper.getCategoryPlaceDao().queryBuilder();
+            builder.where().eq("place_id", relation.place.id).and().eq("category_id", relation.category.id);
+
+            List<CategoryPlace> categoryPlaces = helper.getCategoryPlaceDao().query(builder.prepare());
+
+            if (categoryPlaces.size() < 1) {
+                helper.getCategoryPlaceDao().createOrUpdate(relation);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create relation: " + relation, e);
+        }
+    }
+
+    public void createOrUpdateCategory(Category category) {
+        try
+        {
+            helper.getCategoryDao().createOrUpdate(category);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to create category: " + category, e);
+        }
+    }
+
     public List<Region> getRegions() {
         try
         {
@@ -539,6 +579,146 @@ public class DatabaseWrapper {
         catch (Exception e)
         {
             Log.d(TAG, "Failed to created or update region: " + region, e);
+        }
+    }
+
+    public List<Place> getFilteredPlaces(LatLng location, int radius) {
+        try
+        {
+            PointF center = new PointF((float) location.latitude, (float) location.longitude);
+            PointF p1 = calculateDerivedPosition(center, radius, 0);
+            PointF p2 = calculateDerivedPosition(center, radius, 90);
+            PointF p3 = calculateDerivedPosition(center, radius, 180);
+            PointF p4 = calculateDerivedPosition(center, radius, 270);
+
+            QueryBuilder<Address, Integer> addressBuilder = helper.getAddressDao().queryBuilder();
+
+            addressBuilder.where().between("lat", p3.x, p1.x).and().between("lon", p4.y, p2.y);
+
+            HashMap<DateTime, DateTime> timeIntervals = Search.getInstance(mContext).getWorkoutTimes();
+            List<Range<Double>> priceRanges = Search.getPriceRanges();
+            List<String> categories = Search.getCategoryStrings();
+
+            QueryBuilder<Place, Integer> builder = helper.getPlaceDao().queryBuilder();
+            QueryBuilder<Place, Integer> gymBuilder = helper.getPlaceDao().queryBuilder();
+            Where<Place, Integer> gymWhere = gymBuilder.where();
+
+            if (timeIntervals != null) {
+
+                QueryBuilder<ClassTime, Integer> classTimeBuilder = helper.getClassTimeDao().queryBuilder();
+
+                Where<ClassTime, Integer> where = classTimeBuilder.where();
+
+                for (DateTime begin : timeIntervals.keySet()) {
+                    where.between("classTime", begin.minusSeconds(1), timeIntervals.get(begin).plusSeconds(1));
+                }
+                if (timeIntervals.size() > 1) {
+                    where.or(timeIntervals.size());
+                }
+
+                builder.join(classTimeBuilder);
+            }
+            Where<Place, Integer> where = null;
+            if (priceRanges != null || categories != null)
+            {
+                where = builder.where();
+            }
+            if (priceRanges != null) {
+
+                for (Range<Double> range : priceRanges) {
+                    where.between("lowest_price", range.low - 0.01, range.high + 0.01);
+                    gymWhere.between("lowest_price", range.low - 0.01, range.high + 0.01);
+                }
+                if (priceRanges.size() > 1) {
+                    where.or(priceRanges.size());
+                    gymWhere.or(priceRanges.size());
+                }
+            }
+
+            if (categories != null) {
+
+                QueryBuilder<CategoryPlace, Integer> categoryPlace = makeCategoriesForUser(categories);
+
+                List<CategoryPlace> places = helper.getCategoryPlaceDao().query(categoryPlace.prepare());
+
+                Set<Integer> placeIds = new HashSet<Integer>();
+                for (CategoryPlace place : places)
+                {
+                    placeIds.add(place.place.id);
+                }
+
+                if (categoryPlace != null)
+                {
+                    where.in("category", categories);
+                    where.in("place_id", placeIds);
+                    where.or(2);
+                    if (priceRanges != null)
+                    {
+                        where.and(2);
+                    }
+                    gymWhere.in("category", categories);
+                    gymWhere.in("place_id", placeIds);
+                    gymWhere.or(2);
+                }
+            }
+
+
+            builder.join(addressBuilder).distinct();
+
+            Set<Place> places = new HashSet<Place>(helper.getPlaceDao().query(builder.prepare()));
+
+            gymWhere.gt("facility_type", 0);
+            int addCount = 1;
+            if (priceRanges != null) {
+                addCount = addCount + 1;
+            }
+
+            if (categories != null) {
+                addCount = addCount + 1;
+            }
+
+            if (addCount > 1)
+            {
+                gymWhere.and(addCount);
+            }
+
+            List<Place> dayPassGyms = helper.getPlaceDao().query(gymBuilder.prepare());
+            for (Place place : dayPassGyms) {
+                if (!places.contains(place)) {
+                    places.add(place);
+                }
+            }
+
+            return new ArrayList<Place>(places);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to get filtered places with location: " + location.latitude + ", " + location.longitude, e);
+            return null;
+        }
+    }
+
+    private QueryBuilder<CategoryPlace, Integer> makeCategoriesForUser(List<String> categories) {
+
+        try
+        {
+            QueryBuilder<Category, Integer> categoryBuilder = helper.getCategoryDao().queryBuilder();
+
+            categoryBuilder.where().in("name", categories);
+
+            List<Category> categoryList = helper.getCategoryDao().query(categoryBuilder.prepare());
+
+            QueryBuilder<CategoryPlace, Integer> categoryPlaceQb = helper.getCategoryPlaceDao().queryBuilder();
+
+            categoryPlaceQb.selectColumns("place_id");
+            categoryPlaceQb.where().in("category_id", categoryList);
+
+            return categoryPlaceQb;
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "Failed to getCategories: " + categories, e);
+            return null;
         }
     }
 }

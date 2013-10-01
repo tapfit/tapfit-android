@@ -36,7 +36,7 @@ public class BraintreePayments {
     }
 
     private BraintreePayments(Context context) {
-        if (Boolean.parseBoolean(context.getResources().getString(R.string.is_braintree_sandbox))) {
+        if (Boolean.parseBoolean(context.getString(R.string.is_debug))) {
             mBraintree = new Braintree(context.getResources().getString(R.string.braintree_encryption_debug));
         }
         else {

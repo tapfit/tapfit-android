@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import co.tapfit.android.fragment.AccountFragment;
 import co.tapfit.android.fragment.CustomerSupportFragment;
 import co.tapfit.android.fragment.PassListFragment;
+import co.tapfit.android.fragment.PreferencesFragment;
 import co.tapfit.android.fragment.TapfitInfoFragment;
 import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.LocationServices;
@@ -143,7 +144,14 @@ public class MapListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Countly.sharedInstance().init(this, getString(R.string.countly_server), getString(R.string.countly_app_key));
+        if (Boolean.parseBoolean(getString(R.string.is_debug)))
+        {
+            Countly.sharedInstance().init(this, getString(R.string.countly_server), getString(R.string.countly_app_key_debug));
+        }
+        else
+        {
+            Countly.sharedInstance().init(this, getString(R.string.countly_server), getString(R.string.countly_app_key));
+        }
         Log.d(TAG, "onCreate");
 
         setContentView(R.layout.activity_map_list);
@@ -211,7 +219,7 @@ public class MapListActivity extends BaseActivity {
 
         mPassListFragment = new PassListFragment();
 
-        replaceFragment(mMapListFragment, PLACE_LIST, true);
+        replaceFragment(mMapListFragment, PLACE_LIST, false);
 
         mBottomButtonText.setText("View Map");
 
@@ -348,8 +356,15 @@ public class MapListActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (item.getItemId() == R.id.action_search){
+            replaceFragment(new PreferencesFragment(), "Preferences", true);
+            mBottomButton.setVisibility(View.GONE);
             return true;
+        }
+        else  {
+            if (mDrawerToggle.onOptionsItemSelected(item)) {
+                return true;
+            }
         }
         // Handle your other action bar items...
 
@@ -439,6 +454,6 @@ public class MapListActivity extends BaseActivity {
 
     private void addMapList() {
         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        replaceFragment(mMapListFragment, PLACE_LIST, true);
+        replaceFragment(mMapListFragment, PLACE_LIST, false);
     }
 }

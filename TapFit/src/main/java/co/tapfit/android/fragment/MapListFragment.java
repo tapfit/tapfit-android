@@ -92,7 +92,7 @@ public class MapListFragment extends BaseFragment {
         Log.d(TAG, "initializeMapList: " + mLocation.latitude + ", " + mLocation.longitude);
         mPlaceList = (ListView) mView.findViewById(R.id.place_list);
         mNoPlaceText = (TextView) mView.findViewById(R.id.no_studios_close_by);
-        List<Place> places = dbWrapper.getPlaces(mLocation, 35);
+        List<Place> places = dbWrapper.getFilteredPlaces(mLocation, 50);
 
         if (places != null && places.size() > 0) {
 
@@ -124,7 +124,7 @@ public class MapListFragment extends BaseFragment {
         }
         else
         {
-            List<Place> places = dbWrapper.getPlaces(mLocation, 35);
+            List<Place> places = dbWrapper.getFilteredPlaces(mLocation, 50);
             if (places != null)
             {
                 mPlaceListAdapter.replaceAll(places);

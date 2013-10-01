@@ -35,7 +35,14 @@ public class Request {
 
     protected static String getUrl(Context context)
     {
-        return context.getString(R.string.tapfit_api);
+        if (Boolean.parseBoolean(context.getString(R.string.is_debug)))
+        {
+            return context.getString(R.string.debug_tapfit_api);
+        }
+        else
+        {
+            return context.getString(R.string.tapfit_api);
+        }
     }
 
     protected static DatabaseWrapper dbWrapper;

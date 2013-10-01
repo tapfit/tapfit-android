@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:picker="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@color/dark_blue"
     android:layout_height="match_parent">
@@ -38,7 +39,6 @@
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
                 android:padding="@dimen/padding">
 
                 <ToggleButton
@@ -82,8 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/padding"
-                android:layout_marginTop="10dp">
+                android:padding="@dimen/padding">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -112,8 +111,8 @@
                         android:id="@+id/cardio_toggle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textOn="Spin"
-                        android:textOff="Spin"
+                        android:textOn="Cardio"
+                        android:textOff="Cardio"
                         android:textColor="@color/white"
                         android:layout_weight=".3"/>
 
@@ -153,6 +152,56 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Price?"
+                style="@style/Font"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding" >
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/low_price_toggle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textOn="$"
+                        android:textOff="$"
+                        android:textColor="@color/white"
+                        android:layout_weight=".3"/>
+
+                    <ToggleButton
+                        android:id="@+id/med_price_toggle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textOn="$$"
+                        android:textOff="$$"
+                        android:textColor="@color/white"
+                        android:layout_weight=".3"/>
+
+                    <ToggleButton
+                        android:id="@+id/high_price_toggle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textOn="$$$"
+                        android:textOff="$$$"
+                        android:textColor="@color/white"
+                        android:layout_weight=".3"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

@@ -5,6 +5,10 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
+import com.urbanairship.AirshipConfigOptions;
+import com.urbanairship.Logger;
+import com.urbanairship.UAirship;
+import com.urbanairship.push.PushManager;
 
 import co.tapfit.android.MapListActivity;
 import co.tapfit.android.database.DatabaseWrapper;
@@ -50,6 +54,30 @@ public class TapfitApplication extends Application {
         ImageCache.initImageLoader(getApplicationContext());
         RegionBounds.getInstance(getApplicationContext());
         AnalyticsHelper.getInstance(getApplicationContext());
+
+        AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
+        options.gcmSender = "172020553611";
+        options.transport = "gcm";
+        options.developmentAppKey = "toI5SLoiR4CsE0tutnLp2Q";
+        options.developmentAppSecret = "DtAuCd6UQKu4SqW1YQimGw";
+        options.productionAppKey = "byKer-K9QnyxmdFWx0IZIg";
+        options.productionAppSecret = "LShp0YY8R5-Z3ebfe7fRqA";
+        if (Boolean.valueOf(getString(R.string.is_debug)))
+        {
+            options.inProduction = false;
+        }
+        else
+        {
+            options.inProduction = true;
+        }
+
+// Take off initializes the services
+        UAirship.takeOff(this, options);
+        PushManager.enablePush();
+
+        String apid = PushManager.shared().getAPID();
+        Logger.info("My Application onCreate - App APID: " + apid);
+        Log.d(TAG, "APID: " + apid);
     }
 
 }

@@ -36,7 +36,7 @@ public class Place implements Comparable<Place> {
 
     }
 
-    @DatabaseField(id = true)
+    @DatabaseField(id = true, columnName = "place_id")
     public Integer id;
 
     @DatabaseField
@@ -193,5 +193,10 @@ public class Place implements Comparable<Place> {
         }
 
         return this.id.equals(((Place) other).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

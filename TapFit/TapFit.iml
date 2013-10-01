@@ -13,6 +13,7 @@
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
         <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+        <option name="APK_PATH" value="/build/apk/TapFit-debug-unaligned.apk" />
       </configuration>
     </facet>
     <facet type="android-gradle" name="Android-Gradle">
@@ -85,6 +86,16 @@
     <orderEntry type="library" exported="" name="joda-time-2.3" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.46" level="project" />
     <orderEntry type="module" module-name="facebook" exported="" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/urbanairship-lib-3.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="numberpicker" exported="" />
   </component>
 </module>
 

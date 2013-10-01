@@ -30,6 +30,8 @@ import java.util.concurrent.TimeUnit;
 
 import co.tapfit.android.helper.DateTimeDeserializer;
 import co.tapfit.android.helper.StopWatch;
+import co.tapfit.android.model.Category;
+import co.tapfit.android.model.CategoryPlace;
 import co.tapfit.android.model.ClassTime;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.User;
@@ -212,6 +214,18 @@ public class PlaceRequest extends Request {
                 classTime.place = place;
                 //dbWrapper.createClassTime(classTime);
                 place.addClassTime(dbWrapper, classTime);
+            }
+
+            for (JsonElement categoryElement : element.getAsJsonObject().getAsJsonArray("categories")) {
+
+                Category category = gson.fromJson(categoryElement, Category.class);
+
+                dbWrapper.createOrUpdateCategory(category);
+
+                CategoryPlace relation = new CategoryPlace(place, category);
+
+                dbWrapper.createCategoryPlace(relation);
+
             }
         }
         catch (Exception e)

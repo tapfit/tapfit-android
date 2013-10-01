@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Session;
+
 import java.text.DecimalFormat;
 
 import co.tapfit.android.CreditsActivity;
@@ -126,6 +128,10 @@ public class AccountFragment extends BaseFragment {
                     @Override
                     public void sendCallback(Object responseObject, String message) {
 
+                        Session session = Session.getActiveSession();
+                        if (session.isOpened()) {
+                            session.closeAndClearTokenInformation();
+                        }
                         AccountFragment accountFragment = new AccountFragment();
 
                         ((MapListActivity) getActivity()).setAccountFragment(accountFragment);
