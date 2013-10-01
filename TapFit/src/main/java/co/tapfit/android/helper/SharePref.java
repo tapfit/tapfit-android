@@ -54,16 +54,7 @@ public class SharePref {
     public static final String KEY_PREFS_FIRST_USE = "firstUse";
     public static final String SELECTED_REGION = "region";
 
-    public static final String PREF_MORNING = "morning";
-    public static final String PREF_AFTEROON = "afteroon";
-    public static final String PREF_EVENING = "evening";
-
-    public static final String PREF_YOGA = "yoga";
-    public static final String PREF_PILATES = "pilates";
-    public static final String PREF_DANCE = "dance";
-    public static final String PREF_SPIN = "spin";
-    public static final String PREF_CROSSFIT = "crossfit";
-    public static final String PREF_WEIGHTS = "weights";
+    public static final String AUTH_TOKEN = "auth_token";
 
     private SharePref() {
         // Do not allow this to be instantiated.
@@ -104,5 +95,17 @@ public class SharePref {
     public static int getIntPref(Context context, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(key, -1);
+    }
+
+    public static void setStringPref(Context context, String key, String value) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getStringPref(Context context, String key) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(key, "");
     }
 }

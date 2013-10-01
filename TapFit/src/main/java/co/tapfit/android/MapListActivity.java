@@ -58,6 +58,8 @@ public class MapListActivity extends BaseActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
+    private Boolean mShowFilter = true;
+
     private TextView mBottomButtonText;
     private FrameLayout mBottomButton;
 
@@ -93,6 +95,8 @@ public class MapListActivity extends BaseActivity {
 
         if (mCurrentFragment.equals(PLACE_LIST) || mCurrentFragment.equals(MAP)) {
             AnalyticsHelper.getInstance(this).logEvent("Browse");
+            mShowFilter = true;
+            supportInvalidateOptionsMenu();
         }
         else if (mCurrentFragment.equals(FAVORITES)) {
             AnalyticsHelper.getInstance(this).logEvent("Favorites");
@@ -138,6 +142,11 @@ public class MapListActivity extends BaseActivity {
 
     public void setAccountFragment(AccountFragment accountFragment) {
         this.mAccountFragment = accountFragment;
+    }
+
+    public void setActionItemVisibility() {
+        mShowFilter = true;
+        supportInvalidateOptionsMenu();
     }
 
     @Override
@@ -336,6 +345,7 @@ public class MapListActivity extends BaseActivity {
         //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         //Log.d(TAG, "drawOpen: " + drawerOpen);
         //menu.findItem(R.id.action_menu).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_search).setVisible(mShowFilter);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -357,8 +367,13 @@ public class MapListActivity extends BaseActivity {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         if (item.getItemId() == R.id.action_search){
-            replaceFragment(new PreferencesFragment(), "Preferences", true);
-            mBottomButton.setVisibility(View.GONE);
+            if (getSupportFragmentManager().findFragmentByTag("Preferences") == null)
+            {
+                replaceFragment(new PreferencesFragment(), "Preferences", true);
+                mBottomButton.setVisibility(View.GONE);
+                mShowFilter = false;
+                supportInvalidateOptionsMenu();
+            }
             return true;
         }
         else  {
@@ -418,6 +433,8 @@ public class MapListActivity extends BaseActivity {
 
             mBottomButton.setVisibility(View.VISIBLE);
             mBottomButtonText.setText("View Map");
+            mShowFilter = true;
+            supportInvalidateOptionsMenu();
         }
         else if (position == 1) {
 
@@ -427,6 +444,8 @@ public class MapListActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowCustomEnabled(false);
 
             mBottomButton.setVisibility(View.GONE);
+            mShowFilter = false;
+            supportInvalidateOptionsMenu();
         }
         else if (position == 2) {
 
@@ -436,6 +455,8 @@ public class MapListActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowCustomEnabled(false);
 
             mBottomButton.setVisibility(View.GONE);
+            mShowFilter = false;
+            supportInvalidateOptionsMenu();
         }
         else if (position == 3) {
 
@@ -445,6 +466,8 @@ public class MapListActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowCustomEnabled(false);
 
             mBottomButton.setVisibility(View.GONE);
+            mShowFilter = false;
+            supportInvalidateOptionsMenu();
         }
 
         // Highlight the selected item, update the title, and close the drawer
@@ -453,7 +476,34 @@ public class MapListActivity extends BaseActivity {
     }
 
     private void addMapList() {
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+            Log.d(TAG, "Fragment: " + fm.getBackStackEntryAt(i));
+        }
+
         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        replaceFragment(mMapListFragment, PLACE_LIST, false);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (mCurrentFragment == FAVORITES){
+            ft.remove(mFavoriteListFragment);
+        }
+        else if (mCurrentFragment == ACCOUNT) {
+            ft.remove(mAccountFragment);
+        }
+        else if (mCurrentFragment == PLACE_LIST) {
+
+        }
+        else if (mCurrentFragment == MAP) {
+            ft.remove(mPlaceMapFragment);
+        }
+        else if (mCurrentFragment == PASS_LIST) {
+            ft.remove(mPassListFragment);
+        }
+        ft.commit();
+
+        mCurrentFragment = PASS_LIST;
+        //replaceFragment(mMapListFragment, PLACE_LIST, false);
     }
 }

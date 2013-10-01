@@ -157,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Price?"
+                android:text="Most you would pay?"
                 style="@style/Font"
                 android:gravity="center" />
 
@@ -176,8 +176,8 @@
                         android:id="@+id/low_price_toggle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textOn="$"
-                        android:textOff="$"
+                        android:textOn="$10"
+                        android:textOff="$10"
                         android:textColor="@color/white"
                         android:layout_weight=".3"/>
 
@@ -185,8 +185,8 @@
                         android:id="@+id/med_price_toggle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textOn="$$"
-                        android:textOff="$$"
+                        android:textOn="$20"
+                        android:textOff="$20"
                         android:textColor="@color/white"
                         android:layout_weight=".3"/>
 
@@ -194,8 +194,8 @@
                         android:id="@+id/high_price_toggle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textOn="$$$"
-                        android:textOff="$$$"
+                        android:textOn="$20+"
+                        android:textOff="$20+"
                         android:textColor="@color/white"
                         android:layout_weight=".3"/>
 

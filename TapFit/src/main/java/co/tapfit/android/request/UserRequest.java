@@ -476,6 +476,7 @@ public class UserRequest extends Request {
                     User user = dbWrapper.getCurrentUser();
 
                     SharePref.setIntPref(context, SharePref.CURRENT_USER_ID, -1);
+                    SharePref.setStringPref(context, SharePref.AUTH_TOKEN, "");
 
                     if (callback != null)
                     {
@@ -957,10 +958,13 @@ public class UserRequest extends Request {
 
         User currentUser = dbWrapper.getCurrentUser();
 
-        if (currentUser != null) {
+        String authToken = SharePref.getStringPref(context, SharePref.AUTH_TOKEN);
+
+
+        if (currentUser != null || !authToken.equals("")) {
 
             Bundle args = new Bundle();
-            args.putString(AUTH_TOKEN, currentUser.auth_token);
+            args.putString(AUTH_TOKEN, authToken);
 
             Intent intent = new Intent(context, ApiService.class);
             intent.putExtra(ApiService.URL, getUrl(context) + "me");

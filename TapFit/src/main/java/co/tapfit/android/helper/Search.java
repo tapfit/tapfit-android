@@ -86,16 +86,10 @@ public class Search {
             range.high = 10.0;
             priceRanges.add(range);
         }
-        if (SharePref.getBooleanPref(mContext, PRICE_MED, false)) {
+        else if (SharePref.getBooleanPref(mContext, PRICE_MED, false)) {
             Range<Double> range = new Range<Double>();
-            range.low = 10.0;
+            range.low = 0.0;
             range.high = 20.0;
-            priceRanges.add(range);
-        }
-        if (SharePref.getBooleanPref(mContext, PRICE_HIGH, false)) {
-            Range<Double> range = new Range<Double>();
-            range.low = 20.0;
-            range.high = 100.0;
             priceRanges.add(range);
         }
 

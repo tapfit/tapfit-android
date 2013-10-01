@@ -45,7 +45,7 @@ public class Place implements Comparable<Place> {
     @DatabaseField
     public Boolean can_buy;
 
-    @DatabaseField
+    @DatabaseField(index = true)
     public String category;
 
     @DatabaseField
@@ -57,7 +57,7 @@ public class Place implements Comparable<Place> {
     @DatabaseField
     public Double lowest_price;
 
-    @DatabaseField
+    @DatabaseField(index = true)
     public Integer facility_type;
 
     @DatabaseField

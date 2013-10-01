@@ -53,8 +53,11 @@ public class MapListFragment extends BaseFragment {
         super.onResume();
 
         if (getArguments().getInt(LIST_TYPE) == MAP_LIST) {
-            ((MapListActivity) getActivity()).getBottomButton().setVisibility(View.VISIBLE);
-            ((MapListActivity) getActivity()).getBottomButtonText().setText("View Map");
+            if (getActivity() instanceof MapListActivity){
+                ((MapListActivity) getActivity()).setActionItemVisibility();
+                ((MapListActivity) getActivity()).getBottomButton().setVisibility(View.VISIBLE);
+                ((MapListActivity) getActivity()).getBottomButtonText().setText("View Map");
+            }
             updatePlaceList();
         }
         else if (getArguments().getInt(LIST_TYPE) == FAVORITE_LIST) {

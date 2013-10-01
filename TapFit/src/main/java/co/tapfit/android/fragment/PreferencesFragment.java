@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
-import com.michaelnovakjr.numberpicker.NumberPicker;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 import co.tapfit.android.FirstUseActivity;
+import co.tapfit.android.MapListActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.helper.Search;
 import co.tapfit.android.helper.SharePref;
@@ -150,7 +149,58 @@ public class PreferencesFragment extends BaseFragment {
             changeToggleButtonTextColor(mMedPrice);
             changeToggleButtonTextColor(mHighPrice);
         }
+
+        setUpPriceToggle();
     }
+
+    private void setUpPriceToggle() {
+        mLowPrice.setOnClickListener(lowPriceClicked);
+        mMedPrice.setOnClickListener(medPriceClicked);
+        mHighPrice.setOnClickListener(highPriceClicked);
+
+        if (SharePref.getBooleanPref(getActivity(), Search.PRICE_LOW, false))
+        {
+            mLowPrice.setChecked(true);
+            mMedPrice.setChecked(false);
+            mHighPrice.setChecked(false);
+        }
+        else if (SharePref.getBooleanPref(getActivity(), Search.PRICE_MED, false))
+        {
+            mLowPrice.setChecked(false);
+            mMedPrice.setChecked(true);
+            mHighPrice.setChecked(false);
+        }
+        else
+        {
+            mLowPrice.setChecked(false);
+            mMedPrice.setChecked(false);
+            mHighPrice.setChecked(true);
+        }
+    }
+
+    private View.OnClickListener lowPriceClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mMedPrice.setChecked(false);
+            mHighPrice.setChecked(false);
+        }
+    };
+
+    private View.OnClickListener medPriceClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mLowPrice.setChecked(false);
+            mHighPrice.setChecked(false);
+        }
+    };
+
+    private View.OnClickListener highPriceClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mMedPrice.setChecked(false);
+            mLowPrice.setChecked(false);
+        }
+    };
 
     private void changeToggleButtonTextColor(ToggleButton button) {
         button.setTextColor(getResources().getColor(R.color.black));

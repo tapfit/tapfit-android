@@ -1,1 +1,1 @@
-include ':libraries:numberpicker', ':libraries:facebook', ':libraries:android-maps-extensions', ':libraries:countly-sdk-android', ':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch', ':TapFit'
+include ':libraries:facebook', ':libraries:android-maps-extensions', ':libraries:countly-sdk-android', ':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch', ':TapFit'

@@ -10,7 +10,6 @@
       <module fileurl="file://$PROJECT_DIR$/libraries/facebook/facebook.iml" filepath="$PROJECT_DIR$/libraries/facebook/facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/gradle/gradle.iml" filepath="$PROJECT_DIR$/gradle/gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/number-picker/number-picker1.iml" filepath="$PROJECT_DIR$/libraries/number-picker/number-picker1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/numberpicker/numberpicker.iml" filepath="$PROJECT_DIR$/libraries/numberpicker/numberpicker.iml" />
     </modules>
   </component>
 </project>

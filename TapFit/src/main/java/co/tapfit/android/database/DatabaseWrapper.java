@@ -194,6 +194,8 @@ public class DatabaseWrapper {
                 user.credit_amount = 0.0;
             }
 
+            SharePref.setStringPref(mContext, SharePref.AUTH_TOKEN, user.auth_token);
+
             helper.getUserDao().createOrUpdate(user);
         }
         catch (Exception e)
