@@ -82,7 +82,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDczDCIEQBJ5-XRbMF8bGpHo-e65c_5JdY" />
+            android:value="AIzaSyDpnZq59YOyye7xDDqFQiVsuCg494ekp8g" />
 
         <activity
             android:name="co.tapfit.android.PlaceInfoActivity"

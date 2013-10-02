@@ -265,8 +265,6 @@ public class MapListActivity extends BaseActivity {
                 return true;
             }
         });
-
-        mBottomButton.setOnClickListener(switchMapAndList);
     }
 
     public void setHasShownOutOfAreaMessage(Boolean hasShownOutOfAreaMessage) {
@@ -331,13 +329,6 @@ public class MapListActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.red));
     }
-
-    View.OnClickListener switchMapAndList = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-        }
-    };
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

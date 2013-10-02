@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import co.tapfit.android.MapListActivity;
 import co.tapfit.android.PassActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
@@ -38,6 +39,9 @@ public class PassListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        if (getActivity() instanceof MapListActivity) {
+            ((MapListActivity) getActivity()).getSupportActionBar().setTitle("Passes");
+        }
         setUpView();
     }
 

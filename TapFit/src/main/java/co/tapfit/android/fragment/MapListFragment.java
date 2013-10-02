@@ -57,10 +57,16 @@ public class MapListFragment extends BaseFragment {
                 ((MapListActivity) getActivity()).setActionItemVisibility();
                 ((MapListActivity) getActivity()).getBottomButton().setVisibility(View.VISIBLE);
                 ((MapListActivity) getActivity()).getBottomButtonText().setText("View Map");
+                ((MapListActivity) getActivity()).getSupportActionBar().setTitle("");
+
+                ((MapListActivity) getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(true);
             }
             updatePlaceList();
         }
         else if (getArguments().getInt(LIST_TYPE) == FAVORITE_LIST) {
+            if (getActivity() instanceof MapListActivity) {
+                ((MapListActivity) getActivity()).getSupportActionBar().setTitle("Favorites");
+            }
             initializeFavoriteList();
         }
     }

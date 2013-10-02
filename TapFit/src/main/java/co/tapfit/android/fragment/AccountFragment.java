@@ -41,6 +41,10 @@ public class AccountFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        if (getActivity() instanceof MapListActivity) {
+            ((MapListActivity) getActivity()).getSupportActionBar().setTitle("Account");
+        }
+
         DecimalFormat df = new DecimalFormat("0.00");
 
         mUser = dbWrapper.getCurrentUser();
