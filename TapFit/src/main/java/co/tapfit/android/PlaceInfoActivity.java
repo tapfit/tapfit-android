@@ -1,8 +1,15 @@
 package co.tapfit.android;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import co.tapfit.android.fragment.ConfirmPurchaseFragment;
 import co.tapfit.android.fragment.PassFragment;
@@ -40,7 +47,7 @@ public class PlaceInfoActivity extends BaseActivity {
 
         setupActionBar();
 
-        setUpFragments();
+        //setUpFragments();
 
         getWorkoutsFromServer();
     }
@@ -60,6 +67,28 @@ public class PlaceInfoActivity extends BaseActivity {
     private void setupActionBar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mPlace.name);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        Bundle args = new Bundle();
+        args.putInt(PLACE_ID, mPlace.id);
+
+        ActionBar.Tab scheduleTab = actionBar.newTab().setText("Passes").setTabListener(new TabListener<WorkoutListFragment>(this, WORKOUT_LIST_FRAGMENT, WorkoutListFragment.class, args));
+
+
+        ActionBar.Tab infoTab = actionBar.newTab().setText("Info").setTabListener(new TabListener<PlaceCardFragment>(this, "PlaceCard", PlaceCardFragment.class, args));
+
+        actionBar.addTab(scheduleTab);
+        actionBar.addTab(infoTab);
+    }
+
+    public void openWorkoutCardFromList(Integer workoutId) {
+        Intent intent = new Intent(this, ConfirmPurchaseActivity.class);
+        intent.putExtra(PLACE_ID, mPlace.id);
+        intent.putExtra(ConfirmPurchaseFragment.WORKOUT_ID, workoutId);
+
+        startActivity(intent);
     }
 
     @Override
@@ -95,20 +124,7 @@ public class PlaceInfoActivity extends BaseActivity {
 
     }
 
-    public void openWorkoutCardFromList(Integer workoutId) {
 
-        if (mWorkoutCardFragment == null) {
-            mWorkoutCardFragment = new WorkoutCardFragment();
-        }
-
-        Bundle args = new Bundle();
-        args.putInt(WorkoutCardFragment.WORKOUT_ID, workoutId);
-        args.putInt(PLACE_ID, mPlace.id);
-
-        mWorkoutCardFragment.setArguments(args);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutCardFragment, WORKOUT_CARD_FRAGMENT).addToBackStack(WORKOUT_LIST_FRAGMENT).commit();
-    }
 
     public void confirmPurchasePage(Workout workout) {
 
@@ -139,12 +155,11 @@ public class PlaceInfoActivity extends BaseActivity {
             WORKOUT_CALLBACK_RECEIVED = true;
             if (responseObject != null)
             {
-                if (mWorkoutListFragment != null && mWorkoutListFragment.isResumed()) {
-                    mWorkoutListFragment.receivedWorkouts();
-                }
-                else if (mPlaceCardFragment != null && mPlaceCardFragment.isResumed())
-                {
-                    mPlaceCardFragment.receivedWorkouts();
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(WORKOUT_LIST_FRAGMENT);
+
+                if (fragment != null && fragment instanceof WorkoutListFragment) {
+                    WorkoutListFragment workoutListFragment = (WorkoutListFragment) fragment;
+                    workoutListFragment.receivedWorkouts();
                 }
             }
             else
@@ -153,4 +168,48 @@ public class PlaceInfoActivity extends BaseActivity {
             }
         }
     };
+
+    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
+        private final ActionBarActivity mActivity;
+        private final String mTag;
+        private final Class<T> mClass;
+        private final Bundle mArgs;
+        private Fragment mFragment;
+
+        public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
+            this(activity, tag, clz, null);
+        }
+
+        public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
+            mActivity = activity;
+            mTag = tag;
+            mClass = clz;
+            mArgs = args;
+
+            // Check to see if we already have a fragment for this tab, probably
+            // from a previously saved state.  If so, deactivate it, because our
+            // initial state is that a tab isn't shown.
+            mFragment = mActivity.getSupportFragmentManager().findFragmentByTag(mTag);
+            if (mFragment != null && !mFragment.isDetached()) {
+                FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
+                ft.detach(mFragment);
+                ft.commit();
+            }
+        }
+
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+            if (mFragment == null) {
+                mFragment = Fragment.instantiate(mActivity, mClass.getName(), mArgs);
+            }
+            ft.replace(android.R.id.content, mFragment, mTag);
+        }
+
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            //Toast.makeText(mActivity, "Unselected!", Toast.LENGTH_SHORT).show();
+        }
+
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            //Toast.makeText(mActivity, "Reselected!", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

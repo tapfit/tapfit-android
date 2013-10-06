@@ -4,6 +4,8 @@ import android.content.Context;
 
 import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.Log;
+
+import android.graphics.Paint;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -158,6 +160,11 @@ public class PlaceListAdapter extends BaseAdapter {
             classTimeString = "Dropin passes available";
         }
 
+        if (place.lowest_original_price != null && place.lowest_original_price > 0) {
+            holder.place_orignal_price_text.setText("$" + Math.round(place.lowest_original_price));
+            holder.place_orignal_price_text.setPaintFlags(holder.place_orignal_price_text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
         holder.place_class_time_text.setText(classTimeString);
 
         return view;
@@ -170,7 +177,8 @@ public class PlaceListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private class ViewHolder {
+    private class ViewHolder
+    {
 
         public ViewHolder(View view)
         {
@@ -179,6 +187,7 @@ public class PlaceListAdapter extends BaseAdapter {
             place_class_time_text = (TextView) view.findViewById(R.id.place_class_time_text);
             place_price_text = (TextView) view.findViewById(R.id.place_price_text);
             place_distance_text = (TextView) view.findViewById(R.id.place_distance_text);
+            place_orignal_price_text = (TextView) view.findViewById(R.id.place_original_price_text);
         }
 
         public ImageView place_image;
@@ -186,6 +195,7 @@ public class PlaceListAdapter extends BaseAdapter {
         public TextView place_class_time_text;
         public TextView place_price_text;
         public TextView place_distance_text;
+        public TextView place_orignal_price_text;
 
     }
 }

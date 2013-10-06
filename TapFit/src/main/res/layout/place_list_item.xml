@@ -31,13 +31,28 @@
             android:ellipsize="end"
             style="@style/Font" />
 
-        <TextView
-            android:id="@+id/place_price_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            style="@style/SmallFont"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" >
+
+            <TextView
+                android:id="@+id/place_price_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SmallFont"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/place_original_price_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                style="@style/SmallFont"
+                android:textColor="@color/light_gray" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/place_class_time_text"

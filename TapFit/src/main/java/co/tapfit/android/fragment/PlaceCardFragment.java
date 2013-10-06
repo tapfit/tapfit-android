@@ -49,8 +49,8 @@ public class PlaceCardFragment extends BaseFragment {
 
     private FrameLayout mBottomButton;
 
-    private ListView mWorkoutList;
-    private PlaceScheduleListAdapter mWorkoutListAdapter;
+    //private ListView mWorkoutList;
+    //private PlaceScheduleListAdapter mWorkoutListAdapter;
 
     private Boolean toggledFavorite = false;
 
@@ -122,7 +122,7 @@ public class PlaceCardFragment extends BaseFragment {
 
         setUpSaveButton();
 
-        mWorkoutList = (ListView) mView.findViewById(R.id.upcoming_class_list);
+        /*mWorkoutList = (ListView) mView.findViewById(R.id.upcoming_class_list);
 
         mWorkoutListAdapter = new PlaceScheduleListAdapter(getActivity(), dbWrapper.getUpcomingWorkouts(mPlace));
         mWorkoutList.setAdapter(mWorkoutListAdapter);
@@ -130,6 +130,7 @@ public class PlaceCardFragment extends BaseFragment {
         mWorkoutList.setOnItemClickListener(openClassSchedule);
 
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
+        */
 
         if (PlaceInfoActivity.WORKOUT_CALLBACK_RECEIVED) {
             receivedWorkouts();
@@ -305,19 +306,20 @@ public class PlaceCardFragment extends BaseFragment {
         }
     };
 
+    /*
     private int getListViewHeight() {
         Log.d(TAG, "getListViewHeight: mWorkoutListAdapter: " + mWorkoutListAdapter + ", getActivity: " + getActivity());
         return (int) (getActivity().getResources().getDimension(R.dimen.normal_button_size) * mWorkoutListAdapter.getCount());
     }
-
+    */
 
     public void receivedWorkouts(){
 
-        mWorkoutListAdapter.updateWorkouts(dbWrapper.getUpcomingWorkouts(mPlace));
+        /*mWorkoutListAdapter.updateWorkouts(dbWrapper.getUpcomingWorkouts(mPlace));
 
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
 
-        mWorkoutList.invalidate();
+        mWorkoutList.invalidate();*/
     }
 
     @Override

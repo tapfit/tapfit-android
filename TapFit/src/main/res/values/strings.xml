@@ -27,13 +27,10 @@
     <string name="flurry_api_key">X59K4VB95Q2SYM67X4KX</string>
     <string name="google_maps_release">AIzaSyDpnZq59YOyye7xDDqFQiVsuCg494ekp8g</string>
     <string name="google_maps_debug">AIzaSyDczDCIEQBJ5-XRbMF8bGpHo-e65c_5JdY</string>
-
     <string name="countly_server">https://cloud.count.ly</string>
     <string name="countly_app_key">9fadcb78fb2f19ec12ff1fe255fa4d836a9c0212</string>
     <string name="countly_app_key_debug">c4b1c0e8d1f93e0548fce21fa12aaddd5509cc97</string>
-
     <string name="is_debug">true</string>
-
     <string name="app_id">567244006675246</string>
 
     <string-array name="menu_list">
@@ -53,5 +50,6 @@
     <string name="title_activity_web_view">WebView</string>
     <string name="title_activity_credits">Credits</string>
     <string name="title_activity_extra_settings">ExtraSettingsActivity</string>
+    <string name="title_activity_confirm_purchase">ConfirmPurchaseActivity</string>
 
 </resources>

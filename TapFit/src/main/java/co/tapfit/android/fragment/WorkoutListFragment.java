@@ -28,6 +28,8 @@ import co.tapfit.android.adapter.WorkoutListAdapter;
 import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
+import co.tapfit.android.request.PlaceRequest;
+import co.tapfit.android.request.ResponseCallback;
 
 /**
  * Created by zackmartinsek on 9/12/13.
@@ -48,6 +50,14 @@ public class WorkoutListFragment extends BaseFragment {
         super.onResume();
 
         AnalyticsHelper.getInstance(getActivity()).logEvent("Workout List");
+        PlaceRequest.removeCallback(callback);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        PlaceRequest.removeCallback(callback);
     }
 
     @Override
@@ -146,6 +156,15 @@ public class WorkoutListFragment extends BaseFragment {
         }
 
     }
+
+    public ResponseCallback callback = new ResponseCallback() {
+        @Override
+        public void sendCallback(Object responseObject, String message) {
+            if (responseObject != null) {
+                receivedWorkouts();
+            }
+        }
+    };
 
     public void receivedWorkouts()
     {

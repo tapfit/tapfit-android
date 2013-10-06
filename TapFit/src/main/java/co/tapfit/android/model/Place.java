@@ -57,6 +57,9 @@ public class Place implements Comparable<Place> {
     @DatabaseField
     public Double lowest_price;
 
+    @DatabaseField
+    public Double lowest_original_price;
+
     @DatabaseField(index = true)
     public Integer facility_type;
 

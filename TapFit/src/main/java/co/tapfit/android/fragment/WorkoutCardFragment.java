@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import co.tapfit.android.ConfirmPurchaseActivity;
 import co.tapfit.android.helper.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +111,7 @@ public class WorkoutCardFragment extends BaseFragment {
             if (user != null)
             {
                 args.put("User", String.valueOf(user.id));
-                ((PlaceInfoActivity) getActivity()).confirmPurchasePage(mWorkout);
+                ((ConfirmPurchaseActivity) getActivity()).confirmPurchasePage(mWorkout);
             }
             else
             {
@@ -126,7 +128,7 @@ public class WorkoutCardFragment extends BaseFragment {
         if (requestCode == 1) {
 
             if(resultCode == getActivity().RESULT_OK){
-                ((PlaceInfoActivity) getActivity()).confirmPurchasePage(mWorkout);
+                ((ConfirmPurchaseActivity) getActivity()).confirmPurchasePage(mWorkout);
             }
             if (resultCode == getActivity().RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Need to Sign up to buy", 1000).show();

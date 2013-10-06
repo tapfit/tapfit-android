@@ -68,7 +68,7 @@
                     android:scaleType="fitXY"
                     android:background="@android:color/transparent"/>
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/upcoming_header"
                     android:paddingBottom="7dp"
                     android:paddingTop="10dp"
@@ -85,7 +85,7 @@
                     android:divider="@color/light_gray"
                     android:dividerHeight="1dp"
                     android:background="@drawable/list_view_background_round" />
-
+                -->
                 <TextView
                     android:id="@+id/description_header"
                     android:paddingTop="10dp"
