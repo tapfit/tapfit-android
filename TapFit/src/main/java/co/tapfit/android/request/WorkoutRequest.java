@@ -37,10 +37,6 @@ public class WorkoutRequest extends Request {
     {
         setDatabaseWrapper(context);
 
-        if (callback != null && !callbacks.contains(callback)){
-            callbacks.add(callback);
-        }
-
         ResultReceiver receiver = new ResultReceiver(new Handler()){
 
             @Override
