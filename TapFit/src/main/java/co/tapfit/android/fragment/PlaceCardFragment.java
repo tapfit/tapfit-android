@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
@@ -49,8 +50,8 @@ public class PlaceCardFragment extends BaseFragment {
 
     private FrameLayout mBottomButton;
 
-    //private ListView mWorkoutList;
-    //private PlaceScheduleListAdapter mWorkoutListAdapter;
+    private ListView mWorkoutList;
+    private PlaceScheduleListAdapter mWorkoutListAdapter;
 
     private Boolean toggledFavorite = false;
 
@@ -69,7 +70,7 @@ public class PlaceCardFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_place_card, null);
+        mView = inflater.inflate(R.layout.fragment_place_preview, null);
 
         mPlace = dbWrapper.getPlace(getArguments().getInt(PlaceInfoActivity.PLACE_ID, -1));
 
@@ -88,25 +89,30 @@ public class PlaceCardFragment extends BaseFragment {
             imageCache.loadImageForPlacePage(imageView, mPlace.cover_photo);
         }
 
-        TextView textView = (TextView) mView.findViewById(R.id.place_description);
+        /*TextView textView = (TextView) mView.findViewById(R.id.place_description);
         if (mPlace.source_description == null || mPlace.source_description.equals("")) {
             textView.setText(R.string.no_description);
         }
         else
         {
             textView.setText(mPlace.source_description);
-        }
+        }*/
 
-        textView = (TextView) mView.findViewById(R.id.place_name);
+        TextView textView = (TextView) mView.findViewById(R.id.place_name);
         textView.setText(mPlace.name);
 
-        textView = (TextView) mView.findViewById(R.id.description_header);
-        textView.setText("About " + mPlace.name);
-
-        textView = (TextView) mView.findViewById(R.id.place_distance);
-        textView.setText(String.format("%.1f", mPlace.getDistance()) + " miles away");
+        textView = (TextView) mView.findViewById(R.id.category);
+        textView.setText(mPlace.category);
 
         Address address = dbWrapper.getAddress(mPlace.address.id);
+        textView = (TextView) mView.findViewById(R.id.address_line1);
+        textView.setText(address.line1);
+
+        textView = (TextView) mView.findViewById(R.id.address_line2);
+        textView.setText(address.city + ", " + address.state + " " + address.zip);
+
+        /*textView = (TextView) mView.findViewById(R.id.description_header);
+        textView.setText("About " + mPlace.name);
 
         String addressString = address.line1;
         if (address.line2 != null){
@@ -120,23 +126,28 @@ public class PlaceCardFragment extends BaseFragment {
 
         directionsMap.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, imageCache.convertDpToPixels(100)));
 
-        setUpSaveButton();
+        //setUpSaveButton();
+        */
 
-        /*mWorkoutList = (ListView) mView.findViewById(R.id.upcoming_class_list);
+        LinearLayout viewMore = (LinearLayout) mView.findViewById(R.id.view_more);
+        viewMore.setClickable(true);
+        viewMore.setOnClickListener(showMorePlaceInfo);
 
-        mWorkoutListAdapter = new PlaceScheduleListAdapter(getActivity(), dbWrapper.getUpcomingWorkouts(mPlace));
+        mWorkoutList = (ListView) mView.findViewById(R.id.upcoming_class_list);
+
+        mWorkoutListAdapter = new PlaceScheduleListAdapter(getActivity(), dbWrapper.getUpcomingWorkouts(mPlace), mPlace);
         mWorkoutList.setAdapter(mWorkoutListAdapter);
 
         mWorkoutList.setOnItemClickListener(openClassSchedule);
 
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
-        */
+
 
         if (PlaceInfoActivity.WORKOUT_CALLBACK_RECEIVED) {
             receivedWorkouts();
         }
 
-        String mapUrl = getGoogleMapsStaticUrl();
+        /*String mapUrl = getGoogleMapsStaticUrl();
 
         Log.d(TAG, "Map URL: " + mapUrl);
 
@@ -152,6 +163,7 @@ public class PlaceCardFragment extends BaseFragment {
         RelativeLayout callPhoneNumber = (RelativeLayout) mView.findViewById(R.id.call_phone_number);
         callPhoneNumber.setClickable(true);
         callPhoneNumber.setOnClickListener(callNumber);
+        */
 
         mBottomButton = (FrameLayout) mView.findViewById(R.id.bottom_button);
         mBottomButton.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +178,14 @@ public class PlaceCardFragment extends BaseFragment {
             mBottomButton.setVisibility(View.GONE);
         }
     }
+
+    private View.OnClickListener showMorePlaceInfo = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            ((PlaceInfoActivity) getActivity()).showMorePlaceInfo(mPlace.id);
+        }
+    };
 
     private AdapterView.OnItemClickListener openClassSchedule = new AdapterView.OnItemClickListener() {
         @Override
@@ -186,7 +206,7 @@ public class PlaceCardFragment extends BaseFragment {
     };
 
 
-    private void setUpSaveButton() {
+    /*private void setUpSaveButton() {
 
         mSaveButton = (ImageButton) mView.findViewById(R.id.place_favorite_button);
 
@@ -223,7 +243,6 @@ public class PlaceCardFragment extends BaseFragment {
                     return;
                 }
 
-                //TODO: Add logic for server
                 if ((Boolean) mSaveButton.getTag()) {
                     mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
                     mSaveButton.setTag(false);
@@ -239,7 +258,7 @@ public class PlaceCardFragment extends BaseFragment {
                 }
             }
         });
-    }
+    } */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -306,20 +325,20 @@ public class PlaceCardFragment extends BaseFragment {
         }
     };
 
-    /*
+
     private int getListViewHeight() {
         Log.d(TAG, "getListViewHeight: mWorkoutListAdapter: " + mWorkoutListAdapter + ", getActivity: " + getActivity());
         return (int) (getActivity().getResources().getDimension(R.dimen.normal_button_size) * mWorkoutListAdapter.getCount());
     }
-    */
+
 
     public void receivedWorkouts(){
 
-        /*mWorkoutListAdapter.updateWorkouts(dbWrapper.getUpcomingWorkouts(mPlace));
+        mWorkoutListAdapter.updateWorkouts(dbWrapper.getUpcomingWorkouts(mPlace));
 
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
 
-        mWorkoutList.invalidate();*/
+        mWorkoutList.invalidate();
     }
 
     @Override

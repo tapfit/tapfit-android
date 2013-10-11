@@ -1,6 +1,5 @@
 package co.tapfit.android;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -45,6 +44,7 @@ import co.tapfit.android.fragment.PlaceMapFragment;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.view.TapFitProgressDialog;
 import ly.count.android.api.Countly;
 
 public class MapListActivity extends BaseActivity {
@@ -81,7 +81,7 @@ public class MapListActivity extends BaseActivity {
     private AccountFragment mAccountFragment;
     private PassListFragment mPassListFragment;
 
-    private ProgressDialog progressDialog;
+    private TapFitProgressDialog progressDialog;
 
     private String mCurrentFragment;
 
@@ -176,7 +176,7 @@ public class MapListActivity extends BaseActivity {
             Log.d(TAG, "GOT_INITIAL_PLACES is false");
             if (PlaceRequest.getPlaces(getApplicationContext(), LocationServices.getLatLng(), false, placesCallback)) {
                 Log.d(TAG, "got places, returned true");
-                progressDialog = new ProgressDialog(this);
+                progressDialog = new TapFitProgressDialog(this);
                 progressDialog.setMessage("Loading locations");
                 progressDialog.setCancelable(true);
                 progressDialog.show();

@@ -1,7 +1,6 @@
 package co.tapfit.android;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +21,12 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 import com.urbanairship.UAirship;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import co.tapfit.android.R;
 import co.tapfit.android.application.TapfitApplication;
 import co.tapfit.android.database.DatabaseWrapper;
@@ -29,6 +34,8 @@ import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
+import co.tapfit.android.helper.SharePref;
+import co.tapfit.android.model.Pass;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
 import ly.count.android.api.Countly;
@@ -85,6 +92,29 @@ public class BaseActivity extends ActionBarActivity {
 
         if (Build.VERSION.SDK_INT < 11) {
             getSupportActionBar().setIcon(getResources().getDrawable(R.drawable.transparent_icon));
+        }
+
+        List<Pass> passes = dbWrapper.getPasses();
+
+        Collections.sort(passes);
+
+        Log.d("BaseActivity", "passes count: " + passes.size());
+
+        if (passes.size() > 0 && !(this instanceof ReviewActivity)) {
+            Pass pass = passes.get(passes.size() - 1);
+            Integer placeId = pass.place.id;
+
+            if (SharePref.getIntPref(this, SharePref.RATING_SHOWN) != pass.id)
+            {
+                if (dbWrapper.getWorkout(pass.workout.id).end_time.isBefore(DateTime.now()))
+                {
+                    SharePref.setIntPref(this, SharePref.RATING_SHOWN, pass.id);
+
+                    Intent intent = new Intent(this, ReviewActivity.class);
+                    intent.putExtra(PlaceInfoActivity.PLACE_ID, placeId);
+                    startActivity(intent);
+                }
+            }
         }
     }
 

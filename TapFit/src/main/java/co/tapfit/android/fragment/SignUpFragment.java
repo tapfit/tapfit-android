@@ -1,7 +1,6 @@
 package co.tapfit.android.fragment;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,6 +15,7 @@ import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 /**
  * Created by zackmartinsek on 9/13/13.
@@ -36,7 +36,7 @@ public class SignUpFragment extends BaseFragment {
 
     AlertDialog.Builder alertDialog;
 
-    ProgressDialog progressDialog;
+    TapFitProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class SignUpFragment extends BaseFragment {
     }
 
     private void setUpProgressDialog() {
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new TapFitProgressDialog(getActivity());
         progressDialog.getWindow().setGravity(Gravity.CENTER);
         progressDialog.setMessage("Signing up....");
     }

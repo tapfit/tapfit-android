@@ -20,6 +20,7 @@ import co.tapfit.android.R;
 import co.tapfit.android.SignInActivity;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 /**
  * Created by zackmartinsek on 9/13/13.
@@ -38,7 +39,7 @@ public class SignInFragment extends BaseFragment {
     private FrameLayout mShowSignUp;
 
     AlertDialog.Builder alertDialog;
-    ProgressDialog progressDialog;
+    TapFitProgressDialog progressDialog;
 
     @Override
     public void onResume() {
@@ -62,7 +63,7 @@ public class SignInFragment extends BaseFragment {
     }
 
     private void setUpProgressDialog() {
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new TapFitProgressDialog(getActivity());
         progressDialog.getWindow().setGravity(Gravity.CENTER);
         progressDialog.setMessage("Signing in....");
     }

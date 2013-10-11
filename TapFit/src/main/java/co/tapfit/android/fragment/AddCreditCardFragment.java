@@ -1,6 +1,5 @@
 package co.tapfit.android.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +25,7 @@ import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 import ly.count.android.api.Countly;
 
 /**
@@ -47,7 +47,7 @@ public class AddCreditCardFragment extends BaseFragment {
 
     private SingleLineCardEntryView mSingleLineCardEntry;
 
-    private ProgressDialog progressDialog;
+    private TapFitProgressDialog progressDialog;
 
     private Button mAddCreditCard;
 
@@ -88,7 +88,7 @@ public class AddCreditCardFragment extends BaseFragment {
                 AnalyticsHelper.getInstance(getActivity()).logEvent("Added Credit Card");
 
                 if (mSingleLineCardEntry.isValid()){
-                    progressDialog = new ProgressDialog(getActivity());
+                    progressDialog = new TapFitProgressDialog(getActivity());
                     progressDialog.setMessage("Adding Credit Card...");
                     progressDialog.show();
                     UserRequest.addPaymentMethod(getActivity(), BraintreePayments.encryptPayment(mSingleLineCardEntry.getCardDetails()), addCardCallback);

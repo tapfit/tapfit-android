@@ -1,7 +1,6 @@
 package co.tapfit.android.fragment;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +31,7 @@ import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.WorkoutRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 /**
  * Created by zackmartinsek on 9/14/13.
@@ -103,7 +103,7 @@ public class ConfirmPurchaseFragment extends BaseFragment {
     private View.OnClickListener buyWorkout = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            final TapFitProgressDialog progressDialog = new TapFitProgressDialog(getActivity());
             progressDialog.setMessage("Purchasing " + mWorkout.name);
             progressDialog.show();
 

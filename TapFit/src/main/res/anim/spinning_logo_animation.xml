@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/spinner_1" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_2" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_3" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_4" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_5" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_6" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_7" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_6" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_5" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_4" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_3" android:duration="@integer/spinner_duration" />
+    <item android:drawable="@drawable/spinner_2" android:duration="@integer/spinner_duration" />
+</animation-list>

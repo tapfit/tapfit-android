@@ -51,5 +51,6 @@
     <string name="title_activity_credits">Credits</string>
     <string name="title_activity_extra_settings">ExtraSettingsActivity</string>
     <string name="title_activity_confirm_purchase">ConfirmPurchaseActivity</string>
+    <string name="title_activity_review">ReviewActivity</string>
 
 </resources>

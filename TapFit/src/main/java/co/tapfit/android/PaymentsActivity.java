@@ -2,7 +2,6 @@ package co.tapfit.android;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import co.tapfit.android.model.CreditCard;
 import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 public class PaymentsActivity extends BaseActivity {
 
@@ -97,7 +97,7 @@ public class PaymentsActivity extends BaseActivity {
     AdapterView.OnItemClickListener editCardState = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(final AdapterView<?> adapterView, View view, final int position, long id) {
-            final ProgressDialog progress = new ProgressDialog(PaymentsActivity.this);
+            final TapFitProgressDialog progress = new TapFitProgressDialog(PaymentsActivity.this);
             CreditCard creditCard = (CreditCard) adapterView.getItemAtPosition(position);
             AlertDialog alertDialog = new AlertDialog.Builder(PaymentsActivity.this)
                     .setTitle("Edit Card")

@@ -10,12 +10,16 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import co.tapfit.android.R;
 import co.tapfit.android.helper.WorkoutFormat;
+import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
 
 /**
@@ -34,11 +38,14 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
 
     private ArrayList<Workout> mWorkouts = new ArrayList<Workout>();
 
-    public PlaceScheduleListAdapter(Context context, List<Workout> workouts) {
+    private Place mPlace;
+
+    public PlaceScheduleListAdapter(Context context, List<Workout> workouts, Place place) {
         super();
 
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mPlace = place;
 
         setWorkoutList(workouts);
     }
@@ -47,6 +54,7 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
     public void updateWorkouts(List<Workout> upcomingWorkouts) {
 
         setWorkoutList(upcomingWorkouts);
+        Log.d(TAG, "Removing Progress Bar");
         mWorkouts.remove(PROGRESS_BAR);
         notifyDataSetChanged();
     }
@@ -63,11 +71,23 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
             mWorkouts = new ArrayList<Workout>();
         }
 
+        Iterator<Workout> iterator = mWorkouts.iterator();
+
+        DateTime date = new DateTime().toDateMidnight().toDateTime();
+        DateTime tomorrow = date.plusDays(1);
+
+        while (iterator.hasNext()) {
+            if (iterator.next().start_time.isAfter(tomorrow)) {
+                iterator.remove();
+            }
+        }
+
         Collections.sort(mWorkouts);
 
-        if (mWorkouts.size() > MAX_CLASSES) {
+        /*if (mWorkouts.size() > MAX_CLASSES) {
             mWorkouts = new ArrayList<Workout>(mWorkouts.subList(0, MAX_CLASSES));
-        }
+        }*/
+
 
         if (mWorkouts.size() == 0) {
             mWorkouts.add(PROGRESS_BAR);
@@ -98,6 +118,15 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
         if (workout.equals(BOTTOM_BAR)) {
             Log.d(TAG, "Inflating Bottom bar");
             view = mInflater.inflate(R.layout.button_navigation, null);
+            TextView header = (TextView) view.findViewById(R.id.content_title);
+            if (mPlace.facility_type == null || mPlace.facility_type == 0)
+            {
+                header.setText("View full schedule");
+            }
+            else
+            {
+                header.setText("Days passes available");
+            }
         }
         else if (workout.equals(PROGRESS_BAR)){
             Log.d(TAG, "Inflating Progress bar");

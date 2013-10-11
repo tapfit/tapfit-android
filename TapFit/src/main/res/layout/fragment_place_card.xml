@@ -32,60 +32,12 @@
             android:layout_width="match_parent"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/place_image"
-                android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:layout_height="@dimen/place_image_size" />
             <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:padding="10dp" >
-                <TextView
-                    android:id="@+id/place_name"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    style="@style/Font"
-                    android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/place_distance"
-                    android:paddingTop="7dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/SmallFont"
-                    android:textColor="@color/black" />
-
-                <ImageButton
-                    android:id="@+id/place_favorite_button"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="40dp"
-                    android:layout_width="100dp"
-                    android:scaleType="fitXY"
-                    android:background="@android:color/transparent"/>
-
-                <!--<TextView
-                    android:id="@+id/upcoming_header"
-                    android:paddingBottom="7dp"
-                    android:paddingTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/SmallFont"
-                    android:textColor="@color/black"
-                    android:text="Upcoming Classes"/>
-
-                <ListView
-                    android:id="@+id/upcoming_class_list"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:divider="@color/light_gray"
-                    android:dividerHeight="1dp"
-                    android:background="@drawable/list_view_background_round" />
-                -->
                 <TextView
                     android:id="@+id/description_header"
                     android:paddingTop="10dp"
@@ -93,7 +45,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    style="@style/SmallFont"
+                    style="@style/Font"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -101,13 +54,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingMultiplier="1.2"
-                    android:text="Welcome to this cool ass place. We should kick in and get into some trouble."
-                    android:background="@drawable/text_background_round" />
+                    android:text="Welcome to this cool ass place. We should kick in and get into some trouble." />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
 
                 <TextView
                     android:id="@+id/directions_header"
                     android:paddingBottom="4dp"
-                    android:paddingTop="14dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/SmallFont"
@@ -123,7 +81,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:maxHeight="100dp"
-                        android:background="@drawable/text_background_round"
                         android:scaleType="fitCenter"/>
                     <ImageView
                         android:layout_height="30dp"
@@ -134,22 +91,17 @@
                         android:src="@drawable/map_icon"/>
                 </FrameLayout>
 
-
-                <TextView
-                    android:id="@+id/directions_header"
-                    android:paddingBottom="7dp"
-                    android:paddingTop="10dp"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/SmallFont"
-                    android:textColor="@color/black"
-                    android:text="Additional Info"/>
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:id="@+id/call_phone_number"
-                    android:layout_height="@dimen/normal_button_size"
-                    android:background="@drawable/text_background_round">
+                    android:layout_height="@dimen/normal_button_size" >
 
                     <TextView
                         android:id="@+id/phone_number"

@@ -9,20 +9,26 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import co.tapfit.android.fragment.ConfirmPurchaseFragment;
 import co.tapfit.android.fragment.PassFragment;
 import co.tapfit.android.fragment.PlaceCardFragment;
+import co.tapfit.android.fragment.PlaceCardMoreFragment;
 import co.tapfit.android.fragment.WorkoutCardFragment;
 import co.tapfit.android.fragment.WorkoutListFragment;
+import co.tapfit.android.helper.Log;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.model.Place;
+import co.tapfit.android.model.User;
 import co.tapfit.android.model.Workout;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
 
 public class PlaceInfoActivity extends BaseActivity {
+
+    private static final String TAG = PlaceInfoActivity.class.getSimpleName();
 
     public static final String PLACE_ID = "place_id";
     private static final String PLACE_FRAGMENT = "place_fragment";
@@ -34,9 +40,12 @@ public class PlaceInfoActivity extends BaseActivity {
 
     private PlaceCardFragment mPlaceCardFragment;
     private WorkoutListFragment mWorkoutListFragment;
+    private PlaceCardMoreFragment mPlaceCardMoreFragment;
     private WorkoutCardFragment mWorkoutCardFragment;
     private ConfirmPurchaseFragment mConfirmPurchaseFragment;
     private PassFragment mPassFragment;
+    private Boolean toggledFavorite = false;
+    private Boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +56,13 @@ public class PlaceInfoActivity extends BaseActivity {
 
         setupActionBar();
 
-        //setUpFragments();
+        setUpFragments();
 
         getWorkoutsFromServer();
     }
 
     private void setUpFragments() {
+
         mPlaceCardFragment = new PlaceCardFragment();
         Bundle args = new Bundle();
         args.putInt(PLACE_ID, mPlace.id);
@@ -65,22 +75,13 @@ public class PlaceInfoActivity extends BaseActivity {
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
+
+        if (dbWrapper.getFavorites().contains(mPlace)) {
+            isFavorite = true;
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mPlace.name);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        Bundle args = new Bundle();
-        args.putInt(PLACE_ID, mPlace.id);
-
-        ActionBar.Tab scheduleTab = actionBar.newTab().setText("Passes").setTabListener(new TabListener<WorkoutListFragment>(this, WORKOUT_LIST_FRAGMENT, WorkoutListFragment.class, args));
-
-
-        ActionBar.Tab infoTab = actionBar.newTab().setText("Info").setTabListener(new TabListener<PlaceCardFragment>(this, "PlaceCard", PlaceCardFragment.class, args));
-
-        actionBar.addTab(scheduleTab);
-        actionBar.addTab(infoTab);
     }
 
     public void openWorkoutCardFromList(Integer workoutId) {
@@ -97,6 +98,18 @@ public class PlaceInfoActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.place_info, menu);
         return true;
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        //Log.d(TAG, "drawOpen: " + drawerOpen);
+        //menu.findItem(R.id.action_menu).setVisible(!drawerOpen);
+        if (isFavorite) {
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.favorite_checked);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
     
 
     @Override
@@ -105,8 +118,42 @@ public class PlaceInfoActivity extends BaseActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_favorite:
+                User user = dbWrapper.getCurrentUser();
+
+                if (user == null) {
+                    Toast.makeText(PlaceInfoActivity.this, "Want to save your location? Sign up to see them in your favorites!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PlaceInfoActivity.this, SignInActivity.class);
+                    startActivityForResult(intent, 1);
+                    return true;
+                }
+
+                if (isFavorite) {
+                    dbWrapper.removePlaceFromFavorites(user, mPlace);
+                    isFavorite = false;
+                }
+                else {
+                    dbWrapper.addPlaceToFavorites(user, mPlace);
+                    isFavorite = true;
+                }
+                toggledFavorite = !toggledFavorite;
+                supportInvalidateOptionsMenu();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showMorePlaceInfo(Integer placeId) {
+        if (mPlaceCardMoreFragment == null) {
+            mPlaceCardMoreFragment = new PlaceCardMoreFragment();
+        }
+
+        Bundle args = new Bundle();
+        args.putInt(PLACE_ID, placeId);
+
+        mPlaceCardMoreFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mPlaceCardMoreFragment, "PlaceMoreFragment").addToBackStack(null).commit();
     }
 
     public void openClassSchedule(Integer placeId) {
@@ -123,8 +170,6 @@ public class PlaceInfoActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mWorkoutListFragment, WORKOUT_LIST_FRAGMENT).addToBackStack(PLACE_FRAGMENT).commit();
 
     }
-
-
 
     public void confirmPurchasePage(Workout workout) {
 
@@ -155,11 +200,12 @@ public class PlaceInfoActivity extends BaseActivity {
             WORKOUT_CALLBACK_RECEIVED = true;
             if (responseObject != null)
             {
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag(WORKOUT_LIST_FRAGMENT);
-
-                if (fragment != null && fragment instanceof WorkoutListFragment) {
-                    WorkoutListFragment workoutListFragment = (WorkoutListFragment) fragment;
-                    workoutListFragment.receivedWorkouts();
+                if (mWorkoutListFragment != null && mWorkoutListFragment.isResumed()) {
+                    mWorkoutListFragment.receivedWorkouts();
+                }
+                else if (mPlaceCardFragment != null && mPlaceCardFragment.isResumed())
+                {
+                    mPlaceCardFragment.receivedWorkouts();
                 }
             }
             else
@@ -169,47 +215,31 @@ public class PlaceInfoActivity extends BaseActivity {
         }
     };
 
-    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-        private final ActionBarActivity mActivity;
-        private final String mTag;
-        private final Class<T> mClass;
-        private final Bundle mArgs;
-        private Fragment mFragment;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
-            this(activity, tag, clz, null);
-        }
+        if (requestCode == 1) {
 
-        public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
-            mActivity = activity;
-            mTag = tag;
-            mClass = clz;
-            mArgs = args;
-
-            // Check to see if we already have a fragment for this tab, probably
-            // from a previously saved state.  If so, deactivate it, because our
-            // initial state is that a tab isn't shown.
-            mFragment = mActivity.getSupportFragmentManager().findFragmentByTag(mTag);
-            if (mFragment != null && !mFragment.isDetached()) {
-                FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-                ft.detach(mFragment);
-                ft.commit();
+            if(resultCode == RESULT_OK){
+                User user = dbWrapper.getCurrentUser();
+                Log.d(TAG, "Successfully signed in");
+                isFavorite = true;
+                dbWrapper.addPlaceToFavorites(user, mPlace);
+                toggledFavorite = !toggledFavorite;
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Log.d(TAG, "Didn't log in");
             }
         }
+    }
 
-        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-            if (mFragment == null) {
-                mFragment = Fragment.instantiate(mActivity, mClass.getName(), mArgs);
-            }
-            ft.replace(android.R.id.content, mFragment, mTag);
+    @Override
+    public void onPause(){
+        Log.d(TAG, "toggledFavorite: " + toggledFavorite);
+        if (toggledFavorite) {
+            Log.d(TAG, "About to favorite a place");
+            PlaceRequest.favoritePlace(this, mPlace, dbWrapper.getCurrentUser(), null);
         }
-
-        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-            //Toast.makeText(mActivity, "Unselected!", Toast.LENGTH_SHORT).show();
-        }
-
-        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-            //Toast.makeText(mActivity, "Reselected!", Toast.LENGTH_SHORT).show();
-        }
+        super.onPause();
     }
 }

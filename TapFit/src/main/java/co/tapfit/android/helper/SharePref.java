@@ -53,6 +53,7 @@ public class SharePref {
     public static final String CURRENT_USER_ID = "currentUser";
     public static final String KEY_PREFS_FIRST_USE = "firstUse";
     public static final String SELECTED_REGION = "region";
+    public static final String RATING_SHOWN = "rating_shown";
 
     public static final String AUTH_TOKEN = "auth_token";
 

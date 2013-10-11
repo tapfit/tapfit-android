@@ -119,4 +119,23 @@ public class WorkoutRequest extends Request {
 
         return false;
     }
+
+    public static String REVIEW = "review";
+    public static String RATING = "rating";
+
+    public static void addReview(Context context, Place place, Bundle args) {
+
+        User user = dbWrapper.getCurrentUser();
+
+        if (user != null)
+        {
+            Intent intent = new Intent(context, ApiService.class);
+            intent.putExtra(ApiService.URL, getUrl(context) + "places/" + place.id + "/ratings/");
+            intent.putExtra(ApiService.HTTP_VERB, ApiService.POST);
+            intent.putExtra(ApiService.PARAMS, args);
+            intent.putExtra(ApiService.RESULT_RECEIVER, new ResultReceiver(new Handler()));
+
+            context.startService(intent);
+        }
+    }
 }

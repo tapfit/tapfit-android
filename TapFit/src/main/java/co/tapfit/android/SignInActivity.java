@@ -1,7 +1,6 @@
 package co.tapfit.android;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import co.tapfit.android.fragment.SignInFragment;
 import co.tapfit.android.fragment.SignUpFragment;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 public class SignInActivity extends BaseActivity {
 
@@ -58,7 +58,7 @@ public class SignInActivity extends BaseActivity {
 
     protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (session != null && session.isOpened()) {
-            final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this);
+            final TapFitProgressDialog progressDialog = new TapFitProgressDialog(SignInActivity.this);
             progressDialog.setMessage("Logging In....");
             progressDialog.show();
             Bundle args = new Bundle();

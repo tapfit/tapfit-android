@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.Menu;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;

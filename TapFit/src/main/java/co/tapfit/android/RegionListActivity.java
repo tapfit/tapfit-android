@@ -20,6 +20,7 @@ import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Region;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 public class RegionListActivity extends BaseActivity {
 
@@ -61,7 +62,7 @@ public class RegionListActivity extends BaseActivity {
                     startMapListActivity();
                 }
                 else {
-                    final ProgressDialog progressDialog = new ProgressDialog(RegionListActivity.this);
+                    final TapFitProgressDialog progressDialog = new TapFitProgressDialog(RegionListActivity.this);
                     progressDialog.setMessage("Loading " + region.name + "...");
                     progressDialog.show();
                     PlaceRequest.getPlaces(getApplicationContext(), location, true, new ResponseCallback() {

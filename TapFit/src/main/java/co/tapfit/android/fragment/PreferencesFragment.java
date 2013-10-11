@@ -1,6 +1,5 @@
 package co.tapfit.android.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +17,7 @@ import co.tapfit.android.MapListActivity;
 import co.tapfit.android.R;
 import co.tapfit.android.helper.Search;
 import co.tapfit.android.helper.SharePref;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 /**
  * Created by zackmartinsek on 9/20/13.
@@ -64,7 +64,7 @@ public class PreferencesFragment extends BaseFragment {
         @Override
         public void onClick(View view) {
 
-            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            final TapFitProgressDialog progressDialog = new TapFitProgressDialog(getActivity());
             progressDialog.setMessage("Finding your workouts...");
             progressDialog.show();
 

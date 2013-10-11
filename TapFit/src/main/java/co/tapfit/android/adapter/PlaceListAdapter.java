@@ -69,6 +69,7 @@ public class PlaceListAdapter extends BaseAdapter {
                 .cacheOnDisc(true)
                 .cacheInMemory(true)
                 .imageScaleType(ist)
+                .showStubImage(R.drawable.place_list_background)
                 .build();
 
         mImageLoader = ImageLoader.getInstance();

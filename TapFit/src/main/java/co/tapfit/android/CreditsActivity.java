@@ -1,7 +1,6 @@
 package co.tapfit.android;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 public class CreditsActivity extends BaseActivity {
 
@@ -42,7 +42,7 @@ public class CreditsActivity extends BaseActivity {
     private View.OnClickListener addCodeToUser = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            final ProgressDialog progressDialog = new ProgressDialog(CreditsActivity.this);
+            final TapFitProgressDialog progressDialog = new TapFitProgressDialog(CreditsActivity.this);
             progressDialog.setMessage("Adding code....");
             progressDialog.show();
 

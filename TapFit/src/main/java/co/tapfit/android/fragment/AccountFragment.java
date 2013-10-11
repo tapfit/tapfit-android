@@ -1,6 +1,5 @@
 package co.tapfit.android.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +24,7 @@ import co.tapfit.android.helper.ShareToFriends;
 import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 /**
  * Created by zackmartinsek on 9/10/13.
@@ -124,7 +124,7 @@ public class AccountFragment extends BaseFragment {
         setUpForm(R.id.logout, "LOG OUT", "", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                final TapFitProgressDialog progressDialog = new TapFitProgressDialog(getActivity());
                 progressDialog.setMessage("Logging out..");
                 progressDialog.show();
                 UserRequest.logoutUser(getActivity(), new ResponseCallback(){

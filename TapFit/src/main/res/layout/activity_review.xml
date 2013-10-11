@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding"
+    tools:context=".ReviewActivity">
+
+    <Button
+        android:id="@+id/add_review_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/normal_button_size"
+        android:text="Add Review"
+        android:background="@color/red"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/padding"
+        style="@style/Font.Button" />
+
+    <TextView
+        android:id="@+id/question_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        style="@style/Font"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="How was your workout at Core Power Yoga?"/>
+
+    <LinearLayout
+        android:layout_below="@id/question_text"
+        android:layout_width="match_parent"
+        android:id="@+id/ratings"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+
+        <ImageView
+            android:id="@+id/heart_1"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_margin="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_clicked" />
+
+        <ImageView
+            android:id="@+id/heart_2"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_margin="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_clicked" />
+
+        <ImageView
+            android:id="@+id/heart_3"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_margin="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_clicked" />
+
+        <ImageView
+            android:id="@+id/heart_4"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_margin="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_clicked" />
+
+        <ImageView
+            android:id="@+id/heart_5"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:layout_margin="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_clicked" />
+
+    </LinearLayout>
+
+    <co.tapfit.android.view.DoneEditText
+        android:id="@+id/review_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/place_page_image_size"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/padding"
+        android:layout_marginLeft="@dimen/padding"
+        android:gravity="top"
+        android:inputType="textCapSentences|textMultiLine"
+        android:layout_below="@id/ratings"
+        android:hint="Reviews are for our internal use only so we can provide you the best experiece..."
+        android:background="@drawable/text_background_round"/>
+
+</RelativeLayout>

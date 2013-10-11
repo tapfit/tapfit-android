@@ -1,13 +1,12 @@
 package co.tapfit.android.fragment;
 
-import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,10 +25,12 @@ import co.tapfit.android.R;
 import co.tapfit.android.adapter.WorkoutAdapter;
 import co.tapfit.android.adapter.WorkoutListAdapter;
 import co.tapfit.android.helper.AnalyticsHelper;
+import co.tapfit.android.helper.ImageCache;
 import co.tapfit.android.model.Place;
 import co.tapfit.android.model.Workout;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.view.TapFitProgressDialog;
 
 /**
  * Created by zackmartinsek on 9/12/13.
@@ -43,7 +44,7 @@ public class WorkoutListFragment extends BaseFragment {
 
     private TextView mNoWorkoutText;
 
-    private ProgressDialog progressDialog;
+    private TapFitProgressDialog progressDialog;
 
     @Override
     public void onResume() {
@@ -71,7 +72,7 @@ public class WorkoutListFragment extends BaseFragment {
         }
         else
         {
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new TapFitProgressDialog(getActivity());
             progressDialog.setMessage("Loading Workouts...");
             progressDialog.show();
         }
@@ -80,6 +81,16 @@ public class WorkoutListFragment extends BaseFragment {
     }
 
     private void setUpWorkoutList() {
+
+        View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.workout_list_header, null);
+
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.place_image);
+        if (mPlace.cover_photo == null) {
+            imageCache.loadImageForPlacePage(imageView, ImageCache.getCoverPhotoUrl(mPlace.category));
+        }
+        else {
+            imageCache.loadImageForPlacePage(imageView, mPlace.cover_photo);
+        }
 
         mWorkoutList = (ListView) mView.findViewById(R.id.workout_list);
 
