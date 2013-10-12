@@ -192,8 +192,15 @@ public class PlaceCardFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Workout workout = (Workout) adapterView.getItemAtPosition(i);
             if (workout.equals(PlaceScheduleListAdapter.BOTTOM_BAR)) {
-                AnalyticsHelper.getInstance(getActivity()).logEvent("View Class Schedule");
-                ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
+                if ((Boolean) view.getTag())
+                {
+                    AnalyticsHelper.getInstance(getActivity()).logEvent("View Class Schedule");
+                    ((PlaceInfoActivity) getActivity()).openClassSchedule(mPlace.id);
+                }
+            }
+            else if (workout.equals(PlaceScheduleListAdapter.NO_WORKOUTS_TODAY)) {
+                //Do nothing
+                return;
             }
             else
             {
@@ -204,61 +211,6 @@ public class PlaceCardFragment extends BaseFragment {
             }
         }
     };
-
-
-    /*private void setUpSaveButton() {
-
-        mSaveButton = (ImageButton) mView.findViewById(R.id.place_favorite_button);
-
-        User user = dbWrapper.getCurrentUser();
-        if (user != null) {
-            if (mPlace.user != null && mPlace.user.id == user.id) {
-
-                mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
-                mSaveButton.setTag(true);
-            }
-            else
-            {
-                mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
-                mSaveButton.setTag(false);
-            }
-        }
-        else
-        {
-            mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
-            mSaveButton.setTag(false);
-        }
-
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-
-                User user = dbWrapper.getCurrentUser();
-
-                if (user == null) {
-                    Intent intent = new Intent(getActivity(), SignInActivity.class);
-                    startActivityForResult(intent, 1);
-                    return;
-                }
-
-                if ((Boolean) mSaveButton.getTag()) {
-                    mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_unsaved));
-                    mSaveButton.setTag(false);
-                    dbWrapper.removePlaceFromFavorites(user, mPlace);
-                    toggledFavorite = !toggledFavorite;
-                }
-                else
-                {
-                    mSaveButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.save_button_saved));
-                    mSaveButton.setTag(true);
-                    dbWrapper.addPlaceToFavorites(user, mPlace);
-                    toggledFavorite = !toggledFavorite;
-                }
-            }
-        });
-    } */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -279,52 +231,6 @@ public class PlaceCardFragment extends BaseFragment {
         }
     }
 
-    private String getGoogleMapsStaticUrl() {
-
-        int width = getActivity().getWindowManager().getDefaultDisplay().getWidth();
-
-        Log.d(TAG, "screen: " + width);
-
-        width = width - imageCache.convertDpToPixels(40);
-        int height = imageCache.convertDpToPixels(80);
-
-        String url = "http://maps.googleapis.com/maps/api/staticmap?center=" + mPlace.address.lat + "," + mPlace.address.lon + "&zoom=19&size=" + width + "x" + height + "&sensor=false";
-
-        Log.d(TAG, "Google Maps Static URL: " + url);
-
-        return url;
-    }
-
-    private View.OnClickListener callNumber = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            HashMap<String, String> args = new HashMap<String, String>();
-            args.put("Place", mPlace.name);
-
-            AnalyticsHelper.getInstance(getActivity()).logEvent("Call Number", args);
-            String url = "tel:" + mPlace.phone_number;
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
-            startActivity(intent);
-        }
-    };
-
-    private View.OnClickListener openGoogleMaps = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            HashMap<String, String> args = new HashMap<String, String>();
-            args.put("Place", mPlace.name);
-            AnalyticsHelper.getInstance(getActivity()).logEvent("Get Directions", args);
-            String url = "http://maps.google.com/maps?saddr=" + LocationServices.getLatLng().latitude + "," + LocationServices.getLatLng().longitude + "&daddr="
-                    + mPlace.address.lat + "," + mPlace.address.lon;
-
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse(url));
-            startActivity(intent);
-        }
-    };
-
 
     private int getListViewHeight() {
         Log.d(TAG, "getListViewHeight: mWorkoutListAdapter: " + mWorkoutListAdapter + ", getActivity: " + getActivity());
@@ -339,14 +245,5 @@ public class PlaceCardFragment extends BaseFragment {
         mWorkoutList.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, getListViewHeight()));
 
         mWorkoutList.invalidate();
-    }
-
-    @Override
-    public void onPause(){
-        if (toggledFavorite) {
-            Log.d(TAG, "About to favorite a place");
-            PlaceRequest.favoritePlace(getActivity(), mPlace, dbWrapper.getCurrentUser(), null);
-        }
-        super.onPause();
     }
 }

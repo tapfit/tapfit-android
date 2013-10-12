@@ -24,6 +24,7 @@
         android:text="VIEW UPCOMING SCHEDULE"/>
 
     <ImageView
+        android:id="@+id/carrot"
         android:layout_height="@dimen/normal_text_size"
         android:layout_width="@dimen/normal_text_size"
         android:layout_alignParentRight="true"

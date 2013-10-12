@@ -128,6 +128,8 @@ public class PlaceListAdapter extends BaseAdapter {
 
         List<ClassTime> classTimes = DatabaseWrapper.getInstance(mContext.getApplicationContext()).getClassTimes(place.id);
 
+        Collections.sort(classTimes);
+
         int timeCount = 0;
 
         String classTimeString = "";

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
@@ -34,7 +35,10 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
     private static final String TAG = PlaceScheduleListAdapter.class.getSimpleName();
 
     public static Workout BOTTOM_BAR = new Workout(-1);
+    public static Workout NO_WORKOUTS_TODAY = new Workout(-3);
     private Workout PROGRESS_BAR = new Workout(-2);
+
+    private Boolean mNoMoreWorkouts = false;
 
     private ArrayList<Workout> mWorkouts = new ArrayList<Workout>();
 
@@ -54,6 +58,15 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
     public void updateWorkouts(List<Workout> upcomingWorkouts) {
 
         setWorkoutList(upcomingWorkouts);
+        if (upcomingWorkouts.size() < 1){
+            mNoMoreWorkouts = true;
+            mWorkouts.remove(NO_WORKOUTS_TODAY);
+        }
+        else if (mWorkouts.contains(PROGRESS_BAR)) {
+            mWorkouts.clear();
+            mWorkouts.add(NO_WORKOUTS_TODAY);
+            mWorkouts.add(BOTTOM_BAR);
+        }
         Log.d(TAG, "Removing Progress Bar");
         mWorkouts.remove(PROGRESS_BAR);
         notifyDataSetChanged();
@@ -63,7 +76,8 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
         if (workouts == null){
             mWorkouts = new ArrayList<Workout>();
         }
-        else if (workouts.size() > 0){
+        else if (workouts.size() > 0)
+        {
             mWorkouts = new ArrayList<Workout>(workouts);
         }
         else
@@ -91,6 +105,7 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
 
         if (mWorkouts.size() == 0) {
             mWorkouts.add(PROGRESS_BAR);
+            //mWorkouts.add(NO_WORKOUTS_TODAY);
         }
 
         mWorkouts.add(BOTTOM_BAR);
@@ -116,12 +131,20 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
 
         Workout workout = mWorkouts.get(i);
         if (workout.equals(BOTTOM_BAR)) {
-            Log.d(TAG, "Inflating Bottom bar");
             view = mInflater.inflate(R.layout.button_navigation, null);
             TextView header = (TextView) view.findViewById(R.id.content_title);
             if (mPlace.facility_type == null || mPlace.facility_type == 0)
             {
-                header.setText("View full schedule");
+                if (mNoMoreWorkouts){
+                    header.setText("No Schedule Available");
+                    view.findViewById(R.id.carrot).setVisibility(View.GONE);
+                    view.setTag(false);
+                }
+                else {
+                    header.setText("View full schedule");
+                    view.findViewById(R.id.carrot).setVisibility(View.VISIBLE);
+                    view.setTag(true);
+                }
             }
             else
             {
@@ -129,8 +152,19 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
             }
         }
         else if (workout.equals(PROGRESS_BAR)){
-            Log.d(TAG, "Inflating Progress bar");
             view = mInflater.inflate(R.layout.class_stub_progress, null);
+
+            ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
+            bar.setIndeterminate(true);
+            bar.setIndeterminateDrawable(mContext.getResources().getDrawable(R.anim.spinning_logo_animation));
+        }
+        else if (workout.equals(NO_WORKOUTS_TODAY)) {
+            view = mInflater.inflate(R.layout.class_stub_item, null);
+            TextView textView = (TextView) view.findViewById(R.id.class_time);
+            textView.setVisibility(View.GONE);
+
+            textView = (TextView) view.findViewById(R.id.class_name);
+            textView.setText("No more workouts today");
         }
         else
         {

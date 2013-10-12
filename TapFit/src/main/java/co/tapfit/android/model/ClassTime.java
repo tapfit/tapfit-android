@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by zackmartinsek on 9/10/13.
  */
 @DatabaseTable(tableName = "class_time")
-public class ClassTime {
+public class ClassTime implements Comparable<ClassTime> {
 
     public ClassTime()
     {
@@ -32,4 +32,14 @@ public class ClassTime {
 
     @DatabaseField(foreign=true)
     public Place place;
+
+    @Override
+    public int compareTo(ClassTime classTime) {
+
+        if (this == classTime) {
+            return 0;
+        }
+
+        return this.classTime.compareTo(classTime.classTime);
+    }
 }

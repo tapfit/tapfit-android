@@ -40,17 +40,17 @@
         <item>Account</item>
     </string-array>
 
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_place_info">PlaceInfoActivity</string>
-    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_splash">TapFit</string>
+    <string name="title_activity_place_info">TapFit</string>
+    <string name="title_activity_sign_in">TapFit</string>
     <string name="title_activity_first_use">TapFit</string>
     <string name="title_activity_payments">Payments</string>
-    <string name="title_activity_pass">PassActivity</string>
+    <string name="title_activity_pass">TapFit</string>
     <string name="title_activity_region_list">Locations</string>
-    <string name="title_activity_web_view">WebView</string>
+    <string name="title_activity_web_view">TapFit</string>
     <string name="title_activity_credits">Credits</string>
-    <string name="title_activity_extra_settings">ExtraSettingsActivity</string>
-    <string name="title_activity_confirm_purchase">ConfirmPurchaseActivity</string>
-    <string name="title_activity_review">ReviewActivity</string>
+    <string name="title_activity_extra_settings">TapFit</string>
+    <string name="title_activity_confirm_purchase">TapFit</string>
+    <string name="title_activity_review">TapFit</string>
 
 </resources>

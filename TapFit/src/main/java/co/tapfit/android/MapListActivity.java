@@ -97,6 +97,23 @@ public class MapListActivity extends BaseActivity {
             AnalyticsHelper.getInstance(this).logEvent("Browse");
             mShowFilter = true;
             supportInvalidateOptionsMenu();
+            if (!PlaceRequest.GOT_INITIAL_PLACES) {
+                Log.d(TAG, "GOT_INITIAL_PLACES is false");
+                if (PlaceRequest.getPlaces(getApplicationContext(), LocationServices.getLatLng(), false, placesCallback)) {
+                    Log.d(TAG, "got places, returned true");
+                    progressDialog = new TapFitProgressDialog(this);
+                    progressDialog.setMessage("Loading locations");
+                    progressDialog.setCancelable(true);
+                    progressDialog.show();
+                }
+            }
+            else
+            {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.cancel();
+                }
+
+            }
         }
         else if (mCurrentFragment.equals(FAVORITES)) {
             AnalyticsHelper.getInstance(this).logEvent("Favorites");
@@ -172,16 +189,7 @@ public class MapListActivity extends BaseActivity {
         mMapLocation = CameraPosition.fromLatLngZoom(LocationServices.getLatLng(), 14);
 
 
-        if (!PlaceRequest.GOT_INITIAL_PLACES) {
-            Log.d(TAG, "GOT_INITIAL_PLACES is false");
-            if (PlaceRequest.getPlaces(getApplicationContext(), LocationServices.getLatLng(), false, placesCallback)) {
-                Log.d(TAG, "got places, returned true");
-                progressDialog = new TapFitProgressDialog(this);
-                progressDialog.setMessage("Loading locations");
-                progressDialog.setCancelable(true);
-                progressDialog.show();
-            }
-        }
+
     }
 
     public void getPlaces(LatLng location) {

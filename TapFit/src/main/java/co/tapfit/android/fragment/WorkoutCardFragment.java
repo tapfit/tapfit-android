@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.DateTime;
+
 import java.util.HashMap;
 
 import co.tapfit.android.PlaceInfoActivity;
@@ -72,8 +74,19 @@ public class WorkoutCardFragment extends BaseFragment {
         TextView textView = (TextView) mView.findViewById(R.id.workout_name);
         textView.setText(mWorkout.name);
 
+        textView = (TextView) mView.findViewById(R.id.bottom_button_text);
+        textView.setText("Buy - $" + Math.round(mWorkout.price));
+
         textView = (TextView) mView.findViewById(R.id.workout_time);
-        textView.setText(WorkoutFormat.getStartEndDateTime(mWorkout.start_time, mWorkout.end_time));
+        String dayString = "";
+        if (mWorkout.start_time.withTimeAtStartOfDay().isEqual(DateTime.now().withTimeAtStartOfDay())){
+            dayString = "Today";
+        }
+        else
+        {
+            dayString = mWorkout.start_time.dayOfWeek().getAsText();
+        }
+        textView.setText(dayString + " from " + WorkoutFormat.getStartEndDateTime(mWorkout.start_time, mWorkout.end_time));
 
         textView = (TextView) mView.findViewById(R.id.workout_place_name);
         textView.setText(mPlace.name);
