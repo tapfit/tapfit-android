@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.flurry.android.monolithic.sdk.impl.ada;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

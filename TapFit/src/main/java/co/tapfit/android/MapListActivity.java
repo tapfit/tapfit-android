@@ -33,11 +33,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-import com.flurry.android.monolithic.sdk.impl.acc;
-import com.flurry.android.monolithic.sdk.impl.ft;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import co.tapfit.android.fragment.MapListFragment;
 import co.tapfit.android.fragment.PlaceMapFragment;
@@ -45,7 +43,6 @@ import co.tapfit.android.model.Place;
 import co.tapfit.android.request.PlaceRequest;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.view.TapFitProgressDialog;
-import ly.count.android.api.Countly;
 
 public class MapListActivity extends BaseActivity {
 
@@ -129,17 +126,11 @@ public class MapListActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        FlurryAgent.onStartSession(this, getString(R.string.flurry_api_key));
-        Countly.sharedInstance().onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        FlurryAgent.onEndSession(this);
-        Countly.sharedInstance().onStop();
     }
 
     @Override
@@ -170,14 +161,6 @@ public class MapListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Boolean.parseBoolean(getString(R.string.is_debug)))
-        {
-            Countly.sharedInstance().init(this, getString(R.string.countly_server), getString(R.string.countly_app_key_debug));
-        }
-        else
-        {
-            Countly.sharedInstance().init(this, getString(R.string.countly_server), getString(R.string.countly_app_key));
-        }
         Log.d(TAG, "onCreate");
 
         setContentView(R.layout.activity_map_list);
@@ -187,8 +170,6 @@ public class MapListActivity extends BaseActivity {
         initializeFragments();
 
         mMapLocation = CameraPosition.fromLatLngZoom(LocationServices.getLatLng(), 14);
-
-
 
     }
 
@@ -249,8 +230,10 @@ public class MapListActivity extends BaseActivity {
                         if (mPlaceMapFragment.isVisible())
                         {
                             CameraPosition position = mPlaceMapFragment.getMapLocationCenter();
+                            LocationServices.setCurrentLocation(position.target);
                             mMapListFragment.updateLocation(position.target);
                             mMapLocation = position;
+                            //Log.d(TAG, "mMapLocation (Show List): " + mMapLocation.target.latitude + ", " + mMapLocation.target.longitude);
                             addMapList();
 
                             mBottomButtonText.setText("View Map");
@@ -258,6 +241,8 @@ public class MapListActivity extends BaseActivity {
                         }
                         else
                         {
+                            //Log.d(TAG, "mMapLocation (Show Map): " + mMapLocation.target.latitude + ", " + mMapLocation.target.longitude);
+                            mPlaceMapFragment = new PlaceMapFragment();
                             mPlaceMapFragment.setLoadingBar(mLoadingBar);
                             mPlaceMapFragment.setLocation(mMapLocation);
                             mPlaceMapFragment.setHasShowOutOfAreaMessage(mHasShownOutOfAreaMessage);

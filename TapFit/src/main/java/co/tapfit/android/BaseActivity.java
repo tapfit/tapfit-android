@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 import com.urbanairship.UAirship;
 
@@ -38,7 +37,6 @@ import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.model.Pass;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
-import ly.count.android.api.Countly;
 
 public class BaseActivity extends ActionBarActivity {
 

@@ -226,6 +226,7 @@ public class PlaceInfoActivity extends BaseActivity {
                 isFavorite = true;
                 dbWrapper.addPlaceToFavorites(user, mPlace);
                 toggledFavorite = !toggledFavorite;
+                supportInvalidateOptionsMenu();
             }
             if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "Didn't log in");

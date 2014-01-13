@@ -26,7 +26,6 @@ import co.tapfit.android.model.User;
 import co.tapfit.android.request.ResponseCallback;
 import co.tapfit.android.request.UserRequest;
 import co.tapfit.android.view.TapFitProgressDialog;
-import ly.count.android.api.Countly;
 
 /**
  * Created by zackmartinsek on 9/17/13.

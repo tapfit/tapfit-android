@@ -104,11 +104,7 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        if(getExtendedMap() != null){
-            Log.v(TAG, "Map ready for use!");
-            mMap = getExtendedMap();
-            initMap();
-        }
+
     }
 
     @Override
@@ -120,7 +116,20 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
         mTouchView = new TouchableWrapper(getActivity(), this);
         mTouchView.addView(mContentView);
 
+        onMapReady();
+
         return mTouchView;
+    }
+
+    private void onMapReady() {
+        if(getExtendedMap() != null && mMap == null) {
+            Log.v(TAG, "Map ready for use!");
+            mMap = getExtendedMap();
+        }
+
+        if (mMap != null) {
+            initMap();
+        }
     }
 
     @Override
@@ -212,6 +221,13 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, "onDestroy");
+    }
+
 
     private GoogleMap.OnInfoWindowClickListener clickMarker = new GoogleMap.OnInfoWindowClickListener() {
 
@@ -228,6 +244,7 @@ public class PlaceMapFragment extends SupportMapFragment implements TouchableWra
 
     private void initMap() {
 
+        Log.d(TAG, "initMap() - mMapLocation: " + mMapLocation.target.latitude + ", " + mMapLocation.target.longitude + ", zoom: " + mMapLocation.zoom);
 
         ClusteringSettings clusteringSettings = new ClusteringSettings();
         clusteringSettings.addMarkersDynamically(true);

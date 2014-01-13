@@ -24,6 +24,7 @@ public class LocationServices implements LocationListener {
     private String mProvider;
     private static Location mLocation;
     private static Timer gpsTimer;
+    private static LatLng mCurrentLocation;
 
     private static final String TAG = LocationServices.class.getSimpleName();
 
@@ -173,6 +174,22 @@ public class LocationServices implements LocationListener {
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    public static void setCurrentLocation(LatLng currentLocation) {
+
+        mCurrentLocation = currentLocation;
+    }
+
+    public static LatLng getCurrentLocation(){
+
+        if (mCurrentLocation == null) {
+            return getLatLng();
+        }
+        else
+        {
+            return mCurrentLocation;
+        }
     }
 
     public static LatLng getLatLng()

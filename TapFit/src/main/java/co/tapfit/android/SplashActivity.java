@@ -18,8 +18,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import co.tapfit.android.database.DatabaseWrapper;
+import co.tapfit.android.helper.AnalyticsHelper;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
+import co.tapfit.android.helper.Search;
 import co.tapfit.android.model.User;
 import co.tapfit.android.helper.SharePref;
 import co.tapfit.android.request.PlaceRequest;
@@ -95,6 +97,9 @@ public class SplashActivity extends Activity {
         if (user != null) {
             UserRequest.favorites(getApplicationContext(), null);
         }
+
+        Search.getInstance(getApplicationContext());
+        Search.clearSearchParams();
         /*mJumpRunnable = new Runnable() {
 
             public void run() {

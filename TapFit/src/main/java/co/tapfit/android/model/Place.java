@@ -2,7 +2,6 @@ package co.tapfit.android.model;
 
 import android.content.Context;
 
-import com.flurry.android.monolithic.sdk.impl.cl;
 import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.CloseableWrappedIterable;
@@ -129,6 +128,13 @@ public class Place implements Comparable<Place> {
         return distanceBetweenPoints(userLocation, new LatLng(address.lat, address.lon));
     }
 
+    public double getCurrentDistance() {
+
+        LatLng currentLocation = LocationServices.getCurrentLocation();
+
+        return distanceBetweenPoints(currentLocation, new LatLng(address.lat, address.lon));
+    }
+
     private static double deg2rad(double deg)
     {
         return deg * (Math.PI / 180);
@@ -168,8 +174,8 @@ public class Place implements Comparable<Place> {
             return 0;
         }
 
-        double thisDistance = this.getDistance();
-        double otherDistance = place.getDistance();
+        double thisDistance = this.getCurrentDistance();
+        double otherDistance = place.getCurrentDistance();
 
         if (thisDistance > otherDistance) {
             return 1;

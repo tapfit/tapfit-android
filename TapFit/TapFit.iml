@@ -70,10 +70,10 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.2.2 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="FLurry_3.2.2" level="project" />
+    <orderEntry type="library" name="FLurry_3.2.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="module" module-name="android-maps-extensions" exported="" />
-    <orderEntry type="module" module-name="countly-sdk-android" exported="" />
+    <orderEntry type="module" module-name="countly-sdk-android" />
     <orderEntry type="library" exported="" name="crashlytics-1.0.4" level="project" />
     <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />

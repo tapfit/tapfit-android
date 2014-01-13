@@ -141,4 +141,19 @@ public class Search {
 
         return categories;
     }
+
+    public static void clearSearchParams() {
+        SharePref.setBooleanPref(mContext, Search.TIME_MORNING, false);
+        SharePref.setBooleanPref(mContext, Search.TIME_AFTERNOON, false);
+        SharePref.setBooleanPref(mContext, Search.TIME_EVENING, false);
+        SharePref.setBooleanPref(mContext, Search.WORKOUT_CROSSFIT, false);
+        SharePref.setBooleanPref(mContext, Search.WORKOUT_DANCE, false);
+        SharePref.setBooleanPref(mContext, Search.WORKOUT_PILATES, false);
+        SharePref.setBooleanPref(mContext, Search.WORKOUT_SPIN, false);
+        SharePref.setBooleanPref(mContext, Search.WORKOUT_WEIGHTS, false);
+        SharePref.setBooleanPref(mContext, Search.WORKOUT_YOGA, false);
+        SharePref.setBooleanPref(mContext, Search.PRICE_LOW, false);
+        SharePref.setBooleanPref(mContext, Search.PRICE_MED, false);
+        SharePref.setBooleanPref(mContext, Search.PRICE_HIGH, false);
+    }
 }

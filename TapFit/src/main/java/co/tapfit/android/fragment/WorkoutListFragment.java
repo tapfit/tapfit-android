@@ -139,7 +139,7 @@ public class WorkoutListFragment extends BaseFragment {
             mWorkoutListAdapter.addSection(dateString, new WorkoutAdapter(getActivity(), sections.get(dateString)));
         }*/
 
-        for (int i = 0; i < keys.size(); i++) {
+        for (int i = keys.size() - 1; i >= 0; i--) {
             String dateString = keys.get(i);
             mWorkoutListAdapter.addSection(dateString, new WorkoutAdapter(getActivity(), sections.get(dateString)));
         }

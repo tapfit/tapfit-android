@@ -1,22 +1,53 @@
 package co.tapfit.android.helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
+import android.telephony.TelephonyManager;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.util.InetAddressUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.joda.time.DateTime;
+import org.json.JSONObject;
 
 import java.net.ContentHandler;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 
 import co.tapfit.android.R;
-import ly.count.android.api.Countly;
+import co.tapfit.android.model.Pass;
+import co.tapfit.android.model.User;
+import co.tapfit.android.model.Workout;
+import co.tapfit.android.request.Request;
+import co.tapfit.android.request.ResponseCallback;
+import co.tapfit.android.request.UserRequest;
+import co.tapfit.android.service.ApiService;
 
 /**
  * Created by zackmartinsek on 9/16/13.
@@ -29,6 +60,7 @@ public class AnalyticsHelper {
     private static ArrayList<String> mEventQueue = new ArrayList<String>();
 
     private static AnalyticsHelper mInstance;
+    private static Context mContext;
 
     public static AnalyticsHelper getInstance(Context context) {
         if (mInstance == null) {
@@ -39,6 +71,7 @@ public class AnalyticsHelper {
 
     private AnalyticsHelper(Context context) {
 
+        mContext = context;
         PackageInfo pInfo = null;
         try
         {
@@ -68,17 +101,10 @@ public class AnalyticsHelper {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Countly.sharedInstance().recordEvent(name, finalArgs, 1);
-                FlurryAgent.logEvent(name, finalArgs);
+                //TODO: Add mixpanel
             }
         });
         thread.start();
-
-        saveEventForFuture(name);
-    }
-
-    private void saveEventForFuture(String name) {
-        mEventQueue.add(name);
     }
 
     public void sendEndOfSessionEvent() {
@@ -88,19 +114,6 @@ public class AnalyticsHelper {
             public void run() {
 
                 if (mEventQueue.size() > 0) {
-                    String flowString = "";
-
-                    for (String event : mEventQueue) {
-                        flowString = flowString + " -> " + event;
-                    }
-
-                    flowString = flowString + " -> END";
-
-                    HashMap<String, String> args = new HashMap<String, String>();
-                    args.put("app_version", "android: " + mAppVersion);
-                    args.put("android-flow", flowString);
-
-                    Countly.sharedInstance().recordEvent("Funnel", args, 1);
 
                     mEventQueue.clear();
                 }

@@ -179,7 +179,7 @@ public class MapListFragment extends BaseFragment {
     };
 
     public void updateLocation(LatLng position) {
-        Log.d(TAG, "updateLocation: " + position.latitude + ", " + position.longitude);
+        //Log.d(TAG, "updateLocation: " + position.latitude + ", " + position.longitude);
         mLocation = position;
     }
 }

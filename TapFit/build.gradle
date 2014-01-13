@@ -35,9 +35,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:3.2.25'
     compile files ('libs/gson-2.2.4.jar', 'libs/joda-time-2.3.jar', 'libs/ormlite-android-4.46.jar')
     compile files ('libs/ormlite-core-4.46.jar', 'libs/universal-image-loader-1.8.6-with-sources.jar')
-    compile files ('libs/braintree-android-encryption-1.0.0.jar', 'libs/FLurry_3.2.2.jar')
+    compile files ('libs/braintree-android-encryption-1.0.0.jar')
     compile files ('libs/urbanairship-lib-3.1.0.jar')
-    compile project (':libraries:countly-sdk-android')
     compile project (':libraries:venmo-touch-android-1.0.0-b2:VenmoTouch')
     compile project (':libraries:android-maps-extensions')
     compile project (':libraries:facebook')

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.Logger;
 import com.urbanairship.UAirship;
@@ -77,7 +76,7 @@ public class TapfitApplication extends Application {
 
         String apid = PushManager.shared().getAPID();
         Logger.info("My Application onCreate - App APID: " + apid);
-        Log.d(TAG, "APID: " + apid);
+        //Log.d(TAG, "APID: " + apid);
     }
 
 }

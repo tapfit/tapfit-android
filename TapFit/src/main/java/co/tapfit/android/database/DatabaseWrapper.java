@@ -7,8 +7,6 @@ import android.graphics.PointF;
 import co.tapfit.android.helper.LocationServices;
 import co.tapfit.android.helper.Log;
 
-import com.flurry.android.monolithic.sdk.impl.add;
-import com.flurry.android.monolithic.sdk.impl.up;
 import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;

@@ -33,7 +33,7 @@ public class Request {
 
     public static final String AUTH_TOKEN = "auth_token";
 
-    protected static String getUrl(Context context)
+    public static String getUrl(Context context)
     {
         if (Boolean.parseBoolean(context.getString(R.string.is_debug)))
         {

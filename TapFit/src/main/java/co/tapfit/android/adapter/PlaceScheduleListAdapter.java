@@ -149,6 +149,7 @@ public class PlaceScheduleListAdapter extends BaseAdapter {
             else
             {
                 header.setText("Days passes available");
+                view.setTag(true);
             }
         }
         else if (workout.equals(PROGRESS_BAR)){

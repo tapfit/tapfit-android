@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import co.tapfit.android.helper.Log;
 
-import com.flurry.android.monolithic.sdk.impl.ca;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
