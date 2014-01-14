@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="FLurry_3.2.2">
+  <library name="Gradle: joda-time-2.3">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/TapFit/libs/FLurry_3.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TapFit/libs/joda-time-2.3.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

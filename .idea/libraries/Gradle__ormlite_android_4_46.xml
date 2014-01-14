@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ormlite-android-4.46">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/TapFit/libs/ormlite-android-4.46.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

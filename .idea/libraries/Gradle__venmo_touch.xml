@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: venmo-touch">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/TapFit/:libraries:venmo-touch-android-1.0.0-b2:VenmoTouch/libs/venmo-touch.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TapFit/:libraries:venmo-touch-android-1.0.0-b2:VenmoTouch/libs/venmo-touch.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
